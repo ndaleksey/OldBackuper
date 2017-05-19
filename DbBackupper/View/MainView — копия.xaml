@@ -1,0 +1,204 @@
+﻿<Window x:Class="Swsu.Tools.DbBackupper.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:Swsu.Tools.DbBackupper.ViewModel"
+        mc:Ignorable="d"
+        Title="MainView" Height="700" Width="600" MinWidth="600" MinHeight="800">
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="400" MinWidth="300"/>
+            <ColumnDefinition Width="Auto" MaxWidth="3"/>
+            <ColumnDefinition Width="*" MinWidth="200"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Column="0">
+            <TabItem Header="Создать бэкап БД">
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <GroupBox Header="Подключение">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Хост:"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=ConnectionStringBuilder.Host}"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Content="Порт:"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ConnectionStringBuilder.Port}"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Content="Имя БД:"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ConnectionStringBuilder.Database}"/>
+
+                            <Label Grid.Row="3" Grid.Column="0" Content="Имя пользователя:"/>
+                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=ConnectionStringBuilder.UserId}"/>
+
+                            <Label Grid.Row="4" Grid.Column="0" Content="Пароль:"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=ConnectionStringBuilder.Password}"/>
+
+                            <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Проверить соединение" Command="{Binding TestConnectionCommand}"/>
+                        </Grid>
+                    </GroupBox>
+                    <TabControl>
+                        <TabItem Header="Файл">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Расположение:"/>
+                                    <TextBox Grid.Column="1" Text="{Binding Path=DumpFileName}"/>
+                                    <Button Grid.Column="2" Width="30" Content="..." Command="{Binding Path=DirectorySelectCommand}"/>
+                                </Grid>
+
+                                <CheckBox Grid.Row="1" Grid.Column="0" Content="Включать Blob-объекты"/>
+
+                                <CheckBox Grid.Row="2" Grid.Column="0" Content="Включать информацию о пользователях"/>
+
+                                <GroupBox Grid.Row="3" Grid.Column="0" Header="Включать объекты">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Content="Все объекты" IsChecked="{Binding Path=AllObjects}"/>
+
+                                        <CheckBox Grid.Row="1" Grid.Column="0" Content="Схемы" IsChecked="{Binding Path=IsShemeChecked}"/>
+                                        <CheckBox Grid.Row="1" Grid.Column="1" Content="Таблицы" IsChecked="{Binding Path=IsTableChecked}"/>
+
+                                        <CheckBox Grid.Row="2" Grid.Column="0" Content="Представления" IsChecked="{Binding Path=IsViewChecked}"/>
+                                        <CheckBox Grid.Row="2" Grid.Column="1" Content="Типы" IsChecked="{Binding Path=IsTypeChecked}"/>
+
+                                        <CheckBox Grid.Row="3" Grid.Column="0" Content="Тригеры" IsChecked="{Binding Path=IsTriggerChecked}"/>
+                                        <CheckBox Grid.Row="3" Grid.Column="1" Content="Хранимые процедуры" IsChecked="{Binding Path=IsProcedureChecked}"/>
+
+                                        <CheckBox Grid.Row="4" Grid.Column="0" Content="Пользователи" IsChecked="{Binding Path=IsUserChecked}"/>
+                                    </Grid>
+                                </GroupBox>
+
+                                <Grid Grid.Row="4" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Content="Создать бэкап" Command="{Binding Path=MakeBackupCommand}"/>
+                                    <Button Grid.Column="1" Content="Восстановить из бэкапа" Command="{Binding }"/>
+                                </Grid>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+                </StackPanel>
+            </TabItem>
+            
+            <TabItem Header="Восстановить из бэкапа">
+                <GroupBox Header="Подключение">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Хост:"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=RestoreConnectionString.Host}"/>
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="Порт:"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=RestoreConnectionString.Port}"/>
+
+                        <Label Grid.Row="2" Grid.Column="0" Content="Имя БД:"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=RestoreConnectionString.Database}"/>
+
+                        <Label Grid.Row="3" Grid.Column="0" Content="Имя пользователя:"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=RestoreConnectionString.UserId}"/>
+
+                        <Label Grid.Row="4" Grid.Column="0" Content="Пароль:"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=RestoreConnectionString.Password}"/>
+
+                        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Проверить соединение" Command="{Binding TestRestoreConnectionCommand}"/>
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+        </TabControl>
+
+        <GridSplitter Grid.Row="0" Grid.Column="1" Width="3"/>
+
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Label Content="Данные для экспорта" Height="25"/>
+
+            <TreeView Grid.Row="1" ItemsSource="{Binding Path=Schemes}" Height="400" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+                        <CheckBox Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}"/>
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}"/>
+                            </DataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            
+            <ListView Grid.Row="2" ItemsSource="{Binding Path=Logs}">
+                
+            </ListView>
+        </Grid>
+
+        <ProgressBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Height="10"/>
+    </Grid>
+</Window>

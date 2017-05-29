@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Swsu.Tools.DbBackupper.View.ConnectionDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+	<GroupBox Header="Подключение">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+
+			<Label Content="Хост:" Margin="0, 5"/>
+			<DockPanel Grid.Row="0" Grid.Column="1" >
+				<Button DockPanel.Dock="Right" Content="PING" Height="20" Margin="5, 0, 0, 0" Command="{Binding PingHostCommand}"/>
+				<TextBox Text="{Binding Host, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+			</DockPanel>
+
+			<Label Grid.Row="1" Grid.Column="0" Content="Порт:" Margin="0, 5"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Port, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+
+			<Label Grid.Row="2" Grid.Column="0" Content="Имя БД:" Margin="0, 5"/>
+			<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Database, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+
+			<Label Grid.Row="3" Grid.Column="0" Content="Имя пользователя:" Margin="0, 5"/>
+			<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=User, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+
+			<Label Grid.Row="4" Grid.Column="0" Content="Пароль:" Margin="0, 5"/>
+			<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+
+			<Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+								Content="Получить структуру БД" Margin="5, 5" 
+								Command="{Binding GetDbStructureCommand}" />
+		</Grid>
+	</GroupBox>
+</UserControl>

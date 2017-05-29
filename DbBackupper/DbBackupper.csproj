@@ -56,6 +56,10 @@
       <HintPath>..\packages\NLog.4.4.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Npgsql, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.1.0\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -105,6 +109,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\WorkflowTypeToStringConverter.cs" />
+    <Compile Include="Converter\WorkflowTypeToVisibilityConverter.cs" />
+    <Compile Include="Infrastructure\DbService.cs" />
+    <Compile Include="Infrastructure\EWorkflowType.cs" />
+    <Compile Include="Infrastructure\ObjectType.cs" />
+    <Compile Include="ViewModel\BackupViewModel.cs" />
+    <Compile Include="ViewModel\CustomViewModel.cs" />
+    <Compile Include="ViewModel\RestoreViewModel.cs" />
+    <Compile Include="ViewModel\TabViewModel.cs" />
+    <Compile Include="View\BackupView.xaml.cs">
+      <DependentUpon>BackupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConnectionDetailsView.xaml.cs">
+      <DependentUpon>ConnectionDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DbObjectsBrowserView.xaml.cs">
+      <DependentUpon>DbObjectsBrowserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DumpFormatView.xaml.cs">
+      <DependentUpon>DumpFormatView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RestoreView.xaml.cs">
+      <DependentUpon>RestoreView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\WorkflowIndicatorView.xaml.cs">
+      <DependentUpon>WorkflowIndicatorView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +143,26 @@
     <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\BackupView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ConnectionDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DbObjectsBrowserView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DumpFormatView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RestoreView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -132,6 +183,10 @@
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\WorkflowIndicatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

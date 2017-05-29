@@ -7,7 +7,7 @@ namespace Swsu.Tools.DbBackupper.Service
 {
     public class ListBoxService : ServiceBase, IListBoxService
     {
-        public readonly static DependencyProperty ControlProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty ControlProperty = DependencyProperty.Register(
             nameof(Control),
             typeof (ListBox),
             typeof (ListBoxService),

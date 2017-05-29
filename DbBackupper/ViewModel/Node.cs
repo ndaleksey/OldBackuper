@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
@@ -21,24 +23,18 @@ namespace Swsu.Tools.DbBackupper.ViewModel
             set { SetProperty(ref _isChecked, value, nameof(IsChecked), OnCheckedChanged); }
         }
 
-        public ObservableCollection<Node> Children { get; }
+        public ObservableCollection<Node> Children { get; } = new ObservableCollection<Node>();
         #endregion
 
 
         #region Constructors
-        public Node(string name, ObservableCollection<Node> children)
-        {
-            Name = name;
 
-            if (Children == null)
-            {
-                Children = new ObservableCollection<Node>();
-            }
+	    public Node(string name)
+	    {
+		    Name = name;
+	    }
 
-            Children = children;
-        }
-
-        #endregion
+	    #endregion
 
         #region Methods
         private void OnCheckedChanged()

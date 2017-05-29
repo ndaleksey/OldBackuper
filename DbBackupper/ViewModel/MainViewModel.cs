@@ -17,6 +17,8 @@ using Devart.Data.PostgreSql;
 using DevExpress.Mvvm;
 using Microsoft.Win32;
 using NLog;
+using Npgsql;
+using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Model;
 using Swsu.Tools.DbBackupper.Service;
 
@@ -24,15 +26,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 {
     
 
-    internal enum ObjectType
+    public class MainViewModel : CustomViewModel
     {
-        DataOnly, SchemeOnly, Default
-    }
+		#region Fields
 
-    public class MainViewModel : ViewModelBase
-    {
-        #region Fields
-        private PgSqlConnectionStringBuilder _dumpConnectionStringBuilder;
+		private PgSqlConnectionStringBuilder _dumpConnectionStringBuilder;
         private PgSqlConnectionStringBuilder _restoreConnectionStringBuilder;
         private string _selectedEncoding;
         private bool _allObjects;
@@ -55,14 +53,31 @@ namespace Swsu.Tools.DbBackupper.ViewModel
         private bool _isBlobs;
         private FileFormat _dumpFileFormat;
         private FileFormat _restoreFileFormat;
+
+	    private TabViewModel _backupViewModel;
+	    private TabViewModel _restoreViewModel;
+		
         #endregion
 
         public IListBoxService DumpLogsListBoxService => GetService<IListBoxService>("DumpLogsListBoxService");
         public IListBoxService RestoreLogsListBoxService => GetService<IListBoxService>("RestoreLogsListBoxService");
 
-        #region Properties
+		#region Properties
 
-        public string InDumpFileName
+	    public TabViewModel BackupViewModel
+	    {
+		    get { return _backupViewModel; }
+			set { SetProperty(ref _backupViewModel, value, nameof(BackupViewModel)); }
+	    }
+
+		public TabViewModel RestoreViewModel
+		{
+			get { return _restoreViewModel; }
+			set { SetProperty(ref _restoreViewModel, value, nameof(RestoreViewModel)); }
+		}
+
+
+		public string InDumpFileName
         {
             get { return _inDumpFileName; }
             set { SetProperty(ref _inDumpFileName, value, nameof(InDumpFileName)); }
@@ -164,13 +179,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
             get { return _isBlobs; }
             set { SetProperty(ref _isBlobs, value, nameof(IsBlobs)); }
         }
-
-        public FileFormat DumpFileFormat
-        {
-            get { return _dumpFileFormat; }
-            set { SetProperty(ref _dumpFileFormat, value, nameof(DumpFileFormat)); }
-        }
-
+		
         public FileFormat RestoreFileFormat
         {
             get { return _restoreFileFormat; }
@@ -193,24 +202,34 @@ namespace Swsu.Tools.DbBackupper.ViewModel
         #endregion
 
         #region Commands
-        public ICommand GetSchemesForDumpCommand { get; }
-        public ICommand GetSchemesForRestoreCommand { get; }
         public ICommand RestoreBackupCommand { get; }
+        public ICommand CreateDbCommand { get; }
         public ICommand MakeBackupCommand { get; }
-        public ICommand SaveDialogCommand { get; }
-        public ICommand OpenDialogCommand { get; }
-        public ICommand DumpPingCommand { get; }
-        public ICommand RestorePingCommand { get; }
         #endregion
 
         #region Constructors
         public MainViewModel()
         {
-            try
-            {
-                DumpLogs = new ObservableCollection<string>();
-                RestoreLogs = new ObservableCollection<string>();
+	        BackupViewModel = new BackupViewModel()
+	        {
+		        Host = "127.0.0.1",
+		        Port = 5432,
+		        Database = "los_db",
+		        User = "postgres",
+		        Password = "postgres"
+	        };
 
+			RestoreViewModel = new RestoreViewModel()
+			{
+				Host = "127.0.0.1",
+				Port = 5432,
+				Database = "los_db",
+				User = "postgres",
+				Password = "postgres"
+			};
+
+			try
+            {
                 DumpSchemes = new ObservableCollection<Node>();
                 RestoreSchemes = new ObservableCollection<Node>();
 
@@ -225,37 +244,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
                     DbEncodings.Add(encoding.Name);
                 }
 
-                DumpConnectionStringBuilder = new PgSqlConnectionStringBuilder
-                {
-                    Host = "127.0.0.1",
-                    Port = 5432,
-                    Database = "db_name",
-                    UserId = "user",
-                    Password = "password",
-                    Charset = "WIN1251"
-                };
-
-                RestoreConnectionStringBuilder = new PgSqlConnectionStringBuilder
-                {
-                    Host = "127.0.0.1",
-                    Port = 5432,
-                    Database = "db_name_rocovery",
-                    UserId = "user",
-                    Password = "password",
-                    Charset = "WIN1251"
-                };
-
-                GetSchemesForDumpCommand = new DelegateCommand(GetSchemesForDumpMethod);
-                GetSchemesForRestoreCommand = new DelegateCommand(GetSchemesForRestoreMethod);
-
-                MakeBackupCommand = new DelegateCommand(OnMakeDumpClick, CanMakeDump);
-                RestoreBackupCommand = new DelegateCommand(OnRestoreDumpClick, CanRestoreDump);
-
-                SaveDialogCommand = new DelegateCommand(OnSaveDialogClick);
-                OpenDialogCommand = new DelegateCommand(OnOpenDialogClick);
-
-                DumpPingCommand = new DelegateCommand(DumpPingTestMethod);
-                RestorePingCommand = new DelegateCommand(RestorePingTestMethod);
+				CreateDbCommand = new DelegateCommand(CreateDatabase, CanCreateDatabase);
+				
 
                 Helper.Logger.Log(LogLevel.Info, "Start programme success");
             }
@@ -264,96 +254,56 @@ namespace Swsu.Tools.DbBackupper.ViewModel
                 Helper.Logger.Log(LogLevel.Error, e);
             }
         }
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 
-        private void MakeDump(string exeFileName, string host, string userName, string password, string dataBase,
-            IReadOnlyCollection<string> schemes, ObjectType objectType, FileFormat fileFormat, string dumpFileName)
-        {
-            try
-            {
-                var arguments = new StringBuilder();
+	    private bool CanCreateDatabase()
+	    {
+		    return true;
+	    }
 
-                arguments.Append($"-h {host}");
-                arguments.Append($" -U {userName}");
-                arguments.Append($" -d {dataBase}");
-                arguments.Append($" -f \"{dumpFileName}\"");
+		private async void CreateDatabase()
+	    {
+			try
+			{
+				var builder = new NpgsqlConnectionStringBuilder
+				{
+					Host = RestoreConnectionStringBuilder.Host,
+					Port = RestoreConnectionStringBuilder.Port,
+					Database = "postgres",
+					Password = RestoreConnectionStringBuilder.Password,
+					Username = RestoreConnectionStringBuilder.UserId
+				};
 
-                switch (objectType)
-                {
-                    case ObjectType.DataOnly:
-                        arguments.Append(" -a");
-                        break;
-                    case ObjectType.SchemeOnly:
-                        arguments.Append(" -s");
-                        break;
-                    case ObjectType.Default:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null);
-                }
+				WorkflowType = EWorkflowType.LoadFromDb;
 
-                if (IsBlobs)
-                {
-                    arguments.Append(" -b");
-                }
+				var databases = await DbService.GetDatabasesAsync(builder);
 
-                if (schemes.Count > 0)
-                {
-                    foreach (var scheme in schemes)
-                    {
-                        arguments.Append($" -n {scheme}");
-                    }
-                }
+				if (
+					databases.Any(
+						d => string.Equals(d, RestoreConnectionStringBuilder.Database.Trim(), StringComparison.CurrentCultureIgnoreCase)))
+					if (
+						MessageBox.Show(
+							$"База данных '{RestoreConnectionStringBuilder.Database}' уже существует. Вы хотите заменить ее?",
+							"Создание новой БД", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+						return;
 
-                switch (fileFormat)
-                {
-                    case FileFormat.Plain:
-                        arguments.Append(" -Fp");
-                        break;
-                    case FileFormat.Tar:
-                        arguments.Append(" -Ft");
-                        break;
-                    default:
-                        arguments.Append(" -Fc");
-                        break;
-                }
+				WorkflowType = EWorkflowType.WorkWithDb;
 
-                arguments.Append(" -v");
+				await DbService.CreateDatabaseAsync(builder, RestoreConnectionStringBuilder.Database);
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e);
+			}
+			finally
+			{
+				WorkflowType = EWorkflowType.NormalWork;
+			}
+	    }
 
-
-                var info = new ProcessStartInfo
-                {
-                    FileName = exeFileName,
-                    Arguments = arguments.ToString(),
-                    EnvironmentVariables = { { "PGPASSWORD", password } },
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    RedirectStandardError = true
-                };
-
-                using (var process = Process.Start(info))
-                {
-                    process.BeginErrorReadLine();
-                    process.ErrorDataReceived += OnDumpOutputDataReceived;
-                    process.WaitForExit();
-
-                    var text = new StringBuilder();
-                    text.Append($"{DateTime.Now:HH:mm:ss}\nКод завершения:\t{process.ExitCode}");
-                    text.Append(process.ExitCode == 0
-                        ? "\n\nРезервирование завершилось успешно!"
-                        : "\n\nПри резервировании произошли ошибки");
-
-                    OutConcurrentText(DumpLogs, text.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-                Helper.Logger.Log(LogLevel.Error, e);
-                throw;
-            }
-        }
+		
 
         private async void OutConcurrentText(ICollection<string> logs, string text)
         {
@@ -378,134 +328,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
             OutConcurrentText(RestoreLogs, args.Data);
         }
 
-        private bool CanMakeDump()
-        {
-            return !string.IsNullOrEmpty(OutDumpFileName);
-        }
-
-        private async void OnMakeDumpClick()
-        {
-            DumpLogs.Clear();
-            
-            var schemes = new List<string>();
-
-            foreach (var scheme in DumpSchemes)
-            {
-                if (scheme.IsChecked)
-                {
-                    schemes.Add(scheme.Name);
-                }
-            }
-            
-            var dumpExeFilePath = $"{Environment.CurrentDirectory}\\Tools\\pg_dump.exe";
-//            var dumpExeFilePath = @"C:\Program Files\PostgreSQL\9.5\bin\pg_dump.exe";
-
-            await Task.Run(() =>
-            {
-                MakeDump(dumpExeFilePath,
-                    DumpConnectionStringBuilder.Host, DumpConnectionStringBuilder.UserId,
-                    DumpConnectionStringBuilder.Password,
-                    DumpConnectionStringBuilder.Database, schemes, OnlyDumpData
-                        ? ObjectType.DataOnly
-                        : OnlyDumpScheme ? ObjectType.SchemeOnly : ObjectType.Default, DumpFileFormat, OutDumpFileName);
-            });
-        }
-
-        private void Restore(string exeFileName, string host, string userName, string password, string dataBase,
-            ObjectType objectType, FileFormat fileFormat, string dumpFileName)
-        {
-            try
-            {
-                var arguments = new StringBuilder();
-
-                arguments.Append($"-h {host}");
-                arguments.Append($" -U {userName}");
-                arguments.Append($" -d {dataBase}");
-
-                if (fileFormat != FileFormat.Plain)
-                {
-                    arguments.Append(" -v");
-                }
-
-                switch (objectType)
-                {
-                    case ObjectType.DataOnly:
-                        arguments.Append(" -a");
-                        break;
-                    case ObjectType.SchemeOnly:
-                        arguments.Append(" -s");
-                        break;
-                    case ObjectType.Default:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null);
-                }
-
-                arguments.Append(fileFormat != FileFormat.Plain ? $" {dumpFileName}" : $" -f \"{dumpFileName}\"");
-
-                var info = new ProcessStartInfo
-                {
-                    StandardErrorEncoding = Encoding.Default,
-                    FileName = exeFileName,
-                    Arguments = arguments.ToString(),
-                    EnvironmentVariables = { { "PGPASSWORD", password } },
-                    RedirectStandardError = true,
-                    CreateNoWindow = true,
-                    UseShellExecute = false
-                };
-
-                using (var process = Process.Start(info))
-                {
-                    process.BeginErrorReadLine();
-                    process.ErrorDataReceived += OnRestoreOutputDataReceived;
-
-                    process.WaitForExit();
-
-                    var text = new StringBuilder();
-
-                    text.Append($"{DateTime.Now:HH:mm:ss}\nКод завершения:\t{process.ExitCode}");
-                    text.Append(process.ExitCode == 0
-                        ? "\n\nВосстановление завершилось успешно!"
-                        : "\n\nПри восстановлении произошли ошибки");
-
-                    OutConcurrentText(RestoreLogs, text.ToString());
-                }
-            }
-            catch (Exception e)
-            {
-                Helper.Logger.Log(LogLevel.Error, e);
-            }
-        }
-
-        private bool CanRestoreDump()
-        {
-            return !string.IsNullOrEmpty(InDumpFileName);
-        }
-
-        private void OnRestoreDumpClick()
-        {
-            RestoreLogs.Clear();
-
-            Task.Run(() =>
-            {
-//                var restoreFileName = @"C:\Program Files\PostgreSQL\9.5\bin\pg_restore.exe";
-                var restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\pg_restore.exe";
-
-                if (RestoreFileFormat == FileFormat.Plain)
-                {
-//                    restoreFileName = @"C:\Program Files\PostgreSQL\9.5\bin\psql.exe";
-                    restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\psql.exe";
-                }
-
-                Restore(restoreFileName,
-                    IPAddress.Loopback.ToString(), RestoreConnectionStringBuilder.UserId, RestoreConnectionStringBuilder.Password,
-                    RestoreConnectionStringBuilder.Database, OnlyRestoreData
-                        ? ObjectType.DataOnly
-                        : OnlyRestoreScheme ? ObjectType.SchemeOnly : ObjectType.Default, RestoreFileFormat,
-                    InDumpFileName);
-            });
-        }
-
+        
         private void OnAllObjectsChecked()
         {
             if (AllObjects)
@@ -582,10 +405,10 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
                         foreach (var table in tables)
                         {
-                            children.Add(new Node(table, null));
+                            children.Add(new Node(table));
                         }
 
-                        dbSchemes.Add(new Node(schemeName, children));
+//                        dbSchemes.Add(new Node(schemeName, children));
                     }
                 }
                 catch (Exception e)
@@ -620,152 +443,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
             return tables;
         }
 
-        private void OnMakeBackupClick()
-        {
-            using (var connection = new PgSqlConnection(DumpConnectionStringBuilder.ConnectionString))
-            {
-                connection.Open();
-
-                var directory = $"d:\\{DumpConnectionStringBuilder.Database}";
-                var tables = new StringBuilder();
-
-                try
-                {
-                    Directory.CreateDirectory(directory);
-
-                    var dump = new PgSqlDump(connection);
-
-                    foreach (var scheme in DumpSchemes)
-                    {
-                        if (!scheme.IsChecked)
-                        {
-                            continue;
-                        }
-
-                        foreach (var table in scheme.Children)
-                        {
-                            if (!table.IsChecked)
-                            {
-                                continue;
-                            }
-
-                            tables.Append($"{scheme.Name}.{table.Name};");
-                        }
-
-                        dump.IncludeDrop = true;
-                    }
-                    dump.Tables = tables.ToString();
-
-                    if (!AllObjects)
-                    {
-                        dump.ObjectTypes = SetFlag(dump.ObjectTypes, PgSqlDumpObjects.Schemas, IsShemeChecked);
-                        dump.ObjectTypes = SetFlag(dump.ObjectTypes, PgSqlDumpObjects.Tables, IsTableChecked);
-                        dump.ObjectTypes = SetFlag(dump.ObjectTypes, PgSqlDumpObjects.Views, IsViewChecked);
-                        dump.ObjectTypes = SetFlag(dump.ObjectTypes, PgSqlDumpObjects.Types, IsTypeChecked);
-                        dump.ObjectTypes = SetFlag(dump.ObjectTypes, PgSqlDumpObjects.Triggers, IsTriggerChecked);
-                        dump.ObjectTypes = SetFlag(dump.ObjectTypes, PgSqlDumpObjects.Users, IsUserChecked);
-                    }
-                    else
-                    {
-                        dump.ObjectTypes = PgSqlDumpObjects.All;
-                    }
-
-                    OutDumpFileName = OutDumpFileName.Trim();
-
-                    if (string.IsNullOrEmpty(OutDumpFileName))
-                    {
-                        MessageBox.Show("Не удалось сохранить файл дампа. Указано неверное имя файла");
-                        return;
-                    }
-
-                    using (var stream = new FileStream(OutDumpFileName, FileMode.Create))
-                    {
-                        dump.Backup(stream);
-                        stream.Close();
-                        MessageBox.Show("Файл дампа успешно создан");
-                    }
-                }
-                catch (IOException e)
-                {
-                    Debug.WriteLine(e.StackTrace);
-                }
-
-                connection.Close();
-            }
-        }
-
-        private void OnSaveDialogClick()
-        {
-            var dialog = new SaveFileDialog();
-
-            var date = DateTime.Today.Date;
-
-            if (DumpFileFormat == FileFormat.Plain)
-            {
-                dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
-                dialog.Filter = dialog.DefaultExt = "Файлы запросов (*.sql)|*.sql";
-            }
-            else
-            {
-                dialog.FileName = date.ToString("dd-MM-yy") + ".dump";
-                dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
-            }
-            
-
-            if ((bool) dialog.ShowDialog())
-            {
-                OutDumpFileName = dialog.FileName;
-            }
-        }
-
-        private void OnOpenDialogClick()
-        {
-            var dialog = new OpenFileDialog();
-
-            if (RestoreFileFormat == FileFormat.Plain)
-            {
-                dialog.Filter = dialog.DefaultExt = "Файлы запросов (*.sql)|*.sql";
-            }
-            else
-            {
-                dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
-            }
-
-            if ((bool) dialog.ShowDialog())
-            {
-                InDumpFileName = dialog.FileName;
-            }
-        }
-
-        private void DumpPingTestMethod()
-        {
-            MessageBox.Show(PingToHost(IPAddress.Parse(DumpConnectionStringBuilder.Host)).ToString());
-        }
-
-        private void RestorePingTestMethod()
-        {
-            MessageBox.Show(PingToHost(IPAddress.Parse(RestoreConnectionStringBuilder.Host)).ToString());
-        }
-
-        private static IPStatus? PingToHost(IPAddress host)
-        {
-            return new Ping().Send(host)?.Status;
-        }
-
-        private static PgSqlDumpObjects SetFlag(PgSqlDumpObjects flags, PgSqlDumpObjects flag, bool value)
-        {
-            if (value)
-            {
-                flags |= flag;
-            }
-            else
-            {
-                flags &= ~flag;
-            }
-
-            return flags;
-        }
-
+		
         #endregion
     }
 }

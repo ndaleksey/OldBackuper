@@ -22,7 +22,7 @@ namespace Swsu.Tools.DbBackupper.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Swsu.Tools.DbBackupper.Properties {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Swsu.Tools.DbBackupper.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,282 @@ namespace Swsu.Tools.DbBackupper.Properties {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавить CREATE DATABASE.
+        /// </summary>
+        public static string AddCreateDb {
+            get {
+                return ResourceManager.GetString("AddCreateDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавить DROP DATABASE.
+        /// </summary>
+        public static string AddDropDb {
+            get {
+                return ResourceManager.GetString("AddDropDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Генератор резервных копий.
+        /// </summary>
+        public static string ApplicationTitle {
+            get {
+                return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Создание резервной копии.
+        /// </summary>
+        public static string BackupDump {
+            get {
+                return ResourceManager.GetString("BackupDump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Параметры резервирования.
+        /// </summary>
+        public static string BackupSettings {
+            get {
+                return ResourceManager.GetString("BackupSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сменить язык.
+        /// </summary>
+        public static string ChangeLanguage {
+            get {
+                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на После смены языка произойдет перезапуск программы. Вы хотите сменить язык?.
+        /// </summary>
+        public static string ChangeLanguageRequest {
+            get {
+                return ResourceManager.GetString("ChangeLanguageRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Очистить перед восстановлением.
+        /// </summary>
+        public static string CleanBeforeRestore {
+            get {
+                return ResourceManager.GetString("CleanBeforeRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Настройки подключения.
+        /// </summary>
+        public static string ConnectionSettings {
+            get {
+                return ResourceManager.GetString("ConnectionSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Создать БД.
+        /// </summary>
+        public static string CreateDb {
+            get {
+                return ResourceManager.GetString("CreateDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Создать резервную копию.
+        /// </summary>
+        public static string CreateDump {
+            get {
+                return ResourceManager.GetString("CreateDump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя БД.
+        /// </summary>
+        public static string DatabaseName {
+            get {
+                return ResourceManager.GetString("DatabaseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Только данные.
+        /// </summary>
+        public static string DataOnly {
+            get {
+                return ResourceManager.GetString("DataOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на События.
+        /// </summary>
+        public static string Events {
+            get {
+                return ResourceManager.GetString("Events", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Файл.
+        /// </summary>
+        public static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Формат файла.
+        /// </summary>
+        public static string FileFormat {
+            get {
+                return ResourceManager.GetString("FileFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Получить структуру БД.
+        /// </summary>
+        public static string GetDbStructure {
+            get {
+                return ResourceManager.GetString("GetDbStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на IP-адрес.
+        /// </summary>
+        public static string Host {
+            get {
+                return ResourceManager.GetString("Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Смена языка.
+        /// </summary>
+        public static string LanguageChanging {
+            get {
+                return ResourceManager.GetString("LanguageChanging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Расположение.
+        /// </summary>
+        public static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Типы объектов.
+        /// </summary>
+        public static string ObjectsTypes {
+            get {
+                return ResourceManager.GetString("ObjectsTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пароль.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Порт.
+        /// </summary>
+        public static string Port {
+            get {
+                return ResourceManager.GetString("Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Восстановление из резервной копии.
+        /// </summary>
+        public static string RestoreDump {
+            get {
+                return ResourceManager.GetString("RestoreDump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Восстановить из резервной копии.
+        /// </summary>
+        public static string RestoreFromDump {
+            get {
+                return ResourceManager.GetString("RestoreFromDump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Параметры восстановления.
+        /// </summary>
+        public static string RestoreSettings {
+            get {
+                return ResourceManager.GetString("RestoreSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Только схема.
+        /// </summary>
+        public static string SchemaOnly {
+            get {
+                return ResourceManager.GetString("SchemaOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Схемы.
+        /// </summary>
+        public static string Schemas {
+            get {
+                return ResourceManager.GetString("Schemas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выбрать всё.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя пользователя.
+        /// </summary>
+        public static string UserName {
+            get {
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
     }

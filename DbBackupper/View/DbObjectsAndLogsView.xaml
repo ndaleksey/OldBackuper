@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:service="clr-namespace:Swsu.Tools.DbBackupper.Service"
+             xmlns:properties="clr-namespace:Swsu.Tools.DbBackupper.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400" x:Name="Root">
 
@@ -36,9 +37,9 @@
 			<RowDefinition Height="30*"/>
 		</Grid.RowDefinitions>
 
-		<GroupBox Header="Схемы:">
+		<GroupBox Header="{x:Static properties:Resources.Schemas}">
 			<DockPanel>
-				<CheckBox Content="Выбрать всё" DockPanel.Dock="Top" Margin="0, 5" 
+				<CheckBox Content="{x:Static properties:Resources.SelectAll}" DockPanel.Dock="Top" Margin="0, 5" 
 					  IsChecked="{Binding Path=SelectAll, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
 					  Command="{Binding Path=SelectAllObjectsCommand, UpdateSourceTrigger=PropertyChanged}"
 					  Visibility="{Binding Path=IsBackup, ElementName=Root, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -67,7 +68,7 @@
 		
 		<GridSplitter Grid.Row="1" Height="5" BorderThickness="1" Background="#5E7357"  HorizontalAlignment="Stretch"/>
 
-		<GroupBox Grid.Row="2" Header="События:" VerticalAlignment="Stretch">
+		<GroupBox Grid.Row="2" Header="{x:Static properties:Resources.Events}" VerticalAlignment="Stretch">
 			<ListBox x:Name="LogsListBox" MinHeight="200" ItemsSource="{Binding Path=Logs}" IsSynchronizedWithCurrentItem="True" >
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>

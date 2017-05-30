@@ -238,7 +238,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		protected NpgsqlConnectionStringBuilder GetConnectionBuilder()
 		{
-			if (ValidateConnectionBuilder()) throw new ArgumentException("Ошибка создания строки соединения");
+			if (!ValidateConnectionBuilder()) throw new ArgumentException("Ошибка создания строки соединения");
 
 			return new NpgsqlConnectionStringBuilder()
 			{

@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Swsu.Tools.DbBackupper.View"
-             xmlns:service="clr-namespace:Swsu.Tools.DbBackupper.Service"
-             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:properties="clr-namespace:Swsu.Tools.DbBackupper.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800" Background="AliceBlue">
 
@@ -24,7 +23,7 @@
 
 					<view:DumpFormatView/>
 
-					<GroupBox Header="Файл">
+					<GroupBox Header="{x:Static properties:Resources.File}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
@@ -32,15 +31,16 @@
 								<ColumnDefinition Width="Auto"/>
 							</Grid.ColumnDefinitions>
 
-							<TextBlock Text="Расположение:" VerticalAlignment="Center" Margin="5, 5"/>
+							<TextBlock Text="{x:Static properties:Resources.Location}" VerticalAlignment="Center" Margin="5, 5"/>
 							<TextBox Grid.Column="1" Text="{Binding Path=DumpFileName}" IsReadOnly="True" Margin="5, 5"/>
 							<Button Grid.Column="2" Width="30" Content=" . . . " Command="{Binding Path=CreateBackupFileNameCommand}" Margin="5, 5"/>
 						</Grid>
 					</GroupBox>
 
-					<Expander Header="Типы объектов">
+					<Expander Header="{x:Static properties:Resources.ObjectsTypes}">
 						<StackPanel Orientation="Vertical">
-							<CheckBox x:Name="OnlyDataCheckBox" Content="Только данные" IsChecked="{Binding Path=DataOnly}" Margin="5">
+							<CheckBox x:Name="OnlyDataCheckBox" Content="{x:Static properties:Resources.DataOnly}" 
+									  IsChecked="{Binding Path=DataOnly}" Margin="5">
 								<CheckBox.Style>
 									<Style TargetType="{x:Type CheckBox}">
 										<Setter Property="IsEnabled" Value="True"/>
@@ -56,7 +56,8 @@
 								</CheckBox.Style>
 							</CheckBox>
 
-							<CheckBox x:Name="OnlySchemaCheckBox" Content="Только схема" IsChecked="{Binding Path=SchemaOnly}" Margin="5">
+							<CheckBox x:Name="OnlySchemaCheckBox" Content="{x:Static properties:Resources.SchemaOnly}" 
+									  IsChecked="{Binding Path=SchemaOnly}" Margin="5">
 								<CheckBox.Style>
 									<Style TargetType="{x:Type CheckBox}">
 										<Setter Property="IsEnabled" Value="True"/>
@@ -75,14 +76,14 @@
 						</StackPanel>
 					</Expander>
 
-					<Expander Header="Параметры восстановления">
+					<Expander Header="{x:Static properties:Resources.BackupSettings}">
 						<StackPanel Orientation="Vertical">
-							<CheckBox Content="Добавить CREATE DATABASE" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
-							<CheckBox Content="Добавить DROP DATABASE" Margin="5" IsChecked="{Binding Path=CleanDb}"/>
+							<CheckBox Content="{x:Static properties:Resources.AddCreateDb}" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
+							<CheckBox Content="{x:Static properties:Resources.AddDropDb}" Margin="5" IsChecked="{Binding Path=CleanDb}"/>
 						</StackPanel>
 					</Expander>
 
-					<Button Content="Создать резервную копии" Command="{Binding Path=MakeBackupCommand}" Margin="5"/>
+					<Button Content="{x:Static properties:Resources.CreateDump}" Command="{Binding Path=MakeBackupCommand}" Margin="5"/>
 				</StackPanel>
 			</ScrollViewer>
 		</Grid>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,8 +11,10 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Devart.Data.PostgreSql;
+using DevExpress.Mvvm;
 using NLog;
 using Swsu.Tools.DbBackupper.Model;
+using Swsu.Tools.DbBackupper.Properties;
 using Swsu.Tools.DbBackupper.Service;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
@@ -43,20 +46,23 @@ namespace Swsu.Tools.DbBackupper.ViewModel
         private bool _onlyRestoreScheme;
 
         private bool _isBlobs;
-        private FileFormat _dumpFileFormat;
         private FileFormat _restoreFileFormat;
 
 	    private TabViewModel _backupViewModel;
 	    private TabViewModel _restoreViewModel;
-		
-        #endregion
 
-        /*public IListBoxService DumpLogsListBoxService => GetService<IListBoxService>("DumpLogsListBoxService");
-        public IListBoxService RestoreLogsListBoxService => GetService<IListBoxService>("RestoreLogsListBoxService");*/
+		private string _cultureName;
+
+		#endregion
 
 		#region Properties
-
-	    public TabViewModel BackupViewModel
+		public static bool IsCultureChanged { get; private set; }
+		public string CultureName
+		{
+			get { return _cultureName; }
+			set { SetProperty(ref _cultureName, value, nameof(CultureName)); }
+		}
+		public TabViewModel BackupViewModel
 	    {
 		    get { return _backupViewModel; }
 			set { SetProperty(ref _backupViewModel, value, nameof(BackupViewModel)); }
@@ -194,15 +200,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
         #endregion
 
         #region Commands
-        public ICommand RestoreBackupCommand { get; }
-        public ICommand CreateDbCommand { get; }
-        public ICommand MakeBackupCommand { get; }
+        public ICommand ChangeCultureCommand { get; }
         #endregion
 
         #region Constructors
         public MainViewModel()
         {
-	        BackupViewModel = new BackupViewModel()
+			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
+
+			BackupViewModel = new BackupViewModel()
 	        {
 		        Host = "127.0.0.1",
 		        Port = 5432,
@@ -219,6 +225,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				User = "postgres",
 				Password = "postgres"
 			};
+
+			ChangeCultureCommand = new DelegateCommand(ChangeCulture, CanChangeCulture);
 
 			try
             {
@@ -245,9 +253,33 @@ namespace Swsu.Tools.DbBackupper.ViewModel
         }
 		#endregion
 
+		#region Commands' methods
+		private bool CanChangeCulture()
+		{
+			return true;
+		}
+
+		private void ChangeCulture()
+		{
+			if (
+				MessageBox.Show(Properties.Resources.ChangeLanguageRequest, Properties.Resources.LanguageChanging,
+					MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+				return;
+
+			Settings.Default.Culture = Settings.Default.Culture.Name == "ru-RU"
+				? new CultureInfo("fr-FR")
+				: new CultureInfo("ru-RU");
+
+			Settings.Default.Save();
+
+			IsCultureChanged = true;
+			Application.Current.Shutdown(1);
+		}
+		#endregion
+
 		#region Methods
 
-        private async void OutConcurrentText(ICollection<string> logs, string text)
+		private async void OutConcurrentText(ICollection<string> logs, string text)
         {
             var dispatcher = Application.Current.Dispatcher;
             await dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart)(() =>

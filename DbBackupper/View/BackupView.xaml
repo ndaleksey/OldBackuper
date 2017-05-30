@@ -16,101 +16,75 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<DockPanel>
-				
-			</DockPanel>
-			
-			<Grid Grid.Column="0">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="60*"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="30*"/>
-				</Grid.RowDefinitions>
+			<view:DbObjectsAndLogsView Grid.Column="0" IsBackup="True"/>
 
-				<view:DbObjectsBrowserView IsBackup="True"/>
+			<ScrollViewer Grid.Column="1">
+				<StackPanel Orientation="Vertical">
+					<view:ConnectionDetailsView/>
 
-				<GridSplitter Grid.Row="1" Height="5" BorderThickness="1" Background="#5E7357"  HorizontalAlignment="Stretch"/>
+					<view:DumpFormatView/>
 
-				<GroupBox Grid.Row="2" Header="События:" VerticalAlignment="Stretch">
-					<ListBox x:Name="LogsListBox" MinHeight="200" ItemsSource="{Binding Path=Logs}" IsSynchronizedWithCurrentItem="True" >
-						<ListBox.ItemsPanel>
-							<ItemsPanelTemplate>
-								<VirtualizingStackPanel/>
-							</ItemsPanelTemplate>
-						</ListBox.ItemsPanel>
+					<GroupBox Header="Файл">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="*"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
 
-						<dxmvvm:Interaction.Behaviors>
-							<service:ListBoxService x:Name="LogsListBoxService" Control="{Binding ElementName=LogsListBox}"/>
-						</dxmvvm:Interaction.Behaviors>
-					</ListBox>
-				</GroupBox>
-			</Grid>
+							<TextBlock Text="Расположение:" VerticalAlignment="Center" Margin="5, 5"/>
+							<TextBox Grid.Column="1" Text="{Binding Path=DumpFileName}" IsReadOnly="True" Margin="5, 5"/>
+							<Button Grid.Column="2" Width="30" Content=" . . . " Command="{Binding Path=CreateBackupFileNameCommand}" Margin="5, 5"/>
+						</Grid>
+					</GroupBox>
 
-			<StackPanel Grid.Column="1" Orientation="Vertical">
-				<view:ConnectionDetailsView/>
+					<Expander Header="Типы объектов">
+						<StackPanel Orientation="Vertical">
+							<CheckBox x:Name="OnlyDataCheckBox" Content="Только данные" IsChecked="{Binding Path=DataOnly}" Margin="5">
+								<CheckBox.Style>
+									<Style TargetType="{x:Type CheckBox}">
+										<Setter Property="IsEnabled" Value="True"/>
+										<Style.Triggers>
+											<MultiDataTrigger>
+												<MultiDataTrigger.Conditions>
+													<Condition Binding="{Binding Path=IsChecked, ElementName=OnlySchemaCheckBox}" Value="True"/>
+												</MultiDataTrigger.Conditions>
+												<Setter Property="IsEnabled" Value="False"/>
+											</MultiDataTrigger>
+										</Style.Triggers>
+									</Style>
+								</CheckBox.Style>
+							</CheckBox>
 
-				<view:DumpFormatView/>
+							<CheckBox x:Name="OnlySchemaCheckBox" Content="Только схема" IsChecked="{Binding Path=SchemaOnly}" Margin="5">
+								<CheckBox.Style>
+									<Style TargetType="{x:Type CheckBox}">
+										<Setter Property="IsEnabled" Value="True"/>
+										<Style.Triggers>
+											<MultiDataTrigger>
+												<MultiDataTrigger.Conditions>
+													<Condition Binding="{Binding Path=IsChecked, ElementName=OnlyDataCheckBox}" Value="True"/>
+												</MultiDataTrigger.Conditions>
+												<Setter Property="IsEnabled" Value="False"/>
+											</MultiDataTrigger>
+										</Style.Triggers>
+									</Style>
+								</CheckBox.Style>
+							</CheckBox>
+							<CheckBox Content="Blobs" IsChecked="{Binding IsBlobs}" Margin="5, 5"/>
+						</StackPanel>
+					</Expander>
 
-				<GroupBox Header="Файл">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="Auto"/>
-						</Grid.ColumnDefinitions>
+					<Expander Header="Параметры восстановления">
+						<StackPanel Orientation="Vertical">
+							<CheckBox Content="Добавить CREATE DATABASE" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
+							<CheckBox Content="Добавить DROP DATABASE" Margin="5" IsChecked="{Binding Path=CleanDb}"/>
+						</StackPanel>
+					</Expander>
 
-						<TextBlock Text="Расположение:" VerticalAlignment="Center" Margin="5, 5"/>
-						<TextBox Grid.Column="1" Text="{Binding Path=DumpFileName}" IsReadOnly="True" Margin="5, 5"/>
-						<Button Grid.Column="2" Width="30" Content=" . . . " Command="{Binding Path=CreateBackupFileNameCommand}" Margin="5, 5"/>
-					</Grid>
-				</GroupBox>
-
-				<GroupBox Header="Типы объектов">
-					<StackPanel Orientation="Vertical">
-						<CheckBox x:Name="OnlyDataCheckBox" Content="Только данные" IsChecked="{Binding Path=DataOnly}" Margin="5">
-							<CheckBox.Style>
-								<Style TargetType="{x:Type CheckBox}">
-									<Setter Property="IsEnabled" Value="True"/>
-									<Style.Triggers>
-										<MultiDataTrigger>
-											<MultiDataTrigger.Conditions>
-												<Condition Binding="{Binding Path=IsChecked, ElementName=OnlySchemaCheckBox}" Value="True"/>
-											</MultiDataTrigger.Conditions>
-											<Setter Property="IsEnabled" Value="False"/>
-										</MultiDataTrigger>
-									</Style.Triggers>
-								</Style>
-							</CheckBox.Style>
-						</CheckBox>
-
-						<CheckBox x:Name="OnlySchemaCheckBox" Content="Только схема" IsChecked="{Binding Path=SchemaOnly}" Margin="5">
-							<CheckBox.Style>
-								<Style TargetType="{x:Type CheckBox}">
-									<Setter Property="IsEnabled" Value="True"/>
-									<Style.Triggers>
-										<MultiDataTrigger>
-											<MultiDataTrigger.Conditions>
-												<Condition Binding="{Binding Path=IsChecked, ElementName=OnlyDataCheckBox}" Value="True"/>
-											</MultiDataTrigger.Conditions>
-											<Setter Property="IsEnabled" Value="False"/>
-										</MultiDataTrigger>
-									</Style.Triggers>
-								</Style>
-							</CheckBox.Style>
-						</CheckBox>
-						<CheckBox Content="Blobs" IsChecked="{Binding IsBlobs}" Margin="5, 5"/>
-					</StackPanel>
-				</GroupBox>
-				
-				<GroupBox Header="Параметры восстановления">
-					<StackPanel Orientation="Vertical">
-						<CheckBox Content="Добавить CREATE DATABASE" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
-						<CheckBox Content="Добавить DROP DATABASE" Margin="5" IsChecked="{Binding Path=CleanDb}"/>
-					</StackPanel>
-				</GroupBox>
-				
-				<Button Content="Создать резервную копии" Command="{Binding Path=MakeBackupCommand}" Margin="5"/>
-			</StackPanel>
+					<Button Content="Создать резервную копии" Command="{Binding Path=MakeBackupCommand}" Margin="5"/>
+				</StackPanel>
+			</ScrollViewer>
 		</Grid>
 
 		<view:WorkflowIndicatorView/>

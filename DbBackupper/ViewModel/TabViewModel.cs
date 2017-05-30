@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
@@ -133,11 +134,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		protected TabViewModel()
 		{
-			GetDbStructureCommand = new DelegateCommand(GetDbStructure);
-			PingHostCommand = new DelegateCommand(PingHost);
+			GetDbStructureCommand = new DelegateCommand(GetDbStructure, CanGetDbStructure);
+			PingHostCommand = new DelegateCommand(PingHost, CanPingHost);
 			SelectAllObjectsCommand = new DelegateCommand(SelectAllObjects, CanSelectAllObjects);
 		}
-
+		
 		#endregion
 
 		#region Commands' methods
@@ -151,6 +152,13 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			foreach (var schema in DbObjects.Where(s=>s != null).ToList())
 				schema.IsChecked = SelectAll;
+		}
+
+		private bool CanPingHost()
+		{
+			IPAddress hostIp;
+
+			return IPAddress.TryParse(Host, out hostIp);
 		}
 
 		private void PingHost()
@@ -172,6 +180,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				Helper.Logger.Error(e);
 				MessageBox.Show("Ошибка соединения с сервером БД", "Проверка соединения", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		protected virtual bool CanGetDbStructure()
+		{
+			return ValidateConnectionBuilder();
 		}
 		
 		protected async void GetDbStructure()
@@ -205,8 +218,28 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Methods
 
+		protected bool ValidateConnectionBuilder()
+		{
+			IPAddress hostIp;
+			if (!IPAddress.TryParse(Host, out hostIp))
+			{
+				Debug.WriteLine("Ошибочный формат IP-адресса хоста");
+				return false;
+			}
+
+			if (Port >= ushort.MaxValue)
+			{
+				Debug.WriteLine("Значение порта некорректно");
+				return false;
+			}
+
+			return !string.IsNullOrEmpty(Database) && !string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Password);
+		}
+
 		protected NpgsqlConnectionStringBuilder GetConnectionBuilder()
 		{
+			if (ValidateConnectionBuilder()) throw new ArgumentException("Ошибка создания строки соединения");
+
 			return new NpgsqlConnectionStringBuilder()
 			{
 				Host = Host,

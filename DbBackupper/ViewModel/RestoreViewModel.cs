@@ -24,8 +24,64 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		public RestoreViewModel()
 		{
 			CreateRestoreFileNameCommand = new DelegateCommand(CreateRestoreFileName);
-			RestoreBackupCommand = new DelegateCommand(RestoreBackup);
+			RestoreBackupCommand = new DelegateCommand(RestoreBackup, CanRestoreBackup);
 			CreateDbCommand = new DelegateCommand(CreateDatabase);
+		}
+		
+		#endregion
+
+		#region Commands' methods
+		private void CreateRestoreFileName()
+		{
+			var dialog = new OpenFileDialog();
+
+			if (FileFormat == FileFormat.Plain)
+			{
+				dialog.Filter = dialog.DefaultExt = "Файлы запросов (*.sql)|*.sql";
+			}
+			else
+			{
+				dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
+			}
+
+			if ((bool)dialog.ShowDialog())
+			{
+				DumpFileName = dialog.FileName;
+			}
+		}
+
+		private bool CanRestoreBackup()
+		{
+			return !string.IsNullOrEmpty(DumpFileName);
+		}
+
+		private async void RestoreBackup()
+		{
+			try
+			{
+				var restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\pg_restore.exe";
+
+				if (FileFormat == FileFormat.Plain)
+					restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\psql.exe";
+
+				var objectsType = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
+
+				WorkflowType = EWorkflowType.LoadFromDb;
+
+				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
+
+				MessageBox.Show("Данные успешно восстановлены из резрвной копии", "Восстановление", MessageBoxButton.OK,
+					MessageBoxImage.Information);
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e);
+				Helper.Logger.Error(e);
+			}
+			finally
+			{
+				WorkflowType = EWorkflowType.NormalWork;
+			}
 		}
 
 		private async void CreateDatabase()
@@ -65,55 +121,6 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		}
 
 		#endregion
-
-		#region Methods' execute
-		private void CreateRestoreFileName()
-		{
-			var dialog = new OpenFileDialog();
-
-			if (FileFormat == FileFormat.Plain)
-			{
-				dialog.Filter = dialog.DefaultExt = "Файлы запросов (*.sql)|*.sql";
-			}
-			else
-			{
-				dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
-			}
-
-			if ((bool)dialog.ShowDialog())
-			{
-				DumpFileName = dialog.FileName;
-			}
-		}
-
-		private async void RestoreBackup()
-		{
-			try
-			{
-				var restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\pg_restore.exe";
-
-				if (FileFormat == FileFormat.Plain)
-					restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\psql.exe";
-
-				var objectsType = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
-
-				WorkflowType = EWorkflowType.LoadFromDb;
-
-				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
-
-				MessageBox.Show("Данные успешно восстановлены из резрвной копии", "Восстановление", MessageBoxButton.OK,
-					MessageBoxImage.Information);
-			}
-			catch (Exception e)
-			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
-			}
-			finally
-			{
-				WorkflowType = EWorkflowType.NormalWork;
-			}
-		}
-		#endregion
+		
 	}
 }

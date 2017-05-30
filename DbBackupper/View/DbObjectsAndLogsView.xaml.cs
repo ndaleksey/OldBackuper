@@ -16,12 +16,12 @@ using System.Windows.Shapes;
 namespace Swsu.Tools.DbBackupper.View
 {
 	/// <summary>
-	/// Логика взаимодействия для DbObjectsBrowserView.xaml
+	/// Логика взаимодействия для DbObjectsAndLogsView.xaml
 	/// </summary>
-	public partial class DbObjectsBrowserView : UserControl
+	public partial class DbObjectsAndLogsView : UserControl
 	{
 		public static readonly DependencyProperty IsBackupProperty = DependencyProperty.Register(nameof(IsBackup),
-			typeof (bool), typeof (DbObjectsBrowserView), new PropertyMetadata(null));
+			typeof (bool), typeof (DbObjectsAndLogsView), new PropertyMetadata(null));
 
 		public bool IsBackup
 		{
@@ -29,7 +29,7 @@ namespace Swsu.Tools.DbBackupper.View
 			set { SetValue(IsBackupProperty, value); }
 		}
 
-		public DbObjectsBrowserView()
+		public DbObjectsAndLogsView()
 		{
 			InitializeComponent();
 		}

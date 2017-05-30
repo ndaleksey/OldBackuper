@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Swsu.Tools.DbBackupper.View.DbObjectsAndLogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:service="clr-namespace:Swsu.Tools.DbBackupper.Service"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400" x:Name="Root">
+
+	<UserControl.Resources>
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+		<Style x:Key="BackupCheckBoxStyle" TargetType="CheckBox">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsBackup, ElementName=Root}" Value="False">
+					<Setter Property="Visibility" Value="Collapsed"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
+		<Style x:Key="BackupTextBlockStyle" TargetType="TextBlock">
+			<Setter Property="Visibility" Value="Collapsed"/>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsBackup, ElementName=Root}" Value="False">
+					<Setter Property="Visibility" Value="Visible"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</UserControl.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="60*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="30*"/>
+		</Grid.RowDefinitions>
+
+		<GroupBox Header="Схемы:">
+			<DockPanel>
+				<CheckBox Content="Выбрать всё" DockPanel.Dock="Top" Margin="0, 5" 
+					  IsChecked="{Binding Path=SelectAll, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+					  Command="{Binding Path=SelectAllObjectsCommand, UpdateSourceTrigger=PropertyChanged}"
+					  Visibility="{Binding Path=IsBackup, ElementName=Root, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+				<TreeView ItemsSource="{Binding DbObjects}" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+					<TreeView.ItemTemplate>
+						<HierarchicalDataTemplate ItemsSource="{Binding Children}">
+
+							<Grid>
+								<CheckBox Content="{Binding Name}" FontWeight="Bold" IsChecked="{Binding IsChecked}" Style="{StaticResource BackupCheckBoxStyle}"/>
+								<TextBlock Text="{Binding Name}" FontWeight="Bold" Style="{StaticResource BackupTextBlockStyle}"/>
+							</Grid>
+
+							<HierarchicalDataTemplate.ItemTemplate>
+								<DataTemplate>
+									<Grid>
+										<CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Style="{StaticResource BackupCheckBoxStyle}"/>
+										<TextBlock Text="{Binding Name}" Style="{StaticResource BackupTextBlockStyle}"/>
+									</Grid>
+								</DataTemplate>
+							</HierarchicalDataTemplate.ItemTemplate>
+						</HierarchicalDataTemplate>
+					</TreeView.ItemTemplate>
+				</TreeView>
+			</DockPanel>
+		</GroupBox>
+		
+		<GridSplitter Grid.Row="1" Height="5" BorderThickness="1" Background="#5E7357"  HorizontalAlignment="Stretch"/>
+
+		<GroupBox Grid.Row="2" Header="События:" VerticalAlignment="Stretch">
+			<ListBox x:Name="LogsListBox" MinHeight="200" ItemsSource="{Binding Path=Logs}" IsSynchronizedWithCurrentItem="True" >
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel/>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+
+				<dxmvvm:Interaction.Behaviors>
+					<service:ListBoxService x:Name="LogsListBoxService" Control="{Binding ElementName=LogsListBox}"/>
+				</dxmvvm:Interaction.Behaviors>
+			</ListBox>
+		</GroupBox>
+	</Grid>
+</UserControl>

@@ -124,8 +124,8 @@
     <Compile Include="View\ConnectionDetailsView.xaml.cs">
       <DependentUpon>ConnectionDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DbObjectsBrowserView.xaml.cs">
-      <DependentUpon>DbObjectsBrowserView.xaml</DependentUpon>
+    <Compile Include="View\DbObjectsAndLogsView.xaml.cs">
+      <DependentUpon>DbObjectsAndLogsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DumpFormatView.xaml.cs">
       <DependentUpon>DumpFormatView.xaml</DependentUpon>
@@ -152,7 +152,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\DbObjectsBrowserView.xaml">
+    <Page Include="View\DbObjectsAndLogsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 
 namespace Swsu.Tools.DbBackupper.ViewModel

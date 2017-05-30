@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Microsoft.Win32;
-using Npgsql;
 using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Model;
 using Swsu.Tools.DbBackupper.Service;
@@ -97,11 +95,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				if (FileFormat == FileFormat.Plain)
 					restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\psql.exe";
 
-				var objectsType = DataOnly ? ObjectType.DataOnly : SchemasOnly ? ObjectType.SchemeOnly : ObjectType.Default;
+				var objectsType = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
 				WorkflowType = EWorkflowType.LoadFromDb;
 
-				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName);
+				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
 
 				MessageBox.Show("Данные успешно восстановлены из резрвной копии", "Восстановление", MessageBoxButton.OK,
 					MessageBoxImage.Information);

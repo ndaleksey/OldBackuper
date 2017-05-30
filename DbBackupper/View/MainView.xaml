@@ -8,7 +8,7 @@
         xmlns:service="clr-namespace:Swsu.Tools.DbBackupper.Service"
         xmlns:view="clr-namespace:Swsu.Tools.DbBackupper.View"
         mc:Ignorable="d"
-        Title="Генератор резервных копий" Height="700" Width="900" MinWidth="900" MinHeight="700"
+        Title="Генератор резервных копий" Height="850" Width="900" MinWidth="900" MinHeight="700"
 		WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -127,14 +127,8 @@
     </Window.Resources>
 
     <Window.DataContext>
-        <viewModel:MainViewModel x:Name="viewModel"/>
+        <viewModel:MainViewModel x:Name="ViewModel"/>
     </Window.DataContext>
-
-    <dxmvvm:Interaction.Behaviors>
-        <service:ListBoxService Control="{Binding ElementName=RestoreLogsListBox}" x:Name="RestoreLogsListBoxService"/>
-        <service:ListBoxService Control="{Binding ElementName=DumpLogsListBox}" x:Name="DumpLogsListBoxService"/>
-
-    </dxmvvm:Interaction.Behaviors>
 
     <TabControl Background="Beige" >
         <TabItem Header="Создать резервную копию БД">

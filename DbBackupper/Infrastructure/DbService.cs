@@ -22,7 +22,7 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 			using (var con = new NpgsqlConnection(newBuilder))
 			{
 				con.Open();
-
+				
 				using (var cmd = con.CreateCommand())
 				{
 					cmd.Connection = con;
@@ -36,7 +36,6 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 					                  "CONNECTION LIMIT = -1";
 					cmd.ExecuteNonQuery();
 				}
-				con.Close();
 			}
 		}
 
@@ -63,9 +62,9 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 
 						while (reader.Read())
 							databases.Add(reader.GetString(0));
+						
 					}
 				}
-				con.Close();
 			}
 			return databases;
 		}
@@ -115,7 +114,6 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 						}
 					}
 				}
-				con.Close();
 			}
 			return objects;
 		}

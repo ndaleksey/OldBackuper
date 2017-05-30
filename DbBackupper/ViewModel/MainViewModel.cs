@@ -3,22 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Devart.Data.PostgreSql;
-using DevExpress.Mvvm;
-using Microsoft.Win32;
 using NLog;
-using Npgsql;
-using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Model;
 using Swsu.Tools.DbBackupper.Service;
 
@@ -59,8 +51,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		
         #endregion
 
-        public IListBoxService DumpLogsListBoxService => GetService<IListBoxService>("DumpLogsListBoxService");
-        public IListBoxService RestoreLogsListBoxService => GetService<IListBoxService>("RestoreLogsListBoxService");
+        /*public IListBoxService DumpLogsListBoxService => GetService<IListBoxService>("DumpLogsListBoxService");
+        public IListBoxService RestoreLogsListBoxService => GetService<IListBoxService>("RestoreLogsListBoxService");*/
 
 		#region Properties
 
@@ -243,10 +235,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
                 {
                     DbEncodings.Add(encoding.Name);
                 }
-
-				CreateDbCommand = new DelegateCommand(CreateDatabase, CanCreateDatabase);
 				
-
                 Helper.Logger.Log(LogLevel.Info, "Start programme success");
             }
             catch (Exception e)
@@ -258,53 +247,6 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Methods
 
-	    private bool CanCreateDatabase()
-	    {
-		    return true;
-	    }
-
-		private async void CreateDatabase()
-	    {
-			try
-			{
-				var builder = new NpgsqlConnectionStringBuilder
-				{
-					Host = RestoreConnectionStringBuilder.Host,
-					Port = RestoreConnectionStringBuilder.Port,
-					Database = "postgres",
-					Password = RestoreConnectionStringBuilder.Password,
-					Username = RestoreConnectionStringBuilder.UserId
-				};
-
-				WorkflowType = EWorkflowType.LoadFromDb;
-
-				var databases = await DbService.GetDatabasesAsync(builder);
-
-				if (
-					databases.Any(
-						d => string.Equals(d, RestoreConnectionStringBuilder.Database.Trim(), StringComparison.CurrentCultureIgnoreCase)))
-					if (
-						MessageBox.Show(
-							$"База данных '{RestoreConnectionStringBuilder.Database}' уже существует. Вы хотите заменить ее?",
-							"Создание новой БД", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-						return;
-
-				WorkflowType = EWorkflowType.WorkWithDb;
-
-				await DbService.CreateDatabaseAsync(builder, RestoreConnectionStringBuilder.Database);
-			}
-			catch (Exception e)
-			{
-				Debug.WriteLine(e);
-			}
-			finally
-			{
-				WorkflowType = EWorkflowType.NormalWork;
-			}
-	    }
-
-		
-
         private async void OutConcurrentText(ICollection<string> logs, string text)
         {
             var dispatcher = Application.Current.Dispatcher;
@@ -312,8 +254,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
             {
                 logs.Add(text);
                 
-                DumpLogsListBoxService.ScrollToEnd();
-                RestoreLogsListBoxService.ScrollToEnd();
+//                DumpLogsListBoxService.ScrollToEnd();
+//                RestoreLogsListBoxService.ScrollToEnd();
             }));
 
             //await Task.Run(()=> { OnProcessFinished?.Invoke(); });

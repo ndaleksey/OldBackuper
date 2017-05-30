@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -14,8 +14,10 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 	public class BackupViewModel : TabViewModel
 	{
 		#region Commands
+
 		public ICommand CreateBackupFileNameCommand { get; }
 		public ICommand MakeBackupCommand { get; }
+
 		#endregion
 
 		#region Constructor
@@ -23,12 +25,18 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		public BackupViewModel()
 		{
 			CreateBackupFileNameCommand = new DelegateCommand(CreateBackupFileName);
-			MakeBackupCommand = new DelegateCommand(MakeBackup);
+			MakeBackupCommand = new DelegateCommand(MakeBackup, CanMakeBackup);
 		}
-		
+
 		#endregion
 
-		#region Methods' execute
+		#region Commands' methods
+
+		private bool CanMakeBackup()
+		{
+			return !string.IsNullOrEmpty(DumpFileName);
+		}
+
 		private void CreateBackupFileName()
 		{
 			var dialog = new SaveFileDialog();
@@ -45,11 +53,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
 			}
 
-			if ((bool)dialog.ShowDialog())
+			if ((bool) dialog.ShowDialog())
 			{
 				DumpFileName = dialog.FileName;
 			}
 		}
+
+		#endregion
+
+		#region Methods
 
 		private async void MakeBackup()
 		{
@@ -57,19 +69,21 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				Logs.Clear();
 
-				var schemes = new List<string>();
+				var schemes = DbObjects.Where(s => s != null && s.IsChecked).Select(scheme => scheme.Name).ToList();
 
-				foreach (var scheme in DbObjects)
-					if (scheme.IsChecked)
-						schemes.Add(scheme.Name);
+				if (schemes.Count == 0)
+				{
+					MessageBox.Show("Резервная копия не сделана т.к. не выбран ни один объект резервирования",
+						"Создание резервной копии", MessageBoxButton.OK, MessageBoxImage.Information);
+					return;
+				}
 
 				var dumpExeFilePath = $"{Environment.CurrentDirectory}\\Tools\\pg_dump.exe";
-				//            var dumpExeFilePath = @"C:\Program Files\PostgreSQL\9.5\bin\pg_dump.exe";
-				var objectTypes = DataOnly ? ObjectType.DataOnly : SchemasOnly ? ObjectType.SchemeOnly : ObjectType.Default;
+				var objectTypes = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
 				WorkflowType = EWorkflowType.WorkWithDb;
 
-				await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, IsBlobs);
+				await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);
 
 				MessageBox.Show("Резервная копия успешно создана", "Создание резервной копии", MessageBoxButton.OK,
 					MessageBoxImage.Information);
@@ -84,6 +98,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				WorkflowType = EWorkflowType.NormalWork;
 			}
 		}
+
 		#endregion
 	}
 }

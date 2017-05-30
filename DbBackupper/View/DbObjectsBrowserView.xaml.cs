@@ -20,6 +20,15 @@ namespace Swsu.Tools.DbBackupper.View
 	/// </summary>
 	public partial class DbObjectsBrowserView : UserControl
 	{
+		public static readonly DependencyProperty IsBackupProperty = DependencyProperty.Register(nameof(IsBackup),
+			typeof (bool), typeof (DbObjectsBrowserView), new PropertyMetadata(null));
+
+		public bool IsBackup
+		{
+			get { return (bool) GetValue(IsBackupProperty); }
+			set { SetValue(IsBackupProperty, value); }
+		}
+
 		public DbObjectsBrowserView()
 		{
 			InitializeComponent();

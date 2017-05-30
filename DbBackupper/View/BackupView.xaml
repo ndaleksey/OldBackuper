@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Swsu.Tools.DbBackupper.View"
+             xmlns:service="clr-namespace:Swsu.Tools.DbBackupper.Service"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800" Background="AliceBlue">
+
 	<Grid>
 		<Grid>
 			<Grid.ColumnDefinitions>
@@ -13,6 +16,10 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
+			<DockPanel>
+				
+			</DockPanel>
+			
 			<Grid Grid.Column="0">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="60*"/>
@@ -20,21 +27,24 @@
 					<RowDefinition Height="30*"/>
 				</Grid.RowDefinitions>
 
-				<view:DbObjectsBrowserView/>
+				<view:DbObjectsBrowserView IsBackup="True"/>
 
 				<GridSplitter Grid.Row="1" Height="5" BorderThickness="1" Background="#5E7357"  HorizontalAlignment="Stretch"/>
 
-				<GroupBox Grid.Row="2" Header="События:">
-					<ListBox x:Name="DumpLogsListBox" MinHeight="200" ItemsSource="{Binding Logs}" IsSynchronizedWithCurrentItem="True" >
+				<GroupBox Grid.Row="2" Header="События:" VerticalAlignment="Stretch">
+					<ListBox x:Name="LogsListBox" MinHeight="200" ItemsSource="{Binding Path=Logs}" IsSynchronizedWithCurrentItem="True" >
 						<ListBox.ItemsPanel>
 							<ItemsPanelTemplate>
 								<VirtualizingStackPanel/>
 							</ItemsPanelTemplate>
 						</ListBox.ItemsPanel>
+
+						<dxmvvm:Interaction.Behaviors>
+							<service:ListBoxService x:Name="LogsListBoxService" Control="{Binding ElementName=LogsListBox}"/>
+						</dxmvvm:Interaction.Behaviors>
 					</ListBox>
 				</GroupBox>
 			</Grid>
-
 
 			<StackPanel Grid.Column="1" Orientation="Vertical">
 				<view:ConnectionDetailsView/>
@@ -57,14 +67,14 @@
 
 				<GroupBox Header="Типы объектов">
 					<StackPanel Orientation="Vertical">
-						<CheckBox x:Name="OnlyDataCheckBox1" Content="Только данные" IsChecked="{Binding Path=DataOnly}" Margin="5, 5">
+						<CheckBox x:Name="OnlyDataCheckBox" Content="Только данные" IsChecked="{Binding Path=DataOnly}" Margin="5">
 							<CheckBox.Style>
 								<Style TargetType="{x:Type CheckBox}">
 									<Setter Property="IsEnabled" Value="True"/>
 									<Style.Triggers>
 										<MultiDataTrigger>
 											<MultiDataTrigger.Conditions>
-												<Condition Binding="{Binding IsChecked, ElementName=OnlySchemeCheckBox1}" Value="True"/>
+												<Condition Binding="{Binding Path=IsChecked, ElementName=OnlySchemaCheckBox}" Value="True"/>
 											</MultiDataTrigger.Conditions>
 											<Setter Property="IsEnabled" Value="False"/>
 										</MultiDataTrigger>
@@ -73,14 +83,14 @@
 							</CheckBox.Style>
 						</CheckBox>
 
-						<CheckBox x:Name="OnlySchemeCheckBox1" Content="Только схема" IsChecked="{Binding Path=ShemasOnly}" Margin="5, 5">
+						<CheckBox x:Name="OnlySchemaCheckBox" Content="Только схема" IsChecked="{Binding Path=SchemaOnly}" Margin="5">
 							<CheckBox.Style>
 								<Style TargetType="{x:Type CheckBox}">
 									<Setter Property="IsEnabled" Value="True"/>
 									<Style.Triggers>
 										<MultiDataTrigger>
 											<MultiDataTrigger.Conditions>
-												<Condition Binding="{Binding IsChecked, ElementName=OnlyDataCheckBox1}" Value="True"/>
+												<Condition Binding="{Binding Path=IsChecked, ElementName=OnlyDataCheckBox}" Value="True"/>
 											</MultiDataTrigger.Conditions>
 											<Setter Property="IsEnabled" Value="False"/>
 										</MultiDataTrigger>
@@ -91,7 +101,14 @@
 						<CheckBox Content="Blobs" IsChecked="{Binding IsBlobs}" Margin="5, 5"/>
 					</StackPanel>
 				</GroupBox>
-
+				
+				<GroupBox Header="Параметры восстановления">
+					<StackPanel Orientation="Vertical">
+						<CheckBox Content="Добавить CREATE DATABASE" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
+						<CheckBox Content="Добавить DROP DATABASE" Margin="5" IsChecked="{Binding Path=CleanDb}"/>
+					</StackPanel>
+				</GroupBox>
+				
 				<Button Content="Создать резервную копии" Command="{Binding Path=MakeBackupCommand}" Margin="5"/>
 			</StackPanel>
 		</Grid>

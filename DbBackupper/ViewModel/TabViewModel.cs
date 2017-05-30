@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Net;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using DevExpress.Mvvm;
-using NLog;
 using Npgsql;
 using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Model;
@@ -29,12 +30,16 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		private FileFormat _fileFormat;
 		private string _dumpFileName;
 		private bool _dataOnly;
-		private bool _schemasOnly;
+		private bool _schemaOnly;
 		private bool _isBlobs;
+		private bool _createDb;
+		private bool _cleanDb;
+		private bool _selectAll;
 
 		#endregion
 
 		#region Properties
+		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
 
 		public string Host
 		{
@@ -84,16 +89,34 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			set { SetProperty(ref _dataOnly, value, nameof(DataOnly)); }
 		}
 
-		public bool SchemasOnly
+		public bool SchemaOnly
 		{
-			get { return _schemasOnly; }
-			set { SetProperty(ref _schemasOnly, value, nameof(SchemasOnly)); }
+			get { return _schemaOnly; }
+			set { SetProperty(ref _schemaOnly, value, nameof(SchemaOnly)); }
+		}
+
+		public bool CreateDb
+		{
+			get { return _createDb; }
+			set { SetProperty(ref _createDb, value, nameof(CreateDb)); }
+		}
+
+		public bool CleanDb
+		{
+			get { return _cleanDb; }
+			set { SetProperty(ref _cleanDb, value, nameof(CleanDb)); }
 		}
 
 		public bool IsBlobs
 		{
 			get { return _isBlobs; }
 			set { SetProperty(ref _isBlobs, value, nameof(IsBlobs)); }
+		}
+
+		public bool SelectAll
+		{
+			get { return _selectAll; }
+			set { SetProperty(ref _selectAll, value, nameof(SelectAll)); }
 		}
 
 		public ObservableCollection<Node> DbObjects { get; } = new ObservableCollection<Node>();
@@ -103,6 +126,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#region Commands
 		public ICommand GetDbStructureCommand { get; }
 		public ICommand PingHostCommand { get; }
+		public ICommand SelectAllObjectsCommand { get; }
 		#endregion
 
 		#region Constructors
@@ -111,11 +135,24 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			GetDbStructureCommand = new DelegateCommand(GetDbStructure);
 			PingHostCommand = new DelegateCommand(PingHost);
+			SelectAllObjectsCommand = new DelegateCommand(SelectAllObjects, CanSelectAllObjects);
 		}
 
 		#endregion
 
 		#region Commands' methods
+
+		private bool CanSelectAllObjects()
+		{
+			return DbObjects != null && DbObjects.Any();
+		}
+
+		protected void SelectAllObjects()
+		{
+			foreach (var schema in DbObjects.Where(s=>s != null).ToList())
+				schema.IsChecked = SelectAll;
+		}
+
 		private void PingHost()
 		{
 			try
@@ -176,18 +213,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				Port = Port,
 				Database = Database,
 				Username = User,
-				Password = Password
+				Password = Password,
+				Pooling = false
 			};
 		}
 
 		protected Task MakeDumpAsync(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
-			FileFormat fileFormat, bool isBlobs)
+			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
-			return Task.Run(() => MakeDump(exeFileName, schemes, objectType, fileFormat, isBlobs));
+			return Task.Run(() => MakeDump(exeFileName, schemes, objectType, fileFormat, createDb, cleanDb, isBlobs));
 		}
 
 		protected void MakeDump(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
-			FileFormat fileFormat, bool isBlobs)
+			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
 			var arguments = new StringBuilder();
 
@@ -210,13 +248,16 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					throw new ArgumentOutOfRangeException(nameof(objectType), objectType, null);
 			}
 
+			if (createDb)
+				arguments.Append(" -C");
+
+			if (cleanDb)
+				arguments.Append(" -c");
+
+
 			if (isBlobs)
 				arguments.Append(" -b");
-
-			if (schemes.Count > 0)
-				foreach (var scheme in schemes)
-					arguments.Append($" -n {scheme}");
-
+			
 			switch (fileFormat)
 			{
 				case FileFormat.Plain:
@@ -229,6 +270,10 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					arguments.Append(" -Fc");
 					break;
 			}
+
+			if (schemes.Count > 0)
+				foreach (var scheme in schemes)
+					arguments.Append($" -n {scheme}");
 
 			arguments.Append(" -v");
 
@@ -245,7 +290,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			using (var process = Process.Start(info))
 			{
 				process.BeginErrorReadLine();
-				process.ErrorDataReceived += OnDumpOutputDataReceived;
+//				process.ErrorDataReceived += OnDumpOutputDataReceived;
 				process.WaitForExit();
 
 				var text = new StringBuilder();
@@ -254,7 +299,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					? "\n\nРезервирование завершилось успешно!"
 					: "\n\nПри резервировании произошли ошибки");
 
-//					OutConcurrentText(Logs, text.ToString());
+					OutConcurrentText(Logs, text.ToString());
 			}
 		}
 
@@ -262,12 +307,12 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 		}
 
-		protected Task RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName)
+		protected Task RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
 		{
-			return Task.Run(() => Restore(exeFileName, objectType, fileFormat, dumpFileName));
+			return Task.Run(() => Restore(exeFileName, objectType, fileFormat, dumpFileName, CreateDb, CleanDb));
 		}
 
-		protected void Restore(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName)
+		protected void Restore(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
 		{
 			var arguments = new StringBuilder();
 
@@ -276,8 +321,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			arguments.Append($" -d {Database}");
 
 			if (fileFormat != FileFormat.Plain)
-			{
 				arguments.Append(" -v");
+
+			if (fileFormat != FileFormat.Plain)
+			{
+				if (createDb)
+					arguments.Append(" -C");
+
+				if (cleanDb)
+					arguments.Append(" -c");
 			}
 
 			switch (objectType)
@@ -321,13 +373,26 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					? "\n\nВосстановление завершилось успешно!"
 					: "\n\nПри восстановлении произошли ошибки");
 
-//				OutConcurrentText(Logs, text.ToString());
+				OutConcurrentText(Logs, text.ToString());
 			}
 		}
 
 		private void OnRestoreOutputDataReceived(object sender, DataReceivedEventArgs e)
 		{
-			
+			OutConcurrentText(Logs, e.Data);
+		}
+
+		private async void OutConcurrentText(ICollection<string> logs, string text)
+		{
+			var dispatcher = Application.Current.Dispatcher;
+			await dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart)(() =>
+			{
+				logs.Add(text);
+
+				LogsListBoxService.ScrollToEnd();
+			}));
+
+			//await Task.Run(()=> { OnProcessFinished?.Invoke(); });
 		}
 
 		#endregion

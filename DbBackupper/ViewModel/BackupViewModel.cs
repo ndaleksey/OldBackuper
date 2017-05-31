@@ -39,23 +39,31 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private void CreateBackupFileName()
 		{
-			var dialog = new SaveFileDialog();
-			var date = DateTime.Today.Date;
+			try
+			{
+				var dialog = new SaveFileDialog();
+				var date = DateTime.Today.Date;
 
-			if (FileFormat == FileFormat.Plain)
-			{
-				dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
-				dialog.Filter = dialog.DefaultExt = "Файлы запросов (*.sql)|*.sql";
-			}
-			else
-			{
-				dialog.FileName = date.ToString("dd-MM-yy") + ".dump";
-				dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
-			}
+				if (FileFormat == FileFormat.Plain)
+				{
+					dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
+					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
+				}
+				else
+				{
+					dialog.FileName = date.ToString("dd-MM-yy") + ".backup";
+					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.DumpTypeFiles} (*.backup)|*.backup";
+				}
 
-			if ((bool) dialog.ShowDialog())
+				if ((bool)dialog.ShowDialog())
+				{
+					DumpFileName = dialog.FileName;
+				}
+			}
+			catch (Exception e)
 			{
-				DumpFileName = dialog.FileName;
+				Debug.WriteLine(e);
+				Helper.Logger.Error(e);
 			}
 		}
 
@@ -67,31 +75,33 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			try
 			{
-				Logs.Clear();
-
 				var schemes = DbObjects.Where(s => s != null && s.IsChecked).Select(scheme => scheme.Name).ToList();
 
 				if (schemes.Count == 0)
 				{
-					MessageBox.Show("Резервная копия не сделана т.к. не выбран ни один объект резервирования",
-						"Создание резервной копии", MessageBoxButton.OK, MessageBoxImage.Information);
+					MessageBox.Show(Resources.Messages.InvalidObjectsCountForBackuping, Resources.Messages.Backuping,
+						MessageBoxButton.OK, MessageBoxImage.Information);
 					return;
 				}
 
 				var dumpExeFilePath = $"{Environment.CurrentDirectory}\\Tools\\pg_dump.exe";
 				var objectTypes = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
-				WorkflowType = EWorkflowType.WorkWithDb;
+				WorkflowType = EWorkflowType.LoadFromDb;
 
+				Logs.Clear();
+				
 				await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);
 
-				MessageBox.Show("Резервная копия успешно создана", "Создание резервной копии", MessageBoxButton.OK,
+				MessageBox.Show(Resources.Messages.BackupSucceed, Resources.Messages.Backuping, MessageBoxButton.OK,
 					MessageBoxImage.Information);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
+				MessageBox.Show(Resources.Messages.BackupFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBoxImage.Error);
 			}
 			finally
 			{

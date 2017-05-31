@@ -237,4 +237,16 @@
     <value>Tout sélectionner</value>
     <comment>Выбрать всё</comment>
   </data>
+  <data name="DbDataRefreshing" xml:space="preserve">
+    <value>Mise à jour des données dans la base de données</value>
+    <comment>Обновление данных в БД</comment>
+  </data>
+  <data name="LoadingFromDb" xml:space="preserve">
+    <value>Chargement des données de la base de données</value>
+    <comment>Загрузка данных из БД</comment>
+  </data>
+  <data name="LoadingIntoDb" xml:space="preserve">
+    <value>Le stockage des données dans une base de données</value>
+    <comment>Сохранение данных в БД</comment>
+  </data>
 </root>

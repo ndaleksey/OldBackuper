@@ -14,9 +14,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 	public class RestoreViewModel : TabViewModel
 	{
 		#region Commands
+
 		public ICommand CreateRestoreFileNameCommand { get; }
 		public ICommand RestoreBackupCommand { get; }
 		public ICommand CreateDbCommand { get; }
+
 		#endregion
 
 		#region Constructor
@@ -25,28 +27,31 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			CreateRestoreFileNameCommand = new DelegateCommand(CreateRestoreFileName);
 			RestoreBackupCommand = new DelegateCommand(RestoreBackup, CanRestoreBackup);
-			CreateDbCommand = new DelegateCommand(CreateDatabase);
+			CreateDbCommand = new DelegateCommand(CreateDatabase, CanCreateDatabase);
 		}
-		
+
 		#endregion
 
 		#region Commands' methods
+
 		private void CreateRestoreFileName()
 		{
-			var dialog = new OpenFileDialog();
+			try
+			{
+				var dialog = new OpenFileDialog();
 
-			if (FileFormat == FileFormat.Plain)
-			{
-				dialog.Filter = dialog.DefaultExt = "Файлы запросов (*.sql)|*.sql";
-			}
-			else
-			{
-				dialog.Filter = dialog.DefaultExt = "Файлы резервных копий (*.dump)|*.dump";
-			}
+				if (FileFormat == FileFormat.Plain)
+					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
+				else
+					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.DumpTypeFiles} (*.backup)|*.backup";
 
-			if ((bool)dialog.ShowDialog())
+				if ((bool) dialog.ShowDialog())
+					DumpFileName = dialog.FileName;
+			}
+			catch (Exception e)
 			{
-				DumpFileName = dialog.FileName;
+				Debug.WriteLine(e);
+				Helper.Logger.Error(e);
 			}
 		}
 
@@ -66,22 +71,31 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				var objectsType = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
-				WorkflowType = EWorkflowType.LoadFromDb;
+				WorkflowType = EWorkflowType.SaveToDb;
+
+				Logs.Clear();
 
 				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
 
-				MessageBox.Show("Данные успешно восстановлены из резрвной копии", "Восстановление", MessageBoxButton.OK,
+				MessageBox.Show(Resources.Messages.RestoreSucceed, Resources.Messages.Restoring, MessageBoxButton.OK,
 					MessageBoxImage.Information);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
+				MessageBox.Show(Resources.Messages.RestoreFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBoxImage.Error);
 			}
 			finally
 			{
 				WorkflowType = EWorkflowType.NormalWork;
 			}
+		}
+
+		private bool CanCreateDatabase()
+		{
+			return ValidateConnectionBuilder();
 		}
 
 		private async void CreateDatabase()
@@ -96,23 +110,24 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				if (
 					databases.Any(
-						d => string.Equals(d, builder.Database.Trim(), StringComparison.CurrentCultureIgnoreCase)))
+						d => string.Equals(d, builder.Database, StringComparison.CurrentCulture)))
 					if (
-						MessageBox.Show(
-							$"База данных '{builder.Database}' уже существует. Вы хотите заменить ее?",
-							"Создание новой БД", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+						MessageBox.Show(Resources.Messages.DbAlreadyExistsWarning, Resources.Messages.NewDbCreating,
+							MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
 						return;
 
 				WorkflowType = EWorkflowType.WorkWithDb;
 				await DbService.CreateDatabaseAsync(builder, Database);
 
-				MessageBox.Show("База данных успешно создана", "Создание БД", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show(Resources.Messages.CreateDbSucceed, Resources.Messages.NewDbCreating, MessageBoxButton.OK,
+					MessageBoxImage.Information);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
-				MessageBox.Show("Ошибка создания БД", "Создание БД", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(Resources.Messages.CreateDbFailed, Resources.Messages.NewDbCreating, MessageBoxButton.OK,
+					MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -121,6 +136,5 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		}
 
 		#endregion
-		
 	}
 }

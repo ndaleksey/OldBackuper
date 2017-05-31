@@ -150,8 +150,16 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		protected void SelectAllObjects()
 		{
-			foreach (var schema in DbObjects.Where(s=>s != null).ToList())
-				schema.IsChecked = SelectAll;
+			try
+			{
+				foreach (var schema in DbObjects.Where(s => s != null).ToList())
+					schema.IsChecked = SelectAll;
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e);
+				Helper.Logger.Error(e);
+			}
 		}
 
 		private bool CanPingHost()
@@ -167,18 +175,20 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				var ping = new Ping().Send(Host);
 
-				if (ping == null) throw new NullReferenceException("Сервер БД не доступен");
+				if (ping == null) throw new NullReferenceException(Resources.Messages.ServerIsNotAvailable);
 
 				if (ping.Status == IPStatus.Success)
-					MessageBox.Show("Сервер БД доступен", "Проверка соединения", MessageBoxButton.OK, MessageBoxImage.Information);
+					MessageBox.Show(Resources.Messages.ServerIsAvailable, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
+						MessageBoxImage.Information);
 				else
-					MessageBox.Show("Сервер БД не доступен", "Проверка соединения", MessageBoxButton.OK, MessageBoxImage.Warning);
+					MessageBox.Show(Resources.Messages.ServerIsNotAvailable, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
+						MessageBoxImage.Warning);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
-				MessageBox.Show("Ошибка соединения с сервером БД", "Проверка соединения", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(Resources.Messages.ServerConnectionError, Resources.Messages.ConnectionCheck, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -201,13 +211,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					DbObjects.Add(obj);
 
 				if (objects.Count == 0)
-					MessageBox.Show("Список объектов БД пуст", "Получение структуры БД", MessageBoxButton.OK,
+					MessageBox.Show(Resources.Messages.EmptyDb, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 						MessageBoxImage.Information);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e.Message);
+				MessageBox.Show(Resources.Messages.GetDbStructureError, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
+					MessageBoxImage.Error);
 			}
 			finally
 			{
@@ -238,7 +250,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		protected NpgsqlConnectionStringBuilder GetConnectionBuilder()
 		{
-			if (!ValidateConnectionBuilder()) throw new ArgumentException("Ошибка создания строки соединения");
+			if (!ValidateConnectionBuilder()) throw new ArgumentException(Resources.Messages.ConnectionStringBuildingError);
 
 			return new NpgsqlConnectionStringBuilder()
 			{
@@ -327,19 +339,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				process.WaitForExit();
 
 				var text = new StringBuilder();
-				text.Append($"{DateTime.Now:HH:mm:ss}\nКод завершения:\t{process.ExitCode}");
+				text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
 				text.Append(process.ExitCode == 0
-					? "\n\nРезервирование завершилось успешно!"
-					: "\n\nПри резервировании произошли ошибки");
+					? $"\n\n{Resources.Messages.BackupProcessSucceed}"
+					: $"\n\n{Resources.Messages.BackupProcessFailed}");
 
 					OutConcurrentText(Logs, text.ToString());
 			}
 		}
-
-		private void OnDumpOutputDataReceived(object sender, DataReceivedEventArgs e)
-		{
-		}
-
+		
 		protected Task RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
 		{
 			return Task.Run(() => Restore(exeFileName, objectType, fileFormat, dumpFileName, CreateDb, CleanDb));
@@ -395,24 +403,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			using (var process = Process.Start(info))
 			{
 				process.BeginErrorReadLine();
-				process.ErrorDataReceived += OnRestoreOutputDataReceived;
+//				process.ErrorDataReceived += OnRestoreOutputDataReceived;
 
 				process.WaitForExit();
 
 				var text = new StringBuilder();
 
-				text.Append($"{DateTime.Now:HH:mm:ss}\nКод завершения:\t{process.ExitCode}");
+				text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
 				text.Append(process.ExitCode == 0
-					? "\n\nВосстановление завершилось успешно!"
-					: "\n\nПри восстановлении произошли ошибки");
+					? $"\n\n{Resources.Messages.RestoreProcessSucceed}"
+					: $"\n\n{Resources.Messages.RestoreProcessFailed}");
 
 				OutConcurrentText(Logs, text.ToString());
 			}
-		}
-
-		private void OnRestoreOutputDataReceived(object sender, DataReceivedEventArgs e)
-		{
-			OutConcurrentText(Logs, e.Data);
 		}
 
 		private async void OutConcurrentText(ICollection<string> logs, string text)
@@ -424,8 +427,6 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				LogsListBoxService.ScrollToEnd();
 			}));
-
-			//await Task.Run(()=> { OnProcessFinished?.Invoke(); });
 		}
 
 		#endregion

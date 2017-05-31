@@ -19,11 +19,11 @@ namespace Swsu.Tools.DbBackupper.Converter
 					case EWorkflowType.NormalWork:
 						return "Normal";
 					case EWorkflowType.WorkWithDb:
-						return "Обновление данных в БД";
+						return Properties.Resources.DbDataRefreshing;
 					case EWorkflowType.LoadFromDb:
-						return "Загрузка дынных из БД";
+						return Properties.Resources.LoadingFromDb;
 					case EWorkflowType.SaveToDb:
-						return "Сохранинение данных в БД";
+						return Properties.Resources.LoadingIntoDb;
 				}
 			}
 			catch (Exception e)

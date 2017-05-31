@@ -178,6 +178,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Обновление данных в БД.
+        /// </summary>
+        public static string DbDataRefreshing {
+            get {
+                return ResourceManager.GetString("DbDataRefreshing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на События.
         /// </summary>
         public static string Events {
@@ -228,6 +237,24 @@ namespace Swsu.Tools.DbBackupper.Properties {
         public static string LanguageChanging {
             get {
                 return ResourceManager.GetString("LanguageChanging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Загрузка данных из БД.
+        /// </summary>
+        public static string LoadingFromDb {
+            get {
+                return ResourceManager.GetString("LoadingFromDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сохранение данных в БД.
+        /// </summary>
+        public static string LoadingIntoDb {
+            get {
+                return ResourceManager.GetString("LoadingIntoDb", resourceCulture);
             }
         }
         

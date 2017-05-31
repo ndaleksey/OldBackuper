@@ -37,7 +37,7 @@
 						</Grid>
 					</GroupBox>
 
-					<Expander Header="{x:Static properties:Resources.ObjectsTypes}">
+					<Expander Header="{x:Static properties:Resources.ObjectsTypes}" Margin="5">
 						<StackPanel Orientation="Vertical">
 							<CheckBox x:Name="OnlyDataCheckBox" Content="{x:Static properties:Resources.DataOnly}" 
 									  IsChecked="{Binding Path=DataOnly}" Margin="5">
@@ -72,11 +72,11 @@
 									</Style>
 								</CheckBox.Style>
 							</CheckBox>
-							<CheckBox Content="Blobs" IsChecked="{Binding IsBlobs}" Margin="5, 5"/>
+							<CheckBox Content="Blobs" IsChecked="{Binding IsBlobs}" Margin="5"/>
 						</StackPanel>
 					</Expander>
 
-					<Expander Header="{x:Static properties:Resources.BackupSettings}">
+					<Expander Header="{x:Static properties:Resources.BackupSettings}" Margin="5">
 						<StackPanel Orientation="Vertical">
 							<CheckBox Content="{x:Static properties:Resources.AddCreateDb}" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
 							<CheckBox Content="{x:Static properties:Resources.AddDropDb}" Margin="5" IsChecked="{Binding Path=CleanDb}"/>

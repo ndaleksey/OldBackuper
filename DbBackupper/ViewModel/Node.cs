@@ -40,9 +40,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
             if (Children == null) return;
 
             foreach (var child in Children)
-            {
                 child.IsChecked = IsChecked;
-            }
         }
 
         #endregion

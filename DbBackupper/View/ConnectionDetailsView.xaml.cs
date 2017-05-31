@@ -24,5 +24,17 @@ namespace Swsu.Tools.DbBackupper.View
 		{
 			InitializeComponent();
 		}
+
+		private void Port_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			if (!char.IsDigit(e.Text, 0))
+				e.Handled = true;
+		}
+
+		private void Host_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+		{
+			if (!char.IsDigit(e.Text, 0) && e.Text[0] != '.')
+				e.Handled = true;
+		}
 	}
 }

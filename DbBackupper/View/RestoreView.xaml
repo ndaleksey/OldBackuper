@@ -18,7 +18,7 @@
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
 
-			<view:DbObjectsAndLogsView Grid.Column="0" IsBackup="True"/>
+			<view:DbObjectsAndLogsView Grid.Column="0" IsBackup="False"/>
 
 			<ScrollViewer Grid.Column="1">
 				<StackPanel Orientation="Vertical">
@@ -40,7 +40,7 @@
 						</Grid>
 					</GroupBox>
 
-					<Expander Header="{x:Static properties:Resources.ObjectsTypes}">
+					<Expander Header="{x:Static properties:Resources.ObjectsTypes}" Margin="5">
 						<StackPanel Orientation="Vertical">
 							<CheckBox x:Name="OnlyDataCheckBox" Content="{x:Static properties:Resources.DataOnly}" 
 									  IsChecked="{Binding Path=DataOnly}" Margin="5">
@@ -79,7 +79,7 @@
 						</StackPanel>
 					</Expander>
 
-					<Expander Header="{x:Static properties:Resources.RestoreSettings}">
+					<Expander Header="{x:Static properties:Resources.RestoreSettings}" Margin="5">
 						<StackPanel Orientation="Vertical">
 							<CheckBox Content="{x:Static properties:Resources.AddCreateDb}" Margin="5" IsChecked="{Binding Path=CreateDb}"/>
 							<CheckBox Content="{x:Static properties:Resources.CleanBeforeRestore}" Margin="5" IsChecked="{Binding Path=CleanDb}"/>

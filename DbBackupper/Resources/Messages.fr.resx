@@ -118,75 +118,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BackupFailed" xml:space="preserve">
-    <value>Ошибка создания резервной копии</value>
+    <value>Impossible de créer une copie de sauvegarde</value>
     <comment>Ошибка создания резервной копии</comment>
   </data>
   <data name="Backuping" xml:space="preserve">
-    <value>Резервирование</value>
+    <value>Réservation</value>
     <comment>Резервирование</comment>
   </data>
   <data name="BackupProcessFailed" xml:space="preserve">
-    <value>При резервировании произошли ошибки!</value>
+    <value>Lors de la réservation Une erreur est survenue!</value>
     <comment>При резервировании произошли ошибки!</comment>
   </data>
   <data name="BackupProcessSucceed" xml:space="preserve">
-    <value>Резервирование завершилось успешно!</value>
+    <value>Sauvegarde terminée avec succès!</value>
     <comment>Резервирование завершилось успешно!</comment>
   </data>
   <data name="BackupSucceed" xml:space="preserve">
-    <value>Резервная копия успешно создана</value>
+    <value>La sauvegarde a été créé avec succès</value>
     <comment>Резервная копия успешно создана</comment>
   </data>
   <data name="ConnectionBuilderGettingError" xml:space="preserve">
-    <value>Ошибка получения копии NpgsqlConnectionStringBuilder</value>
+    <value>Le défaut d'obtenir une copie de NpgsqlConnectionStringBuilder</value>
     <comment>Ошибка получения копии NpgsqlConnectionStringBuilder</comment>
   </data>
   <data name="ConnectionCheck" xml:space="preserve">
-    <value>Проверка соединения</value>
+    <value>Test de la connexion</value>
     <comment>Проверка соединения</comment>
   </data>
   <data name="ConnectionStringBuildingError" xml:space="preserve">
-    <value>Ошибка создания строки соединения</value>
+    <value>Impossible de créer une chaîne de connexion</value>
     <comment>Ошибка создания строки соединения</comment>
   </data>
   <data name="CreateDbFailed" xml:space="preserve">
-    <value>Ошибка создания БД</value>
+    <value>Erreur base de données création</value>
     <comment>Ошибка создания БД</comment>
   </data>
   <data name="CreateDbSucceed" xml:space="preserve">
-    <value>База данных успешно создана</value>
+    <value>La base de données a été créée avec succès</value>
     <comment>База данных успешно создана</comment>
   </data>
   <data name="DbAlreadyExistsWarning" xml:space="preserve">
-    <value>База данных с таким именем уже существует. Вы хотите заменить ее?</value>
-    <comment>База данных уже существует. Вы хотите заменить ее?</comment>
+    <value>Une base de données avec le même nom existe déjà. Voulez-vous le remplacer?</value>
+    <comment>База данных с таким именем уже существует. Вы хотите заменить ее?</comment>
   </data>
   <data name="DbStructureGetting" xml:space="preserve">
-    <value>Получение структуры БД</value>
+    <value>Préparation des structures DB</value>
     <comment>Получение структуры БД</comment>
   </data>
   <data name="DumpTypeFiles" xml:space="preserve">
-    <value>Файлы резервных копий</value>
+    <value>Les fichiers de sauvegarde</value>
     <comment>Файлы резервных копий</comment>
   </data>
   <data name="EmptyDb" xml:space="preserve">
-    <value>Список объектов БД пуст</value>
+    <value>Liste des objets de base de données est vide</value>
     <comment>Список объектов БД пуст</comment>
   </data>
   <data name="GetDbStructureError" xml:space="preserve">
-    <value>Ошибка получения структуры БД</value>
+    <value>Impossible d'obtenir la structure de base de données</value>
     <comment>Ошибка получения структуры БД</comment>
   </data>
   <data name="InvalidObjectsCountForBackuping" xml:space="preserve">
-    <value>Резервная копия не сделана т.к. не выбран ни один объект резервирования</value>
+    <value>La sauvegarde ne se fait pas comme ne sélectionnez pas de sauvegarde de l'objet</value>
     <comment>Резервная копия не сделана т.к. не выбран ни один объект резервирования</comment>
   </data>
   <data name="NewDbCreating" xml:space="preserve">
-    <value>Создание новой БД</value>
+    <value>Création d'une nouvelle base de données</value>
     <comment>Создание новой БД</comment>
   </data>
   <data name="RestoreFailed" xml:space="preserve">
-    <value>Ошибка восстановления из резервной копии</value>
+    <value>Erreur restauration à partir d'une sauvegarde</value>
     <comment>Ошибка восстановления из резервной копии</comment>
   </data>
   <data name="RestoreProcessFailed" xml:space="preserve">
@@ -194,43 +194,43 @@
     <comment>При восстановлении произошли ошибки!</comment>
   </data>
   <data name="RestoreProcessSucceed" xml:space="preserve">
-    <value>Восстановление завершилось успешно!</value>
+    <value>La restauration terminée avec succès!</value>
     <comment>Восстановление завершилось успешно!</comment>
   </data>
   <data name="RestoreSucceed" xml:space="preserve">
-    <value>Данные успешно восстановлены из резрвной копии</value>
+    <value>Les données sont restaurées avec succès de la copie rezrvnoy</value>
     <comment>Данные успешно восстановлены из резрвной копии</comment>
   </data>
   <data name="Restoring" xml:space="preserve">
-    <value>Восстановление</value>
+    <value>Récupération</value>
     <comment>Восстановление</comment>
   </data>
   <data name="ResultCode" xml:space="preserve">
-    <value>Код завершения</value>
+    <value>Complétion de code</value>
     <comment>Код завершения</comment>
   </data>
   <data name="ServerConnectionError" xml:space="preserve">
-    <value>Ошибка соединения с сервером БД</value>
+    <value>Erreur de connexion au serveur de base de données</value>
     <comment>Ошибка соединения с сервером БД</comment>
   </data>
   <data name="ServerIsAvailable" xml:space="preserve">
-    <value>Сервер БД доступен</value>
+    <value>Le serveur de base de données est disponible</value>
     <comment>Сервер БД доступен</comment>
   </data>
   <data name="ServerIsNotAvailable" xml:space="preserve">
-    <value>Сервер БД недоступен</value>
+    <value>Le serveur de base de données est disponible</value>
     <comment>Сервер БД недоступен</comment>
   </data>
   <data name="SqlTypeFiles" xml:space="preserve">
-    <value>Файлы запросов</value>
+    <value>Fichier de la demande</value>
     <comment>Файлы запросов</comment>
   </data>
   <data name="StartApplication" xml:space="preserve">
-    <value>Старт приложения</value>
+    <value>Lancer des applications</value>
     <comment>Старт приложения</comment>
   </data>
   <data name="StopApplication" xml:space="preserve">
-    <value>Остановка приложения</value>
+    <value>Arrêt de l'application</value>
     <comment>Остановка приложения</comment>
   </data>
 </root>

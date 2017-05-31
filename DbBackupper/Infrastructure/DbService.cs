@@ -26,8 +26,8 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 				using (var cmd = con.CreateCommand())
 				{
 					cmd.Connection = con;
-					cmd.CommandText = $"DROP DATABASE IF EXISTS {name}; " +
-					                  $"CREATE DATABASE {name} " +
+					cmd.CommandText = $"DROP DATABASE IF EXISTS \"{name}\"; " +
+					                  $"CREATE DATABASE \"{name}\" " +
 					                  "WITH OWNER = postgres " +
 					                  "ENCODING = 'UTF-8' " +
 					                  "TABLESPACE = pg_default " +
@@ -48,7 +48,11 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 		{
 			var databases = new List<string>();
 
-			using (var con = new NpgsqlConnection(builder))
+			var newBuilder = GetConnectionStringBuilderCopy(builder);
+
+			newBuilder.Database = "postgres";
+
+			using (var con = new NpgsqlConnection(newBuilder))
 			{
 				con.Open();
 
@@ -120,7 +124,8 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 
 		private static NpgsqlConnectionStringBuilder GetConnectionStringBuilderCopy(NpgsqlConnectionStringBuilder builder)
 		{
-			if (builder == null) throw new NullReferenceException("Ошибка получения копии NpgsqlConnectionStringBuilder");
+			if (builder == null) throw new NullReferenceException(Resources.Messages.ConnectionBuilderGettingError);
+
 			return new NpgsqlConnectionStringBuilder(builder.ConnectionString);
 		}
 	}

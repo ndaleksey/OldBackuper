@@ -22,7 +22,7 @@ namespace Swsu.Tools.DbBackupper.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages {
+    public class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Swsu.Tools.DbBackupper.Resources {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Swsu.Tools.DbBackupper.Resources.Messages", typeof(Messages).Assembly);
@@ -51,7 +51,7 @@ namespace Swsu.Tools.DbBackupper.Resources {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,252 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка создания резервной копии.
+        /// </summary>
+        public static string BackupFailed {
+            get {
+                return ResourceManager.GetString("BackupFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Резервирование.
+        /// </summary>
+        public static string Backuping {
+            get {
+                return ResourceManager.GetString("Backuping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на При резервировании произошли ошибки!.
+        /// </summary>
+        public static string BackupProcessFailed {
+            get {
+                return ResourceManager.GetString("BackupProcessFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Резервирование завершилось успешно!.
+        /// </summary>
+        public static string BackupProcessSucceed {
+            get {
+                return ResourceManager.GetString("BackupProcessSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Резервная копия успешно создана.
+        /// </summary>
+        public static string BackupSucceed {
+            get {
+                return ResourceManager.GetString("BackupSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка получения копии NpgsqlConnectionStringBuilder.
+        /// </summary>
+        public static string ConnectionBuilderGettingError {
+            get {
+                return ResourceManager.GetString("ConnectionBuilderGettingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Проверка соединения.
+        /// </summary>
+        public static string ConnectionCheck {
+            get {
+                return ResourceManager.GetString("ConnectionCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка создания строки соединения.
+        /// </summary>
+        public static string ConnectionStringBuildingError {
+            get {
+                return ResourceManager.GetString("ConnectionStringBuildingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка создания БД.
+        /// </summary>
+        public static string CreateDbFailed {
+            get {
+                return ResourceManager.GetString("CreateDbFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на База данных успешно создана.
+        /// </summary>
+        public static string CreateDbSucceed {
+            get {
+                return ResourceManager.GetString("CreateDbSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на База данных с таким именем уже существует. Вы хотите заменить ее?.
+        /// </summary>
+        public static string DbAlreadyExistsWarning {
+            get {
+                return ResourceManager.GetString("DbAlreadyExistsWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Получение структуры БД.
+        /// </summary>
+        public static string DbStructureGetting {
+            get {
+                return ResourceManager.GetString("DbStructureGetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Файлы резервных копий.
+        /// </summary>
+        public static string DumpTypeFiles {
+            get {
+                return ResourceManager.GetString("DumpTypeFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Список объектов БД пуст.
+        /// </summary>
+        public static string EmptyDb {
+            get {
+                return ResourceManager.GetString("EmptyDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка получения структуры БД.
+        /// </summary>
+        public static string GetDbStructureError {
+            get {
+                return ResourceManager.GetString("GetDbStructureError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Резервная копия не сделана т.к. не выбран ни один объект резервирования.
+        /// </summary>
+        public static string InvalidObjectsCountForBackuping {
+            get {
+                return ResourceManager.GetString("InvalidObjectsCountForBackuping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Создание новой БД.
+        /// </summary>
+        public static string NewDbCreating {
+            get {
+                return ResourceManager.GetString("NewDbCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка восстановления из резервной копии.
+        /// </summary>
+        public static string RestoreFailed {
+            get {
+                return ResourceManager.GetString("RestoreFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на При восстановлении произошли ошибки!.
+        /// </summary>
+        public static string RestoreProcessFailed {
+            get {
+                return ResourceManager.GetString("RestoreProcessFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Восстановление завершилось успешно!.
+        /// </summary>
+        public static string RestoreProcessSucceed {
+            get {
+                return ResourceManager.GetString("RestoreProcessSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Данные успешно восстановлены из резрвной копии.
+        /// </summary>
+        public static string RestoreSucceed {
+            get {
+                return ResourceManager.GetString("RestoreSucceed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Восстановление.
+        /// </summary>
+        public static string Restoring {
+            get {
+                return ResourceManager.GetString("Restoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Код завершения.
+        /// </summary>
+        public static string ResultCode {
+            get {
+                return ResourceManager.GetString("ResultCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка соединения с сервером БД.
+        /// </summary>
+        public static string ServerConnectionError {
+            get {
+                return ResourceManager.GetString("ServerConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сервер БД доступен.
+        /// </summary>
+        public static string ServerIsAvailable {
+            get {
+                return ResourceManager.GetString("ServerIsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сервер БД недоступен.
+        /// </summary>
+        public static string ServerIsNotAvailable {
+            get {
+                return ResourceManager.GetString("ServerIsNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Файлы запросов.
+        /// </summary>
+        public static string SqlTypeFiles {
+            get {
+                return ResourceManager.GetString("SqlTypeFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Старт приложения.
         /// </summary>
-        internal static string StartApplication {
+        public static string StartApplication {
             get {
                 return ResourceManager.GetString("StartApplication", resourceCulture);
             }
@@ -72,7 +315,7 @@ namespace Swsu.Tools.DbBackupper.Resources {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Остановка приложения.
         /// </summary>
-        internal static string StopApplication {
+        public static string StopApplication {
             get {
                 return ResourceManager.GetString("StopApplication", resourceCulture);
             }

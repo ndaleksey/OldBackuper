@@ -55,8 +55,8 @@
 							<HierarchicalDataTemplate.ItemTemplate>
 								<DataTemplate>
 									<Grid>
-										<CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Style="{StaticResource BackupCheckBoxStyle}"/>
-										<TextBlock Text="{Binding Name}" Style="{StaticResource BackupTextBlockStyle}"/>
+<!--										<CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}" Style="{StaticResource BackupCheckBoxStyle}"/>-->
+										<TextBlock Text="{Binding Name}"/>
 									</Grid>
 								</DataTemplate>
 							</HierarchicalDataTemplate.ItemTemplate>

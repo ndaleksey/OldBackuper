@@ -24,11 +24,13 @@
 			<Label Content="{x:Static properties:Resources.Host}" Margin="0, 5"/>
 			<DockPanel Grid.Row="0" Grid.Column="1" >
 				<Button DockPanel.Dock="Right" Content="PING" Height="20" Margin="5, 0, 0, 0" Command="{Binding PingHostCommand}"/>
-				<TextBox Text="{Binding Path=Host, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+				<TextBox Text="{Binding Path=Host, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5" 
+						 PreviewTextInput="Host_OnPreviewTextInput"/>
 			</DockPanel>
 
 			<Label Grid.Row="1" Grid.Column="0" Content="{x:Static properties:Resources.Port}" Margin="0, 5"/>
-			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Port, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Port, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"
+					 PreviewTextInput="Port_OnPreviewTextInput"/>
 
 			<Label Grid.Row="2" Grid.Column="0" Content="{x:Static properties:Resources.DatabaseName}" Margin="0, 5"/>
 			<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Database, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5"/>

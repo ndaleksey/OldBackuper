@@ -24,7 +24,7 @@
 
 	<DockPanel>
 		<Button  DockPanel.Dock="Top" HorizontalAlignment="Right"
-					Width="48" Height="32" Padding="0" Margin="2, 2"
+					Width="48" Height="32" Padding="0" Margin="10"
 					Command="{Binding Path=ChangeCultureCommand}">
 			<Button.ToolTip>
 				<ToolTip Content="{x:Static properties:Resources.ChangeLanguage}"/>
@@ -32,7 +32,7 @@
 			<Image Style="{StaticResource FlagIconStyle}" Margin="0, 2, 0, 0"/>
 		</Button>
 
-		<TabControl Background="Beige" >
+		<TabControl Background="Beige" Margin="0, -45, 0, 0" >
 			<TabItem Header="{x:Static properties:Resources.BackupDump}">
 				<view:BackupView DataContext="{Binding Path=BackupViewModel}"/>
 			</TabItem>

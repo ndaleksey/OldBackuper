@@ -8,7 +8,8 @@
         xmlns:properties="clr-namespace:Swsu.Tools.DbBackupper.Properties"
         mc:Ignorable="d"
         Title="{x:Static properties:Resources.ApplicationTitle}" Height="750" Width="900" MinWidth="900" MinHeight="700"
-		WindowStartupLocation="CenterScreen">
+		WindowStartupLocation="CenterScreen"
+		Icon="../Resources/Images/main.ico">
 
 	<Window.Resources>
 		<ResourceDictionary>

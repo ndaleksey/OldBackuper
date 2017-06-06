@@ -76,18 +76,14 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
-				Database = "los_db",
-				User = "postgres",
-				Password = "postgres"
+				Database = "los_db"
 			};
 
 			RestoreViewModel = new RestoreViewModel()
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
-				Database = "los_db",
-				User = "postgres",
-				Password = "postgres"
+				Database = "los_db"
 			};
 
 			DumpSchemes = new ObservableCollection<Node>();

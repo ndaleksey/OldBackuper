@@ -160,6 +160,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Настраиваемый.
+        /// </summary>
+        public static string CustomFormat {
+            get {
+                return ResourceManager.GetString("CustomFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Имя БД.
         /// </summary>
         public static string DatabaseName {
@@ -286,6 +295,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Простой.
+        /// </summary>
+        public static string PlainFormat {
+            get {
+                return ResourceManager.GetString("PlainFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Порт.
         /// </summary>
         public static string Port {
@@ -345,6 +363,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         public static string SelectAll {
             get {
                 return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tar.
+        /// </summary>
+        public static string TarFormat {
+            get {
+                return ResourceManager.GetString("TarFormat", resourceCulture);
             }
         }
         

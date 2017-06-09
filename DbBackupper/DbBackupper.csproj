@@ -109,7 +109,9 @@
     <Compile Include="Converter\WorkflowTypeToStringConverter.cs" />
     <Compile Include="Converter\WorkflowTypeToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\DbService.cs" />
+    <Compile Include="Infrastructure\EnumExtensions.cs" />
     <Compile Include="Infrastructure\EWorkflowType.cs" />
+    <Compile Include="Infrastructure\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Infrastructure\ObjectType.cs" />
     <Compile Include="Resources\Messages.Designer.cs">
       <AutoGen>True</AutoGen>

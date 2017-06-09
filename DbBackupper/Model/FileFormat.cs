@@ -1,15 +1,18 @@
 ﻿using System.ComponentModel;
+using Swsu.Tools.DbBackupper.Infrastructure;
 
 namespace Swsu.Tools.DbBackupper.Model
 {
     [TypeConverter(typeof(EnumValuesToStringNameConverter))]
-    public enum FileFormat
+	public enum FileFormat
     {
-        [Description("Простой")]
+        [LocalizedDescription("PlainFormat", typeof(Properties.Resources))]
         Plain,
-        [Description("Настраиваемый")]
+
+        [LocalizedDescription("CustomFormat", typeof(Properties.Resources))]
         Custom,
-        [Description("Tar")]
+
+        [LocalizedDescription("TarFormat", typeof(Properties.Resources))]
         Tar
     }
 }

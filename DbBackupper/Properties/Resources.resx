@@ -249,4 +249,16 @@
     <value>Сохранение данных в БД</value>
     <comment>Сохранение данных в БД</comment>
   </data>
+  <data name="CustomFormat" xml:space="preserve">
+    <value>Настраиваемый</value>
+    <comment>Настраиваемый</comment>
+  </data>
+  <data name="PlainFormat" xml:space="preserve">
+    <value>Простой</value>
+    <comment>Простой</comment>
+  </data>
+  <data name="TarFormat" xml:space="preserve">
+    <value>Tar</value>
+    <comment>Tar</comment>
+  </data>
 </root>

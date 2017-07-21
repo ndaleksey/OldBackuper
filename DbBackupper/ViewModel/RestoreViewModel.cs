@@ -45,7 +45,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				else
 					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.DumpTypeFiles} (*.backup)|*.backup";
 
-				if ((bool) dialog.ShowDialog())
+				var showDialog = dialog.ShowDialog();
+
+				if (showDialog != null && (bool) showDialog)
 					DumpFileName = dialog.FileName;
 			}
 			catch (Exception e)
@@ -57,7 +59,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private bool CanRestoreBackup()
 		{
-			return !string.IsNullOrEmpty(DumpFileName);
+			return !string.IsNullOrEmpty(Host) && !string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Database) && !string.IsNullOrEmpty(DumpFileName);
 		}
 
 		private async void RestoreBackup()
@@ -75,10 +77,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				Logs.Clear();
 
-				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
+				var process = await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
 
-				MessageBox.Show(Resources.Messages.RestoreSucceed, Resources.Messages.Restoring, MessageBoxButton.OK,
-					MessageBoxImage.Information);
+				ProcessRestoreExitCode(process.ExitCode);
 			}
 			catch (Exception e)
 			{
@@ -117,7 +118,10 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 						return;
 
 				WorkflowType = EWorkflowType.WorkWithDb;
+
 				await DbService.CreateDatabaseAsync(builder, Database);
+
+				GetDbStructure();
 
 				MessageBox.Show(Resources.Messages.CreateDbSucceed, Resources.Messages.NewDbCreating, MessageBoxButton.OK,
 					MessageBoxImage.Information);
@@ -132,6 +136,29 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			finally
 			{
 				WorkflowType = EWorkflowType.NormalWork;
+			}
+		}
+
+		#endregion
+
+		#region Methods
+
+		private void ProcessRestoreExitCode(int code)
+		{
+			switch (code)
+			{
+				case 0:
+					MessageBox.Show(Resources.Messages.RestoreSucceed, Resources.Messages.Restoring, MessageBoxButton.OK,
+						MessageBoxImage.Information);
+					return;
+				case 1:
+					MessageBox.Show(Resources.Messages.RestoreProcessFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+						MessageBoxImage.Warning);
+					return;
+				default:
+					MessageBox.Show(Resources.Messages.RestoreFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+						MessageBoxImage.Error);
+					return;
 			}
 		}
 

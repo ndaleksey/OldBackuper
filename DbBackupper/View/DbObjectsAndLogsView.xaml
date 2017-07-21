@@ -69,7 +69,7 @@
 		<GridSplitter Grid.Row="1" Height="5" BorderThickness="1" Background="#5E7357"  HorizontalAlignment="Stretch"/>
 
 		<GroupBox Grid.Row="2" Header="{x:Static properties:Resources.Events}" VerticalAlignment="Stretch">
-			<ListBox x:Name="LogsListBox" MinHeight="200" ItemsSource="{Binding Path=Logs}" IsSynchronizedWithCurrentItem="True" >
+			<ListBox x:Name="LogsListBox" ItemsSource="{Binding Path=Logs}" IsSynchronizedWithCurrentItem="True" >
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<VirtualizingStackPanel/>

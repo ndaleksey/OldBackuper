@@ -160,6 +160,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Не задано имя БД.
+        /// </summary>
+        public static string DbNameIsNull {
+            get {
+                return ResourceManager.GetString("DbNameIsNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Получение структуры БД.
         /// </summary>
         public static string DbStructureGetting {
@@ -318,6 +327,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         public static string StopApplication {
             get {
                 return ResourceManager.GetString("StopApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Не задано имя пользователя.
+        /// </summary>
+        public static string UserIsNull {
+            get {
+                return ResourceManager.GetString("UserIsNull", resourceCulture);
             }
         }
     }

@@ -34,7 +34,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private bool CanMakeBackup()
 		{
-			return !string.IsNullOrEmpty(DumpFileName);
+			return !string.IsNullOrEmpty(Host) && !string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Database) &&
+			       !string.IsNullOrEmpty(DumpFileName);
 		}
 
 		private void CreateBackupFileName()
@@ -55,7 +56,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.DumpTypeFiles} (*.backup)|*.backup";
 				}
 
-				if ((bool)dialog.ShowDialog())
+				var showDialog = dialog.ShowDialog();
+
+				if (showDialog != null && (bool) showDialog)
 				{
 					DumpFileName = dialog.FileName;
 				}
@@ -66,10 +69,6 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				Helper.Logger.Error(e);
 			}
 		}
-
-		#endregion
-
-		#region Methods
 
 		private async void MakeBackup()
 		{
@@ -88,13 +87,12 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				var objectTypes = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
 				WorkflowType = EWorkflowType.Backup;
-				
-				Logs.Clear();
-				
-				await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);
 
-				MessageBox.Show(Resources.Messages.BackupSucceed, Resources.Messages.Backuping, MessageBoxButton.OK,
-					MessageBoxImage.Information);
+				Logs.Clear();
+
+				var process = await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);
+
+				ProcessBackupExitCode(process.ExitCode);
 			}
 			catch (Exception e)
 			{
@@ -109,6 +107,27 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 		}
 
+		#endregion
+
+		#region Methods
+		private void ProcessBackupExitCode(int code)
+		{
+			switch (code)
+			{
+				case 0:
+					MessageBox.Show(Resources.Messages.BackupSucceed, Resources.Messages.Backuping, MessageBoxButton.OK,
+						MessageBoxImage.Information);
+					return;
+				case 1:
+					MessageBox.Show(Resources.Messages.BackupProcessFailed, Resources.Messages.Backuping, MessageBoxButton.OK,
+						MessageBoxImage.Warning);
+					return;
+				default:
+					MessageBox.Show(Resources.Messages.BackupFailed, Resources.Messages.Backuping, MessageBoxButton.OK,
+						MessageBoxImage.Error);
+					return;
+			}
+		}
 		#endregion
 	}
 }

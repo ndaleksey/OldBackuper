@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -263,13 +264,13 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			};
 		}
 
-		protected Task MakeDumpAsync(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
+		protected Task<Process> MakeDumpAsync(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
 			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
 			return Task.Run(() => MakeDump(exeFileName, schemes, objectType, fileFormat, createDb, cleanDb, isBlobs));
 		}
 
-		protected void MakeDump(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
+		protected Process MakeDump(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
 			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
 			var arguments = new StringBuilder();
@@ -302,7 +303,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 			if (isBlobs)
 				arguments.Append(" -b");
-			
+
 			switch (fileFormat)
 			{
 				case FileFormat.Plain:
@@ -332,28 +333,43 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				RedirectStandardError = true
 			};
 
-			using (var process = Process.Start(info))
-			{
-				process.BeginErrorReadLine();
-//				process.ErrorDataReceived += OnDumpOutputDataReceived;
-				process.WaitForExit();
+			var process = Process.Start(info);
 
-				var text = new StringBuilder();
-				text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
-				text.Append(process.ExitCode == 0
-					? $"\n\n{Resources.Messages.BackupProcessSucceed}"
-					: $"\n\n{Resources.Messages.BackupProcessFailed}");
+			if (process == null) throw new NullReferenceException("Can't execute restore process"); ;
 
-					OutConcurrentText(Logs, text.ToString());
-			}
+			process.BeginErrorReadLine();
+			process.OutputDataReceived += BackupProcess_OutputDataReceived;
+			process.ErrorDataReceived += BackupProcess_ErrorDataReceived;
+			process.WaitForExit();
+
+			var text = new StringBuilder();
+			text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
+			text.Append(process.ExitCode == 0
+				? $"\n\n{Resources.Messages.BackupProcessSucceed}"
+				: $"\n\n{Resources.Messages.BackupProcessFailed}");
+
+			OutConcurrentText(Logs, text.ToString());
+
+			return process;
 		}
-		
-		protected Task RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
+
+		private void BackupProcess_OutputDataReceived(object sender, DataReceivedEventArgs args)
+		{
+			OutConcurrentText(Logs, args.Data);
+		}
+
+		private void BackupProcess_ErrorDataReceived(object sender, DataReceivedEventArgs args)
+		{
+			OutConcurrentText(Logs, args.Data);
+		}
+
+		protected Task<Process> RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
 		{
 			return Task.Run(() => Restore(exeFileName, objectType, fileFormat, dumpFileName, CreateDb, CleanDb));
 		}
 
-		protected void Restore(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
+		protected Process Restore(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName,
+			bool createDb, bool cleanDb)
 		{
 			var arguments = new StringBuilder();
 
@@ -400,22 +416,39 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				UseShellExecute = false
 			};
 
-			using (var process = Process.Start(info))
+			var process = Process.Start(info);
+
+			if (process == null) throw new NullReferenceException("Can't execute restore process");
+
+			process.BeginErrorReadLine();
+			process.Exited += (sender, args) =>
 			{
-				process.BeginErrorReadLine();
-//				process.ErrorDataReceived += OnRestoreOutputDataReceived;
+				Debug.WriteLine("Завершение процесса");
+			};
+			process.OutputDataReceived += RestoreProcess_OutputDataReceived;
+			process.ErrorDataReceived += RestoreProcess_ErrorDataReceived;
+			process.WaitForExit();
 
-				process.WaitForExit();
+			var text = new StringBuilder();
 
-				var text = new StringBuilder();
+			text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
+			text.Append(process.ExitCode == 0
+				? $"\n\n{Resources.Messages.RestoreProcessSucceed}"
+				: $"\n\n{Resources.Messages.RestoreProcessFailed}");
 
-				text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
-				text.Append(process.ExitCode == 0
-					? $"\n\n{Resources.Messages.RestoreProcessSucceed}"
-					: $"\n\n{Resources.Messages.RestoreProcessFailed}");
+			OutConcurrentText(Logs, text.ToString());
 
-				OutConcurrentText(Logs, text.ToString());
-			}
+			return process;
+		}
+
+		private void RestoreProcess_ErrorDataReceived(object sender, DataReceivedEventArgs args)
+		{
+			OutConcurrentText(Logs, args.Data);
+		}
+
+		private void RestoreProcess_OutputDataReceived(object sender, DataReceivedEventArgs args)
+		{
+			OutConcurrentText(Logs, args.Data);
 		}
 
 		private async void OutConcurrentText(ICollection<string> logs, string text)

@@ -90,6 +90,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Создание резервной копии.
         /// </summary>
+        public static string Backup {
+            get {
+                return ResourceManager.GetString("Backup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Создание резервной копии.
+        /// </summary>
         public static string BackupDump {
             get {
                 return ResourceManager.GetString("BackupDump", resourceCulture);
@@ -160,7 +169,7 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Настраиваемый.
+        ///   Ищет локализованную строку, похожую на Бинарный.
         /// </summary>
         public static string CustomFormat {
             get {
@@ -259,15 +268,6 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Сохранение данных в БД.
-        /// </summary>
-        public static string LoadingIntoDb {
-            get {
-                return ResourceManager.GetString("LoadingIntoDb", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Расположение.
         /// </summary>
         public static string Location {
@@ -295,7 +295,7 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Простой.
+        ///   Ищет локализованную строку, похожую на Текстовый.
         /// </summary>
         public static string PlainFormat {
             get {
@@ -315,9 +315,9 @@ namespace Swsu.Tools.DbBackupper.Properties {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Восстановление из резервной копии.
         /// </summary>
-        public static string RestoreDump {
+        public static string Restore {
             get {
-                return ResourceManager.GetString("RestoreDump", resourceCulture);
+                return ResourceManager.GetString("Restore", resourceCulture);
             }
         }
         
@@ -367,7 +367,7 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Tar.
+        ///   Ищет локализованную строку, похожую на Архивный.
         /// </summary>
         public static string TarFormat {
             get {

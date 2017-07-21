@@ -71,7 +71,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				var objectsType = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
-				WorkflowType = EWorkflowType.SaveToDb;
+				WorkflowType = EWorkflowType.Restore;
 
 				Logs.Clear();
 

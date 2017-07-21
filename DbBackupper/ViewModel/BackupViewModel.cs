@@ -87,8 +87,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				var dumpExeFilePath = $"{Environment.CurrentDirectory}\\Tools\\pg_dump.exe";
 				var objectTypes = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
-				WorkflowType = EWorkflowType.LoadFromDb;
-
+				WorkflowType = EWorkflowType.Backup;
+				
 				Logs.Clear();
 				
 				await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);

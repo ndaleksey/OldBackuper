@@ -197,10 +197,6 @@
     <value>Порт</value>
     <comment>Порт</comment>
   </data>
-  <data name="RestoreDump" xml:space="preserve">
-    <value>Восстановление из резервной копии</value>
-    <comment>Восстановление из резервной копии</comment>
-  </data>
   <data name="RestoreFromDump" xml:space="preserve">
     <value>Восстановить из резервной копии</value>
     <comment>Восстановить из резервной копии</comment>
@@ -245,20 +241,24 @@
     <value>Загрузка данных из БД</value>
     <comment>Загрузка данных из БД</comment>
   </data>
-  <data name="LoadingIntoDb" xml:space="preserve">
-    <value>Сохранение данных в БД</value>
-    <comment>Сохранение данных в БД</comment>
+  <data name="Backup" xml:space="preserve">
+    <value>Создание резервной копии</value>
+    <comment>Создание резервной копии</comment>
   </data>
   <data name="CustomFormat" xml:space="preserve">
-    <value>Настраиваемый</value>
-    <comment>Настраиваемый</comment>
+    <value>Бинарный</value>
+    <comment>Бинарный</comment>
   </data>
   <data name="PlainFormat" xml:space="preserve">
-    <value>Простой</value>
-    <comment>Простой</comment>
+    <value>Текстовый</value>
+    <comment>Текстовый</comment>
   </data>
   <data name="TarFormat" xml:space="preserve">
-    <value>Tar</value>
-    <comment>Tar</comment>
+    <value>Архивный</value>
+    <comment>Архивный</comment>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Восстановление из резервной копии</value>
+    <comment>Восстановление из резервной копии</comment>
   </data>
 </root>

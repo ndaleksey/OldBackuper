@@ -38,7 +38,7 @@
 				<view:BackupView DataContext="{Binding Path=BackupViewModel}"/>
 			</TabItem>
 
-			<TabItem Header="{x:Static properties:Resources.RestoreDump}">
+			<TabItem Header="{x:Static properties:Resources.Restore}">
 				<view:RestoreView DataContext="{Binding Path=RestoreViewModel}"/>
 			</TabItem>
 		</TabControl>

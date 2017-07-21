@@ -233,4 +233,12 @@
     <value>Остановка приложения</value>
     <comment>Остановка приложения</comment>
   </data>
+  <data name="DbNameIsNull" xml:space="preserve">
+    <value>Не задано имя БД</value>
+    <comment>Не задано имя БД</comment>
+  </data>
+  <data name="UserIsNull" xml:space="preserve">
+    <value>Не задано имя пользователя</value>
+    <comment>Не задано имя пользователя</comment>
+  </data>
 </root>

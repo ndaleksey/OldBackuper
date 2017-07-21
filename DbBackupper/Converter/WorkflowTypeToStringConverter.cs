@@ -22,8 +22,10 @@ namespace Swsu.Tools.DbBackupper.Converter
 						return Properties.Resources.DbDataRefreshing;
 					case EWorkflowType.LoadFromDb:
 						return Properties.Resources.LoadingFromDb;
-					case EWorkflowType.SaveToDb:
-						return Properties.Resources.LoadingIntoDb;
+					case EWorkflowType.Backup:
+						return Properties.Resources.Backup;
+					case EWorkflowType.Restore:
+						return Properties.Resources.Restore;
 				}
 			}
 			catch (Exception e)

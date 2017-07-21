@@ -7,6 +7,7 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 		NormalWork = 0,
 		WorkWithDb = 1,
 		LoadFromDb = 2,
-		SaveToDb = 3
+		Backup = 3,
+		Restore = 4
 	}
 }

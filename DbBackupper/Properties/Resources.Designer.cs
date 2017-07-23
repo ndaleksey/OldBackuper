@@ -115,6 +115,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Бинарный.
+        /// </summary>
+        public static string BinaryFormat {
+            get {
+                return ResourceManager.GetString("BinaryFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Сменить язык.
         /// </summary>
         public static string ChangeLanguage {
@@ -165,15 +174,6 @@ namespace Swsu.Tools.DbBackupper.Properties {
         public static string CreateDump {
             get {
                 return ResourceManager.GetString("CreateDump", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Бинарный.
-        /// </summary>
-        public static string CustomFormat {
-            get {
-                return ResourceManager.GetString("CustomFormat", resourceCulture);
             }
         }
         

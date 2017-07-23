@@ -165,9 +165,9 @@
     <value>Получение структуры БД</value>
     <comment>Получение структуры БД</comment>
   </data>
-  <data name="DumpTypeFiles" xml:space="preserve">
-    <value>Файлы резервных копий</value>
-    <comment>Файлы резервных копий</comment>
+  <data name="BinaryTypeFiles" xml:space="preserve">
+    <value>Бинарные файлы резервных копий</value>
+    <comment>Бинарные файлы резервных копий</comment>
   </data>
   <data name="EmptyDb" xml:space="preserve">
     <value>Список объектов БД пуст</value>
@@ -240,5 +240,9 @@
   <data name="UserIsNull" xml:space="preserve">
     <value>Не задано имя пользователя</value>
     <comment>Не задано имя пользователя</comment>
+  </data>
+  <data name="TarTypeFiles" xml:space="preserve">
+    <value>Архивные файлы резервных копий</value>
+    <comment>Архивные файлы резервных копий</comment>
   </data>
 </root>

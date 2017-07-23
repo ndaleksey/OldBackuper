@@ -245,7 +245,7 @@
     <value>Создание резервной копии</value>
     <comment>Создание резервной копии</comment>
   </data>
-  <data name="CustomFormat" xml:space="preserve">
+  <data name="BinaryFormat" xml:space="preserve">
     <value>Бинарный</value>
     <comment>Бинарный</comment>
   </data>

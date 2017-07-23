@@ -165,9 +165,9 @@
     <value>Préparation des structures DB</value>
     <comment>Получение структуры БД</comment>
   </data>
-  <data name="DumpTypeFiles" xml:space="preserve">
-    <value>Les fichiers de sauvegarde</value>
-    <comment>Файлы резервных копий</comment>
+  <data name="BinaryTypeFiles" xml:space="preserve">
+    <value>Fichiers binaires de sauvegarde</value>
+    <comment>Бинарные файлы резервных копий</comment>
   </data>
   <data name="EmptyDb" xml:space="preserve">
     <value>Liste des objets de base de données est vide</value>
@@ -232,5 +232,9 @@
   <data name="StopApplication" xml:space="preserve">
     <value>Arrêt de l'application</value>
     <comment>Остановка приложения</comment>
+  </data>
+  <data name="TarTypeFiles" xml:space="preserve">
+    <value>Les fichiers de sauvegarde d'archives</value>
+    <comment>Архивные файлы резервных копий</comment>
   </data>
 </root>

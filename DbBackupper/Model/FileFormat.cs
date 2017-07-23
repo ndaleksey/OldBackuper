@@ -7,12 +7,12 @@ namespace Swsu.Tools.DbBackupper.Model
 	public enum FileFormat
     {
         [LocalizedDescription("PlainFormat", typeof(Properties.Resources))]
-        Plain,
+        Plain = 1,
 
-        [LocalizedDescription("CustomFormat", typeof(Properties.Resources))]
-        Custom,
+        [LocalizedDescription("BinaryFormat", typeof(Properties.Resources))]
+        Binary = 2,
 
         [LocalizedDescription("TarFormat", typeof(Properties.Resources))]
-        Tar
+        Tar = 3
     }
 }

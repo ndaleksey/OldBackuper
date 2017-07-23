@@ -40,15 +40,31 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				var dialog = new OpenFileDialog();
 
-				if (FileFormat == FileFormat.Plain)
-					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
-				else
-					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.DumpTypeFiles} (*.backup)|*.backup";
+				/*switch (FileFormat)
+				{
+					case FileFormat.Plain:
+						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
+						break;
+
+					case FileFormat.Binary:
+						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin";
+						break;
+
+					case FileFormat.Tar:
+						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
+						break;
+				}*/
+				dialog.Filter = 
+					$"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
+					+ $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
+					+ $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
 
 				var showDialog = dialog.ShowDialog();
 
-				if (showDialog != null && (bool) showDialog)
-					DumpFileName = dialog.FileName;
+				if (showDialog == null || !(bool) showDialog) return;
+
+				FileFormat = (FileFormat)dialog.FilterIndex;
+				DumpFileName = dialog.FileName;
 			}
 			catch (Exception e)
 			{

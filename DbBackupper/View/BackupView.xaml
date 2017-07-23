@@ -21,7 +21,7 @@
 				<StackPanel Orientation="Vertical">
 					<view:ConnectionDetailsView/>
 
-					<view:DumpFormatView/>
+<!--					<view:DumpFormatView/>-->
 
 					<GroupBox Header="{x:Static properties:Resources.File}">
 						<Grid>

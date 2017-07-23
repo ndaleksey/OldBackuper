@@ -106,6 +106,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Бинарные файлы резервных копий.
+        /// </summary>
+        public static string BinaryTypeFiles {
+            get {
+                return ResourceManager.GetString("BinaryTypeFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка получения копии NpgsqlConnectionStringBuilder.
         /// </summary>
         public static string ConnectionBuilderGettingError {
@@ -174,15 +183,6 @@ namespace Swsu.Tools.DbBackupper.Resources {
         public static string DbStructureGetting {
             get {
                 return ResourceManager.GetString("DbStructureGetting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Файлы резервных копий.
-        /// </summary>
-        public static string DumpTypeFiles {
-            get {
-                return ResourceManager.GetString("DumpTypeFiles", resourceCulture);
             }
         }
         
@@ -327,6 +327,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         public static string StopApplication {
             get {
                 return ResourceManager.GetString("StopApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Архивные файлы резервных копий.
+        /// </summary>
+        public static string TarTypeFiles {
+            get {
+                return ResourceManager.GetString("TarTypeFiles", resourceCulture);
             }
         }
         

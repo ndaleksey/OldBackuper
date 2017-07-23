@@ -45,23 +45,37 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				var dialog = new SaveFileDialog();
 				var date = DateTime.Today.Date;
 
-				if (FileFormat == FileFormat.Plain)
+				/*switch (FileFormat)
 				{
-					dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
-					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
-				}
-				else
-				{
-					dialog.FileName = date.ToString("dd-MM-yy") + ".backup";
-					dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.DumpTypeFiles} (*.backup)|*.backup";
-				}
+					case FileFormat.Plain:
+						dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
+						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
+						break;
+
+					case FileFormat.Binary:
+						dialog.FileName = date.ToString("dd-MM-yy") + ".bin";
+						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin";
+						break;
+
+					case FileFormat.Tar:
+						dialog.FileName = date.ToString("dd-MM-yy") + ".tar";
+						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
+						break;
+				}*/
+				
+
+				dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
+				dialog.Filter = 
+					$"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
+					+ $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
+					+ $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
 
 				var showDialog = dialog.ShowDialog();
 
-				if (showDialog != null && (bool) showDialog)
-				{
-					DumpFileName = dialog.FileName;
-				}
+				if (showDialog == null || !(bool) showDialog) return;
+
+				FileFormat = (FileFormat) dialog.FilterIndex;
+				DumpFileName = dialog.FileName;
 			}
 			catch (Exception e)
 			{

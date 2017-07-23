@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -335,7 +334,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 			var process = Process.Start(info);
 
-			if (process == null) throw new NullReferenceException("Can't execute restore process"); ;
+			if (process == null) throw new NullReferenceException("Can't execute restore process");
 
 			process.BeginErrorReadLine();
 			process.OutputDataReceived += BackupProcess_OutputDataReceived;

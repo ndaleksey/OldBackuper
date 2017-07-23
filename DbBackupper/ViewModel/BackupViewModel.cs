@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -22,7 +23,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructor
 
-		public BackupViewModel()
+		public BackupViewModel(EWorkflowType? workflowType) : base(workflowType)
 		{
 			CreateBackupFileNameCommand = new DelegateCommand(CreateBackupFileName);
 			MakeBackupCommand = new DelegateCommand(MakeBackup, CanMakeBackup);
@@ -42,34 +43,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			try
 			{
-				var dialog = new SaveFileDialog();
 				var date = DateTime.Today.Date;
-
-				/*switch (FileFormat)
+				var dialog = new SaveFileDialog
 				{
-					case FileFormat.Plain:
-						dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
-						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
-						break;
-
-					case FileFormat.Binary:
-						dialog.FileName = date.ToString("dd-MM-yy") + ".bin";
-						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin";
-						break;
-
-					case FileFormat.Tar:
-						dialog.FileName = date.ToString("dd-MM-yy") + ".tar";
-						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
-						break;
-				}*/
+					FileName = date.ToString("dd-MM-yy") + ".sql",
+					Filter = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
+					         + $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
+					         + $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar"
+				};
 				
-
-				dialog.FileName = date.ToString("dd-MM-yy") + ".sql";
-				dialog.Filter = 
-					$"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
-					+ $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
-					+ $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
-
 				var showDialog = dialog.ShowDialog();
 
 				if (showDialog == null || !(bool) showDialog) return;
@@ -117,7 +99,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			finally
 			{
-				WorkflowType = EWorkflowType.NormalWork;
+//				WorkflowType = EWorkflowType.NormalWork;
 			}
 		}
 

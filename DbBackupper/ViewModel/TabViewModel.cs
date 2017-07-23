@@ -19,7 +19,7 @@ using Swsu.Tools.DbBackupper.Service;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
 {
-	public abstract class TabViewModel : CustomViewModel
+	public abstract class TabViewModel : ViewModelBase
 	{
 		#region Fields
 
@@ -36,11 +36,13 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		private bool _createDb;
 		private bool _cleanDb;
 		private bool _selectAll;
-
+		
 		#endregion
 
 		#region Properties
 		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
+
+		public EWorkflowType? WorkflowType { get; protected set; }
 
 		public string Host
 		{
@@ -132,8 +134,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructors
 
-		protected TabViewModel()
+		protected TabViewModel(EWorkflowType? workflowType)
 		{
+			WorkflowType = workflowType;
 			GetDbStructureCommand = new DelegateCommand(GetDbStructure, CanGetDbStructure);
 			PingHostCommand = new DelegateCommand(PingHost, CanPingHost);
 			SelectAllObjectsCommand = new DelegateCommand(SelectAllObjects, CanSelectAllObjects);
@@ -266,7 +269,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		protected Task<Process> MakeDumpAsync(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
 			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
-			return Task.Run(() => MakeDump(exeFileName, schemes, objectType, fileFormat, createDb, cleanDb, isBlobs));
+			return Task.Run(() =>
+			{
+				Thread.Sleep(5000);
+				return MakeDump(exeFileName, schemes, objectType, fileFormat, createDb, cleanDb, isBlobs);
+			});
 		}
 
 		protected Process MakeDump(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,

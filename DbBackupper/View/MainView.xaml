@@ -23,25 +23,28 @@
 		<viewModel:MainViewModel x:Name="ViewModel"/>
 	</Window.DataContext>
 
-	<DockPanel>
-		<Button  DockPanel.Dock="Top" HorizontalAlignment="Right"
+	<Grid>
+		<DockPanel>
+			<Button  DockPanel.Dock="Top" HorizontalAlignment="Right"
 					Width="48" Height="32" Padding="0" Margin="10"
 					Command="{Binding Path=ChangeCultureCommand}">
-			<Button.ToolTip>
-				<ToolTip Content="{x:Static properties:Resources.ChangeLanguage}"/>
-			</Button.ToolTip>
-			<Image Style="{StaticResource FlagIconStyle}" Margin="0, 2, 0, 0"/>
-		</Button>
+				<Button.ToolTip>
+					<ToolTip Content="{x:Static properties:Resources.ChangeLanguage}"/>
+				</Button.ToolTip>
+				<Image Style="{StaticResource FlagIconStyle}" Margin="0, 2, 0, 0"/>
+			</Button>
 
-		<TabControl Background="Beige" Margin="0, -45, 0, 0" >
-			<TabItem Header="{x:Static properties:Resources.BackupDump}">
-				<view:BackupView DataContext="{Binding Path=BackupViewModel}"/>
-			</TabItem>
+			<TabControl Background="Beige" Margin="0, -45, 0, 0" >
+				<TabItem Header="{x:Static properties:Resources.BackupDump}">
+					<view:BackupView DataContext="{Binding Path=BackupViewModel}"/>
+				</TabItem>
 
-			<TabItem Header="{x:Static properties:Resources.Restore}">
-				<view:RestoreView DataContext="{Binding Path=RestoreViewModel}"/>
-			</TabItem>
-		</TabControl>
-	</DockPanel>
+				<TabItem Header="{x:Static properties:Resources.Restore}">
+					<view:RestoreView DataContext="{Binding Path=RestoreViewModel}"/>
+				</TabItem>
+			</TabControl>
+		</DockPanel>
 
+		<view:WorkflowIndicatorView/>
+	</Grid>
 </Window>

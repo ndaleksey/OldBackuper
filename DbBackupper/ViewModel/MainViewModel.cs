@@ -8,12 +8,13 @@ using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using NLog;
+using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Properties;
 using Swsu.Tools.DbBackupper.Service;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
 {
-	public class MainViewModel : CustomViewModel
+	public class MainViewModel : ViewModelBase
 	{
 		#region Fields
 
@@ -24,9 +25,23 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private string _cultureName;
 
+		private EWorkflowType? _workflowType;
+
 		#endregion
 
 		#region Properties
+		public EWorkflowType? WorkflowType
+		{
+			get { return _workflowType; }
+			set
+			{
+				SetProperty(ref _workflowType, value, nameof(WorkflowType), () =>
+				{
+					Console.WriteLine($"Изменение в {GetType().Name}");
+
+				});
+			}
+		}
 
 		public static bool IsCultureChanged { get; private set; }
 
@@ -71,15 +86,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		public MainViewModel()
 		{
 			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
-
-			BackupViewModel = new BackupViewModel()
+			
+			BackupViewModel = new BackupViewModel(WorkflowType)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
 				Database = "los_db"
 			};
 
-			RestoreViewModel = new RestoreViewModel()
+			RestoreViewModel = new RestoreViewModel(WorkflowType)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,

@@ -9,6 +9,7 @@ namespace Swsu.Tools.DbBackupper.Converter
 	{
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
+			if (value == null) return Visibility.Collapsed;
 
 			var worktype = value as EWorkflowType?;
 			return worktype == EWorkflowType.NormalWork ? Visibility.Collapsed : Visibility.Visible;

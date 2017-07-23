@@ -23,7 +23,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructor
 
-		public RestoreViewModel()
+		public RestoreViewModel(EWorkflowType? workflowType) : base(workflowType)
 		{
 			CreateRestoreFileNameCommand = new DelegateCommand(CreateRestoreFileName);
 			RestoreBackupCommand = new DelegateCommand(RestoreBackup, CanRestoreBackup);
@@ -38,26 +38,12 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			try
 			{
-				var dialog = new OpenFileDialog();
-
-				/*switch (FileFormat)
+				var dialog = new OpenFileDialog
 				{
-					case FileFormat.Plain:
-						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql";
-						break;
-
-					case FileFormat.Binary:
-						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin";
-						break;
-
-					case FileFormat.Tar:
-						dialog.Filter = dialog.DefaultExt = $"{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
-						break;
-				}*/
-				dialog.Filter = 
-					$"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
-					+ $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
-					+ $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar";
+					Filter = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
+					         + $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
+					         + $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar"
+				};
 
 				var showDialog = dialog.ShowDialog();
 

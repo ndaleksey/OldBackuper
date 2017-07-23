@@ -119,7 +119,6 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\BackupViewModel.cs" />
-    <Compile Include="ViewModel\CustomViewModel.cs" />
     <Compile Include="ViewModel\RestoreViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
     <Compile Include="View\BackupView.xaml.cs">

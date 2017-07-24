@@ -245,4 +245,8 @@
     <value>Архивные файлы резервных копий</value>
     <comment>Архивные файлы резервных копий</comment>
   </data>
+  <data name="ConnectionDenied" xml:space="preserve">
+    <value>Невозможно подключиться к серверу БД</value>
+    <comment>Невозможно подключиться к серверу БД</comment>
+  </data>
 </root>

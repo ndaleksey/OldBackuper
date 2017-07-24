@@ -85,16 +85,14 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				Logs.Clear();
 
-				var process = await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);
-
-				ProcessBackupExitCode(process.ExitCode);
+				await MakeDumpAsync(dumpExeFilePath, schemes, objectTypes, FileFormat, CreateDb, CleanDb, IsBlobs);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
-				MessageBox.Show(Resources.Messages.BackupFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
-					MessageBoxImage.Error);
+				/*MessageBox.Show(Resources.Messages.BackupFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBoxImage.Error);*/
 			}
 			finally
 			{

@@ -133,6 +133,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Невозможно подключиться к серверу БД.
+        /// </summary>
+        public static string ConnectionDenied {
+            get {
+                return ResourceManager.GetString("ConnectionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка создания строки соединения.
         /// </summary>
         public static string ConnectionStringBuildingError {

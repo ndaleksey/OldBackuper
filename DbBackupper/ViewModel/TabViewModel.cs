@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,10 +37,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		private bool _createDb;
 		private bool _cleanDb;
 		private bool _selectAll;
-		
+
 		#endregion
 
 		#region Properties
+
 		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
 
 		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; protected set; }
@@ -124,12 +126,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		public ObservableCollection<Node> DbObjects { get; } = new ObservableCollection<Node>();
 		public ObservableCollection<string> Logs { get; } = new ObservableCollection<string>();
+
 		#endregion
 
 		#region Commands
+
 		public ICommand GetDbStructureCommand { get; }
 		public ICommand PingHostCommand { get; }
 		public ICommand SelectAllObjectsCommand { get; }
+
 		#endregion
 
 		#region Constructors
@@ -142,7 +147,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			PingHostCommand = new DelegateCommand(PingHost, CanPingHost);
 			SelectAllObjectsCommand = new DelegateCommand(SelectAllObjects, CanSelectAllObjects);
 		}
-		
+
 		#endregion
 
 		#region Commands' methods
@@ -192,7 +197,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
-				MessageBox.Show(Resources.Messages.ServerConnectionError, Resources.Messages.ConnectionCheck, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(Resources.Messages.ServerConnectionError, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
+					MessageBoxImage.Error);
 			}
 		}
 
@@ -221,14 +227,21 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			catch (PostgresException dbe)
 			{
 				Debug.WriteLine(dbe);
-				Helper.Logger.Error(dbe.Message);
+				Helper.Logger.Error(dbe);
 				MessageBox.Show(Helper.ParseErrorCode(dbe), Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
+					MessageBoxImage.Error);
+			}
+			catch (SocketException se)
+			{
+				Debug.WriteLine(se);
+				Helper.Logger.Error(se);
+				MessageBox.Show(Resources.Messages.ConnectionDenied, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
-				Helper.Logger.Error(e.Message);
+				Helper.Logger.Error(e);
 				MessageBox.Show(Resources.Messages.GetDbStructureError, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
@@ -353,6 +366,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			process.ErrorDataReceived += BackupProcess_ErrorDataReceived;
 			process.WaitForExit();
 
+			if (process.ExitCode == 0)
+				ClearLogs();
+
 			var text = new StringBuilder();
 			text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
 			text.Append(process.ExitCode == 0
@@ -374,7 +390,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			OutConcurrentText(Logs, args.Data);
 		}
 
-		protected Task<Process> RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName, bool createDb, bool cleanDb)
+		protected Task<Process> RestoreAsync(string exeFileName, ObjectType objectType, FileFormat fileFormat,
+			string dumpFileName, bool createDb, bool cleanDb)
 		{
 			return Task.Run(() => Restore(exeFileName, objectType, fileFormat, dumpFileName, CreateDb, CleanDb));
 		}
@@ -440,6 +457,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			process.ErrorDataReceived += RestoreProcess_ErrorDataReceived;
 			process.WaitForExit();
 
+			if (process.ExitCode == 0)
+				ClearLogs();
+
 			var text = new StringBuilder();
 
 			text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
@@ -462,14 +482,23 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			OutConcurrentText(Logs, args.Data);
 		}
 
-		private async void OutConcurrentText(ICollection<string> logs, string text)
+		private void OutConcurrentText(ICollection<string> logs, string text)
 		{
 			var dispatcher = Application.Current.Dispatcher;
-			await dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart)(() =>
+			dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart) (() =>
 			{
 				logs.Add(text);
 
 				LogsListBoxService.ScrollToEnd();
+			}));
+		}
+
+		private void ClearLogs()
+		{
+			var dispatcher = Application.Current.Dispatcher;
+			dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart) (() =>
+			{
+				Logs.Clear();
 			}));
 		}
 

@@ -124,6 +124,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Большие данные.
+        /// </summary>
+        public static string Blobs {
+            get {
+                return ResourceManager.GetString("Blobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Сменить язык.
         /// </summary>
         public static string ChangeLanguage {

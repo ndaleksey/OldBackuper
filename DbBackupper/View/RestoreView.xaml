@@ -75,7 +75,7 @@
 								</Style>
 							</CheckBox.Style>
 						</CheckBox>
-						<CheckBox Content="Blobs" IsChecked="{Binding IsBlobs}" Margin="5, 5"/>
+						<CheckBox Content="{x:Static properties:Resources.Blobs}" IsChecked="{Binding IsBlobs}" Margin="5, 5"/>
 					</StackPanel>
 				</Expander>
 

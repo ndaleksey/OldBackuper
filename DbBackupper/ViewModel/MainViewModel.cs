@@ -2,12 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
-using NLog;
 using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Properties;
 using Swsu.Tools.DbBackupper.Service;
@@ -67,7 +65,6 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		public ObservableCollection<Node> DumpSchemes { get; }
 		public ObservableCollection<Node> RestoreSchemes { get; }
-		public ObservableCollection<string> DbEncodings { get; }
 
 		#endregion
 
@@ -100,22 +97,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 			DumpSchemes = new ObservableCollection<Node>();
 			RestoreSchemes = new ObservableCollection<Node>();
-			DbEncodings = new ObservableCollection<string>();
 
 			ChangeCultureCommand = new DelegateCommand(ChangeCulture, CanChangeCulture);
-
-			try
-			{
-				var encodings = Encoding.GetEncodings();
-
-				foreach (var encoding in encodings)
-					DbEncodings.Add(encoding.Name);
-			}
-			catch (Exception e)
-			{
-				Debug.WriteLine(e);
-				Helper.Logger.Log(LogLevel.Error, e);
-			}
 		}
 
 		#endregion

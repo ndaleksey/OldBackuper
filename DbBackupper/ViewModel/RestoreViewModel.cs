@@ -79,16 +79,14 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				Logs.Clear();
 
-				var process = await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
-
-				ProcessRestoreExitCode(process.ExitCode);
+				await RestoreAsync(restoreFileName, objectsType, FileFormat, DumpFileName, CreateDb, CleanDb);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
 				Helper.Logger.Error(e);
-				MessageBox.Show(Resources.Messages.RestoreFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
-					MessageBoxImage.Error);
+				/*MessageBox.Show(Resources.Messages.RestoreFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBoxImage.Error);*/
 			}
 			finally
 			{

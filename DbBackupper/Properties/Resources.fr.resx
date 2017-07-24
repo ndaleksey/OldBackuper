@@ -261,4 +261,8 @@
     <value>Archive</value>
     <comment>Архивный</comment>
   </data>
+  <data name="Blobs" xml:space="preserve">
+    <value>Gros volumes de données</value>
+    <comment>Большие данные</comment>
+  </data>
 </root>

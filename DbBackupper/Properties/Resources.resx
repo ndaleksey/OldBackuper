@@ -261,4 +261,8 @@
     <value>Восстановление из резервной копии</value>
     <comment>Восстановление из резервной копии</comment>
   </data>
+  <data name="Blobs" xml:space="preserve">
+    <value>Большие данные</value>
+    <comment>Большие данные</comment>
+  </data>
 </root>

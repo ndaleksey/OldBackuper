@@ -100,7 +100,7 @@
 
 	<Grid Visibility="{Binding Path=WorkflowType, Converter={StaticResource WorkflowTypeToVisibilityConverter}}" Opacity="1">
 
-		<UserControl Background="Black" Opacity="0.5" />
+<!--		<UserControl Background="Black" Opacity="0.5" />-->
 		<dx:WaitIndicator DeferedVisibility="True" FontSize="16" Opacity="1"
 						  Content="{Binding Path=WorkflowType, Converter={StaticResource WorkflowTypeToStringConverter}}" Template="{DynamicResource WaitIndicatorControlTemplate}">
 			<dx:WaitIndicator.ContentTemplate>

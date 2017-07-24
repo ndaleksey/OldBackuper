@@ -190,7 +190,7 @@
     <comment>Ошибка восстановления из резервной копии</comment>
   </data>
   <data name="RestoreProcessFailed" xml:space="preserve">
-    <value>При восстановлении произошли ошибки!</value>
+    <value>Lors de la restauration d'une erreur!</value>
     <comment>При восстановлении произошли ошибки!</comment>
   </data>
   <data name="RestoreProcessSucceed" xml:space="preserve">
@@ -236,5 +236,9 @@
   <data name="TarTypeFiles" xml:space="preserve">
     <value>Les fichiers de sauvegarde d'archives</value>
     <comment>Архивные файлы резервных копий</comment>
+  </data>
+  <data name="ConnectionDenied" xml:space="preserve">
+    <value>Impossible de se connecter au serveur de base de données</value>
+    <comment>Невозможно подключиться к серверу БД</comment>
   </data>
 </root>

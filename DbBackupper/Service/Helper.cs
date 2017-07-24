@@ -1,5 +1,4 @@
-﻿using System;
-using NLog;
+﻿using NLog;
 using Npgsql;
 
 namespace Swsu.Tools.DbBackupper.Service

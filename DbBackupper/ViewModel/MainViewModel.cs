@@ -81,9 +81,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		public MainViewModel()
 		{
-			WorkflowType = new EWorkflowType();
 			WorkflowTypeChangedHandler = type => WorkflowType = type;
-
 			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
 
 			BackupViewModel = new BackupViewModel(WorkflowTypeChangedHandler)

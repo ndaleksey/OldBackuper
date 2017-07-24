@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
 	<Style x:Key="FlagIconStyle" TargetType="Image">
 		<Style.Triggers>
 			<DataTrigger Binding="{Binding Path=CultureName}" Value="ru-RU">
@@ -119,5 +120,4 @@
 			</MultiTrigger>
 		</Style.Triggers>
 	</Style>
-
 </ResourceDictionary>

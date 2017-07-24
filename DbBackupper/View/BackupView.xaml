@@ -8,6 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800" Background="AliceBlue">
 
+	<UserControl.Resources>
+		<Style TargetType="{x:Type CheckBox}">
+			<Setter Property="IsEnabled" Value="True"/>
+		</Style>
+	</UserControl.Resources>
+
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="0.8*"/>
@@ -40,7 +46,6 @@
 									  IsChecked="{Binding Path=DataOnly}" Margin="5">
 							<CheckBox.Style>
 								<Style TargetType="{x:Type CheckBox}">
-									<Setter Property="IsEnabled" Value="True"/>
 									<Style.Triggers>
 										<MultiDataTrigger>
 											<MultiDataTrigger.Conditions>
@@ -57,7 +62,6 @@
 									  IsChecked="{Binding Path=SchemaOnly}" Margin="5">
 							<CheckBox.Style>
 								<Style TargetType="{x:Type CheckBox}">
-									<Setter Property="IsEnabled" Value="True"/>
 									<Style.Triggers>
 										<MultiDataTrigger>
 											<MultiDataTrigger.Conditions>

@@ -6,22 +6,108 @@
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:converter="clr-namespace:Swsu.Tools.DbBackupper.Converter"
              mc:Ignorable="d" 
+			 dx:ThemeManager.ThemeName="Office2013"
              d:DesignHeight="300" d:DesignWidth="300">
 
 	<UserControl.Resources>
 		<converter:WorkflowTypeToVisibilityConverter x:Key="WorkflowTypeToVisibilityConverter"/>
 		<converter:WorkflowTypeToStringConverter x:Key="WorkflowTypeToStringConverter"/>
+
+		<SolidColorBrush x:Key="ThemeColor" Color="#FF879e84"/>
+
+		<ControlTemplate x:Key="WaitIndicatorControlTemplate" TargetType="{x:Type dx:WaitIndicator}">
+			<Grid x:Name="Root" HorizontalAlignment="Center" Margin="{TemplateBinding ContentPadding}" 
+				  Visibility="Collapsed" VerticalAlignment="Center">
+				<VisualStateManager.VisualStateGroups>
+					<VisualStateGroup x:Name="Visibility">
+						<VisualState x:Name="Visible">
+							<Storyboard>
+								<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="Root">
+									<DiscreteObjectKeyFrame KeyTime="0:0:0.1">
+										<DiscreteObjectKeyFrame.Value>
+											<Visibility>Visible</Visibility>
+										</DiscreteObjectKeyFrame.Value>
+									</DiscreteObjectKeyFrame>
+								</ObjectAnimationUsingKeyFrames>
+								<BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsIndeterminate" Storyboard.TargetName="progressBar">
+									<DiscreteBooleanKeyFrame KeyTime="0:0:0.1" Value="True"/>
+								</BooleanAnimationUsingKeyFrames>
+							</Storyboard>
+						</VisualState>
+						<VisualState x:Name="Collapsed">
+							<Storyboard>
+								<DoubleAnimation BeginTime="0:0:0.1" Duration="0:0:0.1" From="1" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Root"/>
+								<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="Root">
+									<DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+										<DiscreteObjectKeyFrame.Value>
+											<Visibility>Collapsed</Visibility>
+										</DiscreteObjectKeyFrame.Value>
+									</DiscreteObjectKeyFrame>
+								</ObjectAnimationUsingKeyFrames>
+								<BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsIndeterminate" Storyboard.TargetName="progressBar">
+									<DiscreteBooleanKeyFrame KeyTime="0:0:0.1" Value="False"/>
+								</BooleanAnimationUsingKeyFrames>
+							</Storyboard>
+						</VisualState>
+					</VisualStateGroup>
+				</VisualStateManager.VisualStateGroups>
+
+				<dx:WaitIndicatorContainer>
+					<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+						<ProgressBar x:Name="progressBar" BorderBrush="{StaticResource ThemeColor}" BorderThickness="4" 
+									 Background="White" Foreground="{StaticResource ThemeColor}" HorizontalAlignment="Center" 
+									 Height="40" IsIndeterminate="True" Margin="12,12,8,12" VerticalAlignment="Center" Width="40">
+							<ProgressBar.Template>
+								<ControlTemplate TargetType="{x:Type ProgressBar}">
+									<Grid x:Name="TemplateRoot" SnapsToDevicePixels="True">
+										<VisualStateManager.VisualStateGroups>
+											<VisualStateGroup x:Name="CommonStates">
+												<VisualState x:Name="Determinate"/>
+												<VisualState x:Name="Indeterminate">
+													<Storyboard>
+														<DoubleAnimationUsingKeyFrames RepeatBehavior="Forever" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="Path">
+															<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+															<EasingDoubleKeyFrame KeyTime="0:0:2" Value="359"/>
+														</DoubleAnimationUsingKeyFrames>
+													</Storyboard>
+												</VisualState>
+											</VisualStateGroup>
+										</VisualStateManager.VisualStateGroups>
+										<Path x:Name="Path" Data="F1M16,0C17.1046,0 18,0.895433 18,2 18,3.10457 17.1046,4 16,4 14.8954,4 14,3.10457 14,2 14,0.895433 14.8954,0 16,0z M23,2.00003C24.1045,2.00003 25,2.89546 25,4.00003 25,5.1046 24.1045,6.00003 23,6.00003 21.8954,6.00003 21,5.1046 21,4.00003 21,2.89546 21.8954,2.00003 23,2.00003z M28,7.00002C29.1045,7.00002 30,7.89546 30,9.00002 30,10.1046 29.1045,11 28,11 26.8954,11 26,10.1046 26,9.00002 26,7.89546 26.8954,7.00002 28,7.00002z M30,14C31.1045,14 32,14.8954 32,16 32,17.1046 31.1045,18 30,18 28.8954,18 28,17.1046 28,16 28,14.8954 28.8954,14 30,14z M28,21C29.1045,21 30,21.8954 30,23 30,24.1046 29.1045,25 28,25 26.8954,25 26,24.1046 26,23 26,21.8954 26.8954,21 28,21z M23,26C24.1045,26 25,26.8954 25,28 25,29.1046 24.1046,30 23,30 21.8954,30 21,29.1046 21,28 21,26.8954 21.8954,26 23,26z M16,28C17.1046,28 18,28.8954 18,30 18,31.1046 17.1046,32 16,32 14.8954,32 14,31.1046 14,30 14,28.8954 14.8954,28 16,28z M9,26C10.1046,26 11,26.8954 11,28 11,29.1046 10.1046,30 9,30 7.89543,30 7,29.1046 7,28 7,26.8954 7.89543,26 9,26z M4,21C5.10457,21 6,21.8954 6,23 6,24.1046 5.10457,25 4,25 2.89543,25 2,24.1046 2,23 2,21.8954 2.89543,21 4,21z M2,14C3.10457,14 4,14.8954 4,16 4,17.1046 3.10457,18 2,18 0.895431,18 1.19209E-06,17.1046 1.19209E-06,16 1.19209E-06,14.8954 0.895431,14 2,14z M4,7.00001C5.10457,7.00001 6,7.89544 6,9.00001 6,10.1046 5.10457,11 4,11 2.89543,11 2,10.1046 2,9.00001 2,7.89544 2.89543,7.00001 4,7.00001z M9,2C10.1046,2 11,2.89544 11,4 11,5.10457 10.1046,6 9,6 7.89543,6 7,5.10457 7,4 7,2.89544 7.89543,2 9,2z" Fill="{TemplateBinding Foreground}" Margin="4" RenderTransformOrigin="0.5,0.5" Stretch="None">
+											<Path.RenderTransform>
+												<TransformGroup>
+													<ScaleTransform/>
+													<SkewTransform/>
+													<RotateTransform Angle="0"/>
+													<TranslateTransform/>
+												</TransformGroup>
+											</Path.RenderTransform>
+										</Path>
+									</Grid>
+								</ControlTemplate>
+							</ProgressBar.Template>
+						</ProgressBar>
+						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding ActualContent}" Grid.Column="1" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+					</Grid>
+				</dx:WaitIndicatorContainer>
+			</Grid>
+		</ControlTemplate>
 	</UserControl.Resources>
 
 	<Grid Visibility="{Binding Path=WorkflowType, Converter={StaticResource WorkflowTypeToVisibilityConverter}}" Opacity="1">
+
 		<UserControl Background="Black" Opacity="0.5" />
 		<dx:WaitIndicator DeferedVisibility="True" FontSize="16" Opacity="1"
-                              Content="{Binding Path=WorkflowType, Converter={StaticResource WorkflowTypeToStringConverter}}">
+						  Content="{Binding Path=WorkflowType, Converter={StaticResource WorkflowTypeToStringConverter}}" Template="{DynamicResource WaitIndicatorControlTemplate}">
 			<dx:WaitIndicator.ContentTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Vertical">
 						<TextBlock Text="{Binding}"
-                                       Foreground="White" 
+                                       Foreground="{StaticResource ThemeColor}" 
                                        HorizontalAlignment="Center" 
                                        TextWrapping="Wrap" 
                                        TextAlignment="Center"

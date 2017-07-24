@@ -50,7 +50,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					         + $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
 					         + $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar"
 				};
-				
+
 				var showDialog = dialog.ShowDialog();
 
 				if (showDialog == null || !(bool) showDialog) return;
@@ -105,6 +105,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#endregion
 
 		#region Methods
+
 		private void ProcessBackupExitCode(int code)
 		{
 			switch (code)
@@ -123,6 +124,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					return;
 			}
 		}
+
 		#endregion
 	}
 }

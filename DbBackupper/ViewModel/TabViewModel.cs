@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -200,7 +201,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			return ValidateConnectionBuilder();
 		}
-		
+
 		protected async void GetDbStructure()
 		{
 			try
@@ -218,6 +219,13 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					MessageBox.Show(Resources.Messages.EmptyDb, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 						MessageBoxImage.Information);
 			}
+			catch (PostgresException dbe)
+			{
+				Debug.WriteLine(dbe);
+				Helper.Logger.Error(dbe.Message);
+				MessageBox.Show(Helper.ParseErrorCode(dbe), Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
+					MessageBoxImage.Error);
+			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
@@ -230,6 +238,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.NormalWork);
 			}
 		}
+
 		#endregion
 
 		#region Methods
@@ -256,7 +265,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			if (!ValidateConnectionBuilder()) throw new ArgumentException(Resources.Messages.ConnectionStringBuildingError);
 
-			return new NpgsqlConnectionStringBuilder()
+			return new NpgsqlConnectionStringBuilder
 			{
 				Host = Host,
 				Port = Port,

@@ -118,6 +118,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\PostgresErrorCodes.Designer.cs" />
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\RestoreViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
@@ -214,6 +215,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PostgresErrorCodes.fr.resx" />
+    <EmbeddedResource Include="Resources\PostgresErrorCodes.resx" />
     <Resource Include="main.ico" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

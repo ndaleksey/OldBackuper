@@ -30,13 +30,11 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#endregion
 
 		#region Properties
+
 		public EWorkflowType WorkflowType
 		{
 			get { return _workflowType; }
-			set
-			{
-				SetProperty(ref _workflowType, value, nameof(WorkflowType));
-			}
+			set { SetProperty(ref _workflowType, value, nameof(WorkflowType)); }
 		}
 
 		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; }
@@ -87,7 +85,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			WorkflowTypeChangedHandler = type => WorkflowType = type;
 
 			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
-			
+
 			BackupViewModel = new BackupViewModel(WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
@@ -136,8 +134,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			try
 			{
 				if (
-				MessageBox.Show(Properties.Resources.ChangeLanguageRequest, Properties.Resources.LanguageChanging,
-					MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+					MessageBox.Show(Properties.Resources.ChangeLanguageRequest, Properties.Resources.LanguageChanging,
+						MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
 					return;
 
 				Settings.Default.Culture = Settings.Default.Culture.Name == "ru-RU"

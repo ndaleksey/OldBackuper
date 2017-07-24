@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -23,7 +22,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructor
 
-		public BackupViewModel(EWorkflowType? workflowType) : base(workflowType)
+		public BackupViewModel(Action<EWorkflowType> workflowTypeChangedHandler) : base(workflowTypeChangedHandler)
 		{
 			CreateBackupFileNameCommand = new DelegateCommand(CreateBackupFileName);
 			MakeBackupCommand = new DelegateCommand(MakeBackup, CanMakeBackup);
@@ -82,7 +81,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				var dumpExeFilePath = $"{Environment.CurrentDirectory}\\Tools\\pg_dump.exe";
 				var objectTypes = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
-				WorkflowType = EWorkflowType.Backup;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.Backup);
 
 				Logs.Clear();
 
@@ -99,7 +98,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			finally
 			{
-//				WorkflowType = EWorkflowType.NormalWork;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.NormalWork);
 			}
 		}
 

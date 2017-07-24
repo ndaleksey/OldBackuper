@@ -23,7 +23,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructor
 
-		public RestoreViewModel(EWorkflowType? workflowType) : base(workflowType)
+		public RestoreViewModel(Action<EWorkflowType> workflowType) : base(workflowType)
 		{
 			CreateRestoreFileNameCommand = new DelegateCommand(CreateRestoreFileName);
 			RestoreBackupCommand = new DelegateCommand(RestoreBackup, CanRestoreBackup);
@@ -75,7 +75,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				var objectsType = DataOnly ? ObjectType.DataOnly : SchemaOnly ? ObjectType.SchemeOnly : ObjectType.Default;
 
-				WorkflowType = EWorkflowType.Restore;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.Restore);
 
 				Logs.Clear();
 
@@ -92,7 +92,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			finally
 			{
-				WorkflowType = EWorkflowType.NormalWork;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.NormalWork);
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				var builder = GetConnectionBuilder();
 
-				WorkflowType = EWorkflowType.LoadFromDb;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.LoadFromDb);
 
 				var databases = await DbService.GetDatabasesAsync(builder);
 
@@ -119,7 +119,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 							MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
 						return;
 
-				WorkflowType = EWorkflowType.WorkWithDb;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.WorkWithDb);
 
 				await DbService.CreateDatabaseAsync(builder, Database);
 
@@ -137,7 +137,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			finally
 			{
-				WorkflowType = EWorkflowType.NormalWork;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.NormalWork);
 			}
 		}
 

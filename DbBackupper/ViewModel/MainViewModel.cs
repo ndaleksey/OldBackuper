@@ -25,23 +25,21 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private string _cultureName;
 
-		private EWorkflowType? _workflowType;
+		private EWorkflowType _workflowType;
 
 		#endregion
 
 		#region Properties
-		public EWorkflowType? WorkflowType
+		public EWorkflowType WorkflowType
 		{
 			get { return _workflowType; }
 			set
 			{
-				SetProperty(ref _workflowType, value, nameof(WorkflowType), () =>
-				{
-					Console.WriteLine($"Изменение в {GetType().Name}");
-
-				});
+				SetProperty(ref _workflowType, value, nameof(WorkflowType));
 			}
 		}
+
+		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; }
 
 		public static bool IsCultureChanged { get; private set; }
 
@@ -85,16 +83,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		public MainViewModel()
 		{
+			WorkflowType = new EWorkflowType();
+			WorkflowTypeChangedHandler = type => WorkflowType = type;
+
 			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
 			
-			BackupViewModel = new BackupViewModel(WorkflowType)
+			BackupViewModel = new BackupViewModel(WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
 				Database = "los_db"
 			};
 
-			RestoreViewModel = new RestoreViewModel(WorkflowType)
+			RestoreViewModel = new RestoreViewModel(WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,

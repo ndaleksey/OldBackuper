@@ -42,7 +42,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#region Properties
 		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
 
-		public EWorkflowType? WorkflowType { get; protected set; }
+		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; protected set; }
 
 		public string Host
 		{
@@ -134,9 +134,10 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructors
 
-		protected TabViewModel(EWorkflowType? workflowType)
+		protected TabViewModel(Action<EWorkflowType> workflowTypeChangedHandler)
 		{
-			WorkflowType = workflowType;
+			WorkflowTypeChangedHandler = workflowTypeChangedHandler;
+
 			GetDbStructureCommand = new DelegateCommand(GetDbStructure, CanGetDbStructure);
 			PingHostCommand = new DelegateCommand(PingHost, CanPingHost);
 			SelectAllObjectsCommand = new DelegateCommand(SelectAllObjects, CanSelectAllObjects);
@@ -204,7 +205,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			try
 			{
-				WorkflowType = EWorkflowType.LoadFromDb;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.LoadFromDb);
 
 				var objects = await DbService.GetDbSchemaObjectsAsync(GetConnectionBuilder(), Database);
 
@@ -226,7 +227,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			finally
 			{
-				WorkflowType = EWorkflowType.NormalWork;
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.NormalWork);
 			}
 		}
 		#endregion
@@ -269,11 +270,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		protected Task<Process> MakeDumpAsync(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
 			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
-			return Task.Run(() =>
-			{
-				Thread.Sleep(5000);
-				return MakeDump(exeFileName, schemes, objectType, fileFormat, createDb, cleanDb, isBlobs);
-			});
+			return Task.Run(() => MakeDump(exeFileName, schemes, objectType, fileFormat, createDb, cleanDb, isBlobs));
 		}
 
 		protected Process MakeDump(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,

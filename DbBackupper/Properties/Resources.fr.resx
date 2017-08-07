@@ -158,11 +158,11 @@
     <comment>Создать БД</comment>
   </data>
   <data name="CreateDump" xml:space="preserve">
-    <value>Créer une sauvegarde</value>
+    <value>Créer une copie réserve de la BD</value>
     <comment>Создать резервную копию</comment>
   </data>
   <data name="DatabaseName" xml:space="preserve">
-    <value>Base de données de nom</value>
+    <value>Nom de la BD</value>
     <comment>Имя БД</comment>
   </data>
   <data name="DataOnly" xml:space="preserve">
@@ -178,7 +178,7 @@
     <comment>Формат файла</comment>
   </data>
   <data name="GetDbStructure" xml:space="preserve">
-    <value>Obtenez la structure de base de données</value>
+    <value>Recevoir la structure de la BD</value>
     <comment>Получить структуру БД</comment>
   </data>
   <data name="Host" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>Смена языка</comment>
   </data>
   <data name="Location" xml:space="preserve">
-    <value>Emplacement</value>
+    <value>Disposition</value>
     <comment>Расположение</comment>
   </data>
   <data name="ObjectsTypes" xml:space="preserve">
@@ -210,7 +210,7 @@
     <comment>Восстановление из резервной копии</comment>
   </data>
   <data name="RestoreFromDump" xml:space="preserve">
-    <value>Restaurer de la sauvegarde</value>
+    <value>Restaurer à partir de la copie réserve</value>
     <comment>Восстановить из резервной копии</comment>
   </data>
   <data name="RestoreSettings" xml:space="preserve">
@@ -218,7 +218,7 @@
     <comment>Параметры восстановления</comment>
   </data>
   <data name="SchemaOnly" xml:space="preserve">
-    <value>Seul régime</value>
+    <value>Schéma uniquement</value>
     <comment>Только схема</comment>
   </data>
   <data name="UserName" xml:space="preserve">
@@ -230,7 +230,7 @@
     <comment>События</comment>
   </data>
   <data name="Schemas" xml:space="preserve">
-    <value>Régimes</value>
+    <value>Schémas</value>
     <comment>Схемы</comment>
   </data>
   <data name="SelectAll" xml:space="preserve">

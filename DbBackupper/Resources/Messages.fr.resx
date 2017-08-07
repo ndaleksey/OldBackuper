@@ -126,11 +126,11 @@
     <comment>Резервирование</comment>
   </data>
   <data name="BackupProcessFailed" xml:space="preserve">
-    <value>Lors de la réservation Une erreur est survenue!</value>
+    <value>Erreurs apparues lors réservation!</value>
     <comment>При резервировании произошли ошибки!</comment>
   </data>
   <data name="BackupProcessSucceed" xml:space="preserve">
-    <value>Sauvegarde terminée avec succès!</value>
+    <value>Réservation est achevée avec succès!</value>
     <comment>Резервирование завершилось успешно!</comment>
   </data>
   <data name="BackupSucceed" xml:space="preserve">
@@ -186,7 +186,7 @@
     <comment>Создание новой БД</comment>
   </data>
   <data name="RestoreFailed" xml:space="preserve">
-    <value>Erreur restauration à partir d'une sauvegarde</value>
+    <value>Erreur lors de restauration de la BD</value>
     <comment>Ошибка восстановления из резервной копии</comment>
   </data>
   <data name="RestoreProcessFailed" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Восстановление</comment>
   </data>
   <data name="ResultCode" xml:space="preserve">
-    <value>Complétion de code</value>
+    <value>Code d’achèvement</value>
     <comment>Код завершения</comment>
   </data>
   <data name="ServerConnectionError" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Сервер БД недоступен</comment>
   </data>
   <data name="SqlTypeFiles" xml:space="preserve">
-    <value>Fichier de la demande</value>
+    <value>Fichiers des demandes</value>
     <comment>Файлы запросов</comment>
   </data>
   <data name="StartApplication" xml:space="preserve">

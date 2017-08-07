@@ -6,6 +6,7 @@
         xmlns:viewModel="clr-namespace:Swsu.Tools.DbBackupper.ViewModel"
         xmlns:view="clr-namespace:Swsu.Tools.DbBackupper.View"
         xmlns:properties="clr-namespace:Swsu.Tools.DbBackupper.Properties"
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         mc:Ignorable="d"
         Title="{x:Static properties:Resources.ApplicationTitle}" Height="750" Width="900" MinWidth="900" MinHeight="700"
 		WindowStartupLocation="CenterScreen"
@@ -47,4 +48,8 @@
 
 		<view:WorkflowIndicatorView/>
 	</Grid>
+	
+	<dxmvvm:Interaction.Behaviors>
+		<dxmvvm:EventToCommand EventName="Closing" Command="{Binding Path=CanCloseCommand}" PassEventArgsToCommand="True"/>
+	</dxmvvm:Interaction.Behaviors>
 </Window>

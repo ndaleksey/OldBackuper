@@ -121,7 +121,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 				await DbService.CreateDatabaseAsync(builder, Database);
 
-				GetDbStructure();
+//				GetDbStructure();
 
 				MessageBox.Show(Resources.Messages.CreateDbSucceed, Resources.Messages.NewDbCreating, MessageBoxButton.OK,
 					MessageBoxImage.Information);

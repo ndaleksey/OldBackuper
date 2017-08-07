@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
@@ -71,6 +72,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#region Commands
 
 		public ICommand ChangeCultureCommand { get; }
+		public ICommand<CancelEventArgs> CanCloseCommand { get; }
 
 		#endregion
 
@@ -99,6 +101,31 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			RestoreSchemes = new ObservableCollection<Node>();
 
 			ChangeCultureCommand = new DelegateCommand(ChangeCulture, CanChangeCulture);
+			CanCloseCommand = new DelegateCommand<CancelEventArgs>(CanClose);
+		}
+
+		private void CanClose(CancelEventArgs args)
+		{
+			if (WorkflowType == EWorkflowType.NormalWork) return;
+
+			if (MessageBox.Show("Выполняется продолжительная операция. Вы хотите прервать процесс?", "Закрытие приложения",
+				    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+			{
+
+				return;
+			}
+
+			args.Cancel = true;
+
+			/*if (MessageBox.Show("Вы уверенны, что хотите закрыть приложение", "Закрытие", MessageBoxButton.YesNo,
+				    MessageBoxImage.Question) == MessageBoxResult.Yes)
+			{
+				
+			}
+			else
+			{
+				args.Cancel = true;
+			}*/
 		}
 
 		#endregion

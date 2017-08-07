@@ -46,6 +46,7 @@ namespace Swsu.Tools.DbBackupper
 				process?.Dispose();
 			}
 		}
+		
 
 		protected override void OnExit(ExitEventArgs e)
 		{

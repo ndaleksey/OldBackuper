@@ -45,7 +45,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
 
 		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; protected set; }
-
+		
 		public string Host
 		{
 			get { return _host; }
@@ -484,6 +484,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private void OutConcurrentText(ICollection<string> logs, string text)
 		{
+			if (Application.Current == null) return;
+
 			var dispatcher = Application.Current.Dispatcher;
 			dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart) (() =>
 			{

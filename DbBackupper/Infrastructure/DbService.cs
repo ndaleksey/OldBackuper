@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Npgsql;
@@ -23,7 +24,7 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 			using (var con = new NpgsqlConnection(newBuilder))
 			{
 				con.Open();
-				
+
 				using (var cmd = con.CreateCommand())
 				{
 					cmd.Connection = con;
@@ -67,7 +68,7 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 
 						while (reader.Read())
 							databases.Add(reader.GetString(0));
-						
+
 					}
 				}
 			}
@@ -114,7 +115,7 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 								objects.Add(curSchema);
 								prevSchemaName = schemaName;
 							}
-							
+
 							curSchema?.Children.Add(new Node(tableName));
 						}
 					}
@@ -129,5 +130,100 @@ namespace Swsu.Tools.DbBackupper.Infrastructure
 
 			return new NpgsqlConnectionStringBuilder(builder.ConnectionString);
 		}
+
+		public static Task<IEnumerable<Connection>> GetActiveConnectionsAsync(NpgsqlConnectionStringBuilder builder)
+		{
+			return Task.Run(() => GetActiveConnections(builder));
+		}
+
+		private static IEnumerable<Connection> GetActiveConnections(NpgsqlConnectionStringBuilder builder)
+		{
+			using (var con = new NpgsqlConnection(builder))
+			{
+				con.Open();
+
+				using (var cmd = con.CreateCommand())
+				{
+					var currentPid = GetCurrentConnectionPid(con);
+
+					cmd.CommandText =
+						$"SELECT pid, client_addr::text FROM pg_stat_activity WHERE datname = '{builder.Database}' AND pid <> {currentPid}";
+					using (var reader = cmd.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							var pid = reader.GetInt32(0);
+							var host = reader.GetString(1);
+							yield return new Connection(pid, host);
+						}
+					}
+				}
+			}
+		}
+
+		private static int GetCurrentConnectionPid(NpgsqlConnection con)
+		{
+			using (var cmd = con.CreateCommand())
+			{
+				cmd.CommandText = "SELECT pg_backend_pid()";
+
+				using (var reader = cmd.ExecuteReader())
+				{
+					reader.Read();
+
+					return reader.GetInt32(0);
+				}
+			}
+		}
+
+		public static Task StopActiveConnectionAsync(NpgsqlConnectionStringBuilder builder, List<Connection> connections)
+		{
+			return Task.Run(() => StopActiveConnection(builder, connections));
+		}
+
+		private static void StopActiveConnection(NpgsqlConnectionStringBuilder builder,
+			IReadOnlyCollection<Connection> connections)
+		{
+			if (connections == null || connections.Count == 0) return;
+
+			using (var con = new NpgsqlConnection(builder))
+			{
+				con.Open();
+
+				using (var cmd = con.CreateCommand())
+				{
+					var script = new StringBuilder();
+
+					foreach (var connection in connections)
+
+						script.Append(
+							$"SELECT pg_terminate_backend({connection.Pid}), pg_cancel_backend({connection.Pid}), * FROM pg_stat_activity " +
+							$"WHERE datname = '{builder.Database}'; ");
+
+					cmd.CommandText = script.ToString();
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+	}
+
+	public class Connection
+	{
+		#region Properties
+
+		public string Host { get; }
+		public int Pid { get; }
+
+		#endregion
+
+		#region Constructors
+
+		public Connection(int pid, string host)
+		{
+			Pid = pid;
+			Host = host;
+		}
+
+		#endregion
 	}
 }

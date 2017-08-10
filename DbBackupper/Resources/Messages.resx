@@ -249,4 +249,8 @@
     <value>Невозможно подключиться к серверу БД</value>
     <comment>Невозможно подключиться к серверу БД</comment>
   </data>
+  <data name="ActiveConnectionsAbortingRequest" xml:space="preserve">
+    <value>Выбранная БД имеет активные соединения. Вы хотите отключить их?</value>
+    <comment>Выбранная БД имеет активные соединения. Вы хотите отключить их?</comment>
+  </data>
 </root>

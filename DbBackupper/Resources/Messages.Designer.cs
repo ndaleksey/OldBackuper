@@ -61,6 +61,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Выбранная БД имеет активные соединения. Вы хотите отключить их?.
+        /// </summary>
+        public static string ActiveConnectionsAbortingRequest {
+            get {
+                return ResourceManager.GetString("ActiveConnectionsAbortingRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка создания резервной копии.
         /// </summary>
         public static string BackupFailed {

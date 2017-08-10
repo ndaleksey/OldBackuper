@@ -112,10 +112,21 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				if (
 					databases.Any(
 						d => string.Equals(d, builder.Database, StringComparison.CurrentCulture)))
+				{
 					if (
 						MessageBox.Show(Resources.Messages.DbAlreadyExistsWarning, Resources.Messages.NewDbCreating,
 							MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
 						return;
+					
+					var connections = (await DbService.GetActiveConnectionsAsync(builder)).ToList();
+
+					if (connections.Count > 0)
+						if (MessageBox.Show(Resources.Messages.ActiveConnectionsAbortingRequest, Resources.Messages.NewDbCreating,
+							    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+							return;
+
+					await DbService.StopActiveConnectionAsync(builder, connections);
+				}
 
 				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.WorkWithDb);
 

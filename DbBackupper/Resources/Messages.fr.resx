@@ -241,4 +241,8 @@
     <value>Impossible de se connecter au serveur de base de données</value>
     <comment>Невозможно подключиться к серверу БД</comment>
   </data>
+  <data name="ActiveConnectionsAbortingRequest" xml:space="preserve">
+    <value>La base de données sélectionnée possède des connexions actives. Voulez-vous les désactiver?</value>
+    <comment>Выбранная БД имеет активные соединения. Вы хотите отключить их?</comment>
+  </data>
 </root>

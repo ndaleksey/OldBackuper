@@ -268,7 +268,7 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Данные успешно восстановлены из резрвной копии.
+        ///   Ищет локализованную строку, похожую на Данные успешно восстановлены из резервной копии.
         /// </summary>
         public static string RestoreSucceed {
             get {

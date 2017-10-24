@@ -199,7 +199,7 @@
   </data>
   <data name="RestoreSucceed" xml:space="preserve">
     <value>Les données sont restaurées avec succès de la copie rezrvnoy</value>
-    <comment>Данные успешно восстановлены из резрвной копии</comment>
+    <comment>Данные успешно восстановлены из резервной копии</comment>
   </data>
   <data name="Restoring" xml:space="preserve">
     <value>Récupération</value>

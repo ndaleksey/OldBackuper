@@ -198,8 +198,8 @@
     <comment>Восстановление завершилось успешно!</comment>
   </data>
   <data name="RestoreSucceed" xml:space="preserve">
-    <value>Данные успешно восстановлены из резрвной копии</value>
-    <comment>Данные успешно восстановлены из резрвной копии</comment>
+    <value>Данные успешно восстановлены из резервной копии</value>
+    <comment>Данные успешно восстановлены из резервной копии</comment>
   </data>
   <data name="Restoring" xml:space="preserve">
     <value>Восстановление</value>

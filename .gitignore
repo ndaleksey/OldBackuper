@@ -4,3 +4,6 @@
 /DbBackupper.Console
 /DbDumper.Console
 /ProcessDemo
+
+*.doc
+*.docx

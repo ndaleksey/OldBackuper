@@ -1,9 +1,10 @@
 .vs
 /DbBackupper/bin
 /DbBackupper/obj
-/DbBackupper.Console
-/DbDumper.Console
-/ProcessDemo
+DbBackupper.Console
+DbDumper.Console
+ProcessDemo
+packages
 
 *.doc
 *.docx

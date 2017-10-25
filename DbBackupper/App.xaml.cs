@@ -8,6 +8,7 @@ using Swsu.Tools.DbBackupper.Properties;
 using Swsu.Tools.DbBackupper.Resources;
 using Swsu.Tools.DbBackupper.Service;
 using Swsu.Tools.DbBackupper.ViewModel;
+using AppResources = Swsu.Tools.DbBackupper.Properties.Resources;
 
 namespace Swsu.Tools.DbBackupper
 {
@@ -21,7 +22,7 @@ namespace Swsu.Tools.DbBackupper
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			bool createdNew;
-			_mutex = new Mutex(true, "Programme", out createdNew);
+			_mutex = new Mutex(true, Process.GetCurrentProcess().ProcessName, out createdNew);
 
 			if (!createdNew)
 				Shutdown();
@@ -35,14 +36,14 @@ namespace Swsu.Tools.DbBackupper
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
 			AppDomain.CurrentDomain.ProcessExit += OnCurrentDomainProcessExit;
-
-			Helper.Logger.Info(Messages.StartApplication);
+			
+			Helper.Logger.Info(AppResources.LogSource, Messages.StartApplication);
 		}
 
 	    private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args)
 	    {
-		    Helper.Logger.Info(((Exception)args.ExceptionObject).Message);
-		    Helper.Logger.Info(((Exception)args.ExceptionObject).StackTrace);
+		    Helper.Logger.Info(AppResources.LogSource, ((Exception)args.ExceptionObject).Message);
+		    Helper.Logger.Info(AppResources.LogSource, ((Exception)args.ExceptionObject).StackTrace);
 	    }
 
 	    private void OnCurrentDomainProcessExit(object sender, EventArgs e)
@@ -59,7 +60,7 @@ namespace Swsu.Tools.DbBackupper
 		protected override void OnExit(ExitEventArgs e)
 		{
 			base.OnExit(e);
-			Helper.Logger.Info(Messages.StopApplication);
+			Helper.Logger.Info(AppResources.LogSource, Messages.StopApplication);
 		}
 	}
 }

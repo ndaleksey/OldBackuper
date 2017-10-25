@@ -61,7 +61,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
+				Helper.Logger.Error(Properties.Resources.LogSource, e);
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
+				Helper.Logger.Error(Properties.Resources.LogSource, e);
 				/*MessageBox.Show(Resources.Messages.BackupFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
 					MessageBoxImage.Error);*/
 			}

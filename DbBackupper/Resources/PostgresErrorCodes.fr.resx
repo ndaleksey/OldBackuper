@@ -117,8 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InvalidPassword" xml:space="preserve">
-    <value>Connexion ou mot de passe</value>
-    <comment>Неверный логин или пароль</comment>
+  <data name="Err08000" xml:space="preserve">
+    <value>Erreur de communication (Code d'erreur: 08000)</value>
+    <comment>08000 connection_exception</comment>
+  </data>
+  <data name="Err08003" xml:space="preserve">
+    <value>Le composé n'existe pas (Code d'erreur: 08003)</value>
+    <comment>08003 connection_does_not_exist</comment>
+  </data>
+  <data name="Err08006" xml:space="preserve">
+    <value>Erreur de communication (Code d'erreur: 08006)</value>
+    <comment>08006 connection_failure</comment>
+  </data>
+  <data name="Err28000" xml:space="preserve">
+    <value>Échec de l'autorisation: les paramètres de connexion incorrects (code d'erreur: 28000)</value>
+    <comment>28000 invalid_authorization_specification</comment>
+  </data>
+  <data name="Err28P01" xml:space="preserve">
+    <value>Erreur d'autorisation: nom d'utilisateur ou mot de passe (code d'erreur: 28P01)</value>
+    <comment>28P01 invalid_password</comment>
+  </data>
+  <data name="Err3D000" xml:space="preserve">
+    <value>Gestion des erreurs dans la base de données: un nom de base de données non valide (code d'erreur: 3D000)</value>
+    <comment>3D000 invalid_catalog_name</comment>
+  </data>
+  <data name="Err3F000" xml:space="preserve">
+    <value>La gestion des erreurs dans la base de données: un nom de schéma non valide (Code d'erreur: 3F000)</value>
+    <comment>3F000 invalid_schema_name</comment>
+  </data>
+  <data name="Err42601" xml:space="preserve">
+    <value>Erreur requête SQL: syntaxe incorrecte (Code d'erreur: 42601)</value>
+    <comment>42601 syntax_error</comment>
+  </data>
+  <data name="Err57P03" xml:space="preserve">
+    <value>Erreur de connexion: au moment où le serveur de base de données est disponible (code d'erreur: 57P03)</value>
+    <comment>57P03 cannot_connect_now</comment>
   </data>
 </root>

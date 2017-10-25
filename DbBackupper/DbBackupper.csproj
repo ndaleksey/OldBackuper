@@ -59,6 +59,18 @@
       <HintPath>..\packages\Npgsql.3.1.0\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Swsu.Lignis.Logger.AppLogger, Version=1.2.1.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.7.1.9\lib\net45\Swsu.Lignis.Logger.AppLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="Swsu.Lignis.Logger.NodLogger, Version=1.5.1.10, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.7.1.9\lib\net45\Swsu.Lignis.Logger.NodLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="Swsu.Lignis.Logger.PrtAgent, Version=1.7.1.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.7.1.9\lib\net45\Swsu.Lignis.Logger.PrtAgent.dll</HintPath>
+    </Reference>
+    <Reference Include="Swsu.Lignis.MiddleWare.Common, Version=1.6.1.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.MiddleWare.Common.1.6.1.6\lib\net45\Swsu.Lignis.MiddleWare.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -96,7 +108,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\PostgresErrorCodes.Designer.cs" />
+    <Compile Include="Resources\PostgresErrorCodes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresErrorCodes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\PostgresErrorCodes.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PostgresErrorCodes.fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\BackupViewModel.cs" />
     <Compile Include="ViewModel\RestoreViewModel.cs" />
     <Compile Include="ViewModel\TabViewModel.cs" />
@@ -119,14 +140,6 @@
       <DependentUpon>WorkflowIndicatorView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\CommonResources.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -193,8 +206,16 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\PostgresErrorCodes.fr.resx" />
-    <EmbeddedResource Include="Resources\PostgresErrorCodes.resx" />
+    <EmbeddedResource Include="Resources\PostgresErrorCodes.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PostgresErrorCodes.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PostgresErrorCodes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PostgresErrorCodes.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Resource Include="main.ico" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -205,25 +226,15 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\WindowsIcons-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\flag_france.ico" />

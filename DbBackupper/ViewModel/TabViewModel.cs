@@ -159,16 +159,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		protected void SelectAllObjects()
 		{
-			try
-			{
-				foreach (var schema in DbObjects.Where(s => s != null).ToList())
-					schema.IsChecked = SelectAll;
-			}
-			catch (Exception e)
-			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
-			}
+			foreach (var schema in DbObjects.Where(s => s != null).ToList())
+				schema.IsChecked = SelectAll;
 		}
 
 		private bool CanPingHost()
@@ -196,7 +188,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
+				Helper.Logger.Error(Properties.Resources.LogSource, e);
 				MessageBox.Show(Resources.Messages.ServerConnectionError, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
@@ -227,21 +219,21 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			catch (PostgresException dbe)
 			{
 				Debug.WriteLine(dbe);
-				Helper.Logger.Error(dbe);
-				MessageBox.Show(Helper.ParseErrorCode(dbe), Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
-					MessageBoxImage.Error);
+				var errorMessage = Helper.ParseErrorCode(dbe);
+				Helper.Logger.Error(Properties.Resources.LogSource, errorMessage, dbe);
+				MessageBox.Show(errorMessage, Resources.Messages.DbStructureGetting, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			catch (SocketException se)
 			{
 				Debug.WriteLine(se);
-				Helper.Logger.Error(se);
+				Helper.Logger.Error(Properties.Resources.LogSource, Resources.Messages.ConnectionDenied, se);
 				MessageBox.Show(Resources.Messages.ConnectionDenied, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
+				Helper.Logger.Error(Properties.Resources.LogSource, Resources.Messages.GetDbStructureError, e);
 				MessageBox.Show(Resources.Messages.GetDbStructureError, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
@@ -258,6 +250,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		protected bool ValidateConnectionBuilder()
 		{
 			IPAddress hostIp;
+
 			if (!IPAddress.TryParse(Host, out hostIp))
 			{
 				Debug.WriteLine("Ошибочный формат IP-адресса хоста");

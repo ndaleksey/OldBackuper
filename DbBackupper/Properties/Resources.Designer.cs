@@ -88,6 +88,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на DbBackupper.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Создание резервной копии.
         /// </summary>
         public static string Backup {
@@ -282,6 +291,15 @@ namespace Swsu.Tools.DbBackupper.Properties {
         public static string Location {
             get {
                 return ResourceManager.GetString("Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Application.
+        /// </summary>
+        public static string LogSource {
+            get {
+                return ResourceManager.GetString("LogSource", resourceCulture);
             }
         }
         

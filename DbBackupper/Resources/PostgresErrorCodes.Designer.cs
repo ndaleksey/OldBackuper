@@ -61,11 +61,83 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Неверный логин или пароль.
+        ///   Ищет локализованную строку, похожую на Ошибка соединения (Код ошибки: 08000).
         /// </summary>
-        public static string InvalidPassword {
+        public static string Err08000 {
             get {
-                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+                return ResourceManager.GetString("Err08000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Соединение не существует (Код ошибки: 08003).
+        /// </summary>
+        public static string Err08003 {
+            get {
+                return ResourceManager.GetString("Err08003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка соединения (Код ошибки: 08006).
+        /// </summary>
+        public static string Err08006 {
+            get {
+                return ResourceManager.GetString("Err08006", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка авторизации: неверные параметры подключения (Код ошибки: 28000).
+        /// </summary>
+        public static string Err28000 {
+            get {
+                return ResourceManager.GetString("Err28000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка авторизации: указан неверный логин или пароль (Код ошибки: 28P01).
+        /// </summary>
+        public static string Err28P01 {
+            get {
+                return ResourceManager.GetString("Err28P01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка обращения к БД: указано неверное имя базы данных (Код ошибки: 3D000).
+        /// </summary>
+        public static string Err3D000 {
+            get {
+                return ResourceManager.GetString("Err3D000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка обращения к БД: указано неверное имя схемы (Код ошибки: 3F000).
+        /// </summary>
+        public static string Err3F000 {
+            get {
+                return ResourceManager.GetString("Err3F000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка SQL-запроса: указан неверный синтаксис (Код ошибки: 42601).
+        /// </summary>
+        public static string Err42601 {
+            get {
+                return ResourceManager.GetString("Err42601", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка соединения: в данный момент сервер БД недоступен (Код ошибки: 57P03).
+        /// </summary>
+        public static string Err57P03 {
+            get {
+                return ResourceManager.GetString("Err57P03", resourceCulture);
             }
         }
     }

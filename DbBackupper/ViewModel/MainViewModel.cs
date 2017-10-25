@@ -139,13 +139,12 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private void ChangeCulture()
 		{
+			if (MessageBox.Show(Properties.Resources.ChangeLanguageRequest, Properties.Resources.LanguageChanging,
+				    MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
+				return;
+
 			try
 			{
-				if (
-					MessageBox.Show(Properties.Resources.ChangeLanguageRequest, Properties.Resources.LanguageChanging,
-						MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.No)
-					return;
-
 				Settings.Default.Culture = Settings.Default.Culture.Name == "ru-RU"
 					? new CultureInfo("fr-FR")
 					: new CultureInfo("ru-RU");
@@ -155,10 +154,10 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				IsCultureChanged = true;
 				Application.Current.Shutdown(1);
 			}
-			catch (Exception e)
+			catch (CultureNotFoundException ce)
 			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(e);
+				Debug.WriteLine(ce);
+				Helper.Logger.Error(Properties.Resources.LogSource, ce);
 			}
 		}
 

@@ -265,4 +265,10 @@
     <value>Большие данные</value>
     <comment>Большие данные</comment>
   </data>
+  <data name="AppName" xml:space="preserve">
+    <value>DbBackupper</value>
+  </data>
+  <data name="LogSource" xml:space="preserve">
+    <value>Application</value>
+  </data>
 </root>

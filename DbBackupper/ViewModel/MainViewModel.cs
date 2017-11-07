@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
@@ -156,8 +155,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			catch (CultureNotFoundException ce)
 			{
-				Debug.WriteLine(ce);
-				Helper.Logger.Error(Properties.Resources.LogSource, ce);
+				Helper.LogError(ce);
 			}
 		}
 

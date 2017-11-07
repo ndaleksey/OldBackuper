@@ -71,6 +71,12 @@
     <Reference Include="Swsu.Lignis.MiddleWare.Common, Version=1.6.1.6, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Swsu.Lignis.MiddleWare.Common.1.6.1.6\lib\net45\Swsu.Lignis.MiddleWare.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Swsu.Lignis.SCMF.ModuleSCMF, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.SCMF.ModuleSCMF.1.2.2\lib\net45\Swsu.Lignis.SCMF.ModuleSCMF.dll</HintPath>
+    </Reference>
+    <Reference Include="Swsu.Lignis.SCMF.ProtocolSCMF, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.SCMF.ProtocolSCMF.0.2.3\lib\net45\Swsu.Lignis.SCMF.ProtocolSCMF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

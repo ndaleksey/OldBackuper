@@ -187,8 +187,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(Properties.Resources.LogSource, e);
+				Helper.LogError(e);
 				MessageBox.Show(Resources.Messages.ServerConnectionError, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
@@ -218,22 +217,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			catch (PostgresException dbe)
 			{
-				Debug.WriteLine(dbe);
 				var errorMessage = Helper.ParseErrorCode(dbe);
-				Helper.Logger.Error(Properties.Resources.LogSource, errorMessage, dbe);
+				Helper.LogError(errorMessage, dbe);
 				MessageBox.Show(errorMessage, Resources.Messages.DbStructureGetting, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			catch (SocketException se)
 			{
-				Debug.WriteLine(se);
-				Helper.Logger.Error(Properties.Resources.LogSource, Resources.Messages.ConnectionDenied, se);
+				Helper.LogError(Resources.Messages.ConnectionDenied, se);
 				MessageBox.Show(Resources.Messages.ConnectionDenied, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(Properties.Resources.LogSource, Resources.Messages.GetDbStructureError, e);
+				Helper.LogError(Resources.Messages.GetDbStructureError, e);
 				MessageBox.Show(Resources.Messages.GetDbStructureError, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}

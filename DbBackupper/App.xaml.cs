@@ -8,7 +8,6 @@ using Swsu.Tools.DbBackupper.Properties;
 using Swsu.Tools.DbBackupper.Resources;
 using Swsu.Tools.DbBackupper.Service;
 using Swsu.Tools.DbBackupper.ViewModel;
-using AppResources = Swsu.Tools.DbBackupper.Properties.Resources;
 
 namespace Swsu.Tools.DbBackupper
 {
@@ -37,13 +36,13 @@ namespace Swsu.Tools.DbBackupper
 
 			AppDomain.CurrentDomain.ProcessExit += OnCurrentDomainProcessExit;
 			
-			Helper.Logger.Info(AppResources.LogSource, Messages.StartApplication);
+			Helper.LogInfo(Messages.StartApplication);
 		}
 
 	    private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs args)
 	    {
-		    Helper.Logger.Info(AppResources.LogSource, ((Exception)args.ExceptionObject).Message);
-		    Helper.Logger.Info(AppResources.LogSource, ((Exception)args.ExceptionObject).StackTrace);
+		    Helper.LogInfo(((Exception)args.ExceptionObject).Message);
+		    Helper.LogInfo(((Exception)args.ExceptionObject).StackTrace);
 	    }
 
 	    private void OnCurrentDomainProcessExit(object sender, EventArgs e)
@@ -60,7 +59,7 @@ namespace Swsu.Tools.DbBackupper
 		protected override void OnExit(ExitEventArgs e)
 		{
 			base.OnExit(e);
-			Helper.Logger.Info(AppResources.LogSource, Messages.StopApplication);
+			Helper.LogInfo(Messages.StopApplication);
 		}
 	}
 }

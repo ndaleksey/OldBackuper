@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -60,8 +59,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(Properties.Resources.LogSource, e);
+				Helper.LogError(e);
 			}
 		}
 
@@ -89,8 +87,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine(e);
-				Helper.Logger.Error(Properties.Resources.LogSource, e);
+				Helper.LogError(e);
 				/*MessageBox.Show(Resources.Messages.BackupFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
 					MessageBoxImage.Error);*/
 			}

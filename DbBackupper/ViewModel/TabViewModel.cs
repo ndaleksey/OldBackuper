@@ -476,7 +476,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			if (Application.Current == null) return;
 
 			var dispatcher = Application.Current.Dispatcher;
-			dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart) (() =>
+			dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart) (() =>
 			{
 				logs.Add(text);
 
@@ -487,7 +487,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		private void ClearLogs()
 		{
 			var dispatcher = Application.Current.Dispatcher;
-			dispatcher.BeginInvoke(DispatcherPriority.Background, (ThreadStart) (() =>
+			dispatcher.Invoke(DispatcherPriority.Normal, (ThreadStart) (() =>
 			{
 				Logs.Clear();
 			}));

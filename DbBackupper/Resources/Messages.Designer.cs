@@ -349,6 +349,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на БД с указанным именем уже существует. Вы хотите перезаписать ее?.
+        /// </summary>
+        public static string SuchDbAlreadyExists {
+            get {
+                return ResourceManager.GetString("SuchDbAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Архивные файлы резервных копий.
         /// </summary>
         public static string TarTypeFiles {

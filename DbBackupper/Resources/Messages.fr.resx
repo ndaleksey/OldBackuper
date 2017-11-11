@@ -245,4 +245,8 @@
     <value>La base de données sélectionnée possède des connexions actives. Voulez-vous les désactiver?</value>
     <comment>Выбранная БД имеет активные соединения. Вы хотите отключить их?</comment>
   </data>
+  <data name="SuchDbAlreadyExists" xml:space="preserve">
+    <value>Une base de données avec le nom spécifié existe déjà. Voulez-vous l'écraser?</value>
+    <comment>БД с указанным именем уже существует. Вы хотите перезаписать ее?</comment>
+  </data>
 </root>

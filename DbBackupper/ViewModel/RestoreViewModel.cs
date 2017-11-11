@@ -6,6 +6,7 @@ using DevExpress.Mvvm;
 using Microsoft.Win32;
 using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Model;
+using Swsu.Tools.DbBackupper.Resources;
 using Swsu.Tools.DbBackupper.Service;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
@@ -66,6 +67,17 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		{
 			try
 			{
+				var cb = GetConnectionBuilder();
+
+				WorkflowTypeChangedHandler?.Invoke(EWorkflowType.LoadFromDb);
+
+				var databases = await DbService.GetDatabasesAsync(cb);
+
+				if (databases.Contains(cb.Database))
+					if (MessageBox.Show(Messages.SuchDbAlreadyExists, Properties.Resources.Restore, MessageBoxButton.YesNo,
+						    MessageBoxImage.Question) == MessageBoxResult.No)
+						return;
+
 				var restoreFileName = $"{Environment.CurrentDirectory}\\Tools\\pg_restore.exe";
 
 				if (FileFormat == FileFormat.Plain)

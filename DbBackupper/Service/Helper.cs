@@ -20,9 +20,10 @@ namespace Swsu.Tools.DbBackupper.Service
 
 		static Helper()
 		{
+			var processName = Process.GetCurrentProcess().ProcessName;
 			var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-			ModuleScmf = new ModuleSCMF(Properties.Resources.ApplicationTitle, version);
-			Logger = new AppLogger(null, Process.GetCurrentProcess().ProcessName, -1);
+			ModuleScmf = new ModuleSCMF(processName, version, Properties.Resources.ApplicationTitle);
+			Logger = new AppLogger(null, processName, -1);
 		}
 
 		#endregion

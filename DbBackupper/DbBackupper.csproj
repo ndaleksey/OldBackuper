@@ -55,27 +55,26 @@
       <HintPath>..\packages\NLog.4.4.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Npgsql, Version=3.1.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.1.0\lib\net45\Npgsql.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Npgsql, Version=3.1.10.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.1.10\lib\net45\Npgsql.dll</HintPath>
     </Reference>
-    <Reference Include="Swsu.Lignis.Logger.AppLogger, Version=1.2.1.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.7.1.9\lib\net45\Swsu.Lignis.Logger.AppLogger.dll</HintPath>
+    <Reference Include="Swsu.Lignis.Logger.AppLogger, Version=1.2.1.14, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.8.1.7\lib\net45\Swsu.Lignis.Logger.AppLogger.dll</HintPath>
     </Reference>
-    <Reference Include="Swsu.Lignis.Logger.NodLogger, Version=1.5.1.10, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.7.1.9\lib\net45\Swsu.Lignis.Logger.NodLogger.dll</HintPath>
+    <Reference Include="Swsu.Lignis.Logger.NodLogger, Version=1.5.1.15, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.8.1.7\lib\net45\Swsu.Lignis.Logger.NodLogger.dll</HintPath>
     </Reference>
-    <Reference Include="Swsu.Lignis.Logger.PrtAgent, Version=1.7.1.9, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.7.1.9\lib\net45\Swsu.Lignis.Logger.PrtAgent.dll</HintPath>
+    <Reference Include="Swsu.Lignis.Logger.PrtAgent, Version=1.8.1.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.Logger.PrtAgent.1.8.1.7\lib\net45\Swsu.Lignis.Logger.PrtAgent.dll</HintPath>
     </Reference>
-    <Reference Include="Swsu.Lignis.MiddleWare.Common, Version=1.6.1.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swsu.Lignis.MiddleWare.Common.1.6.1.6\lib\net45\Swsu.Lignis.MiddleWare.Common.dll</HintPath>
+    <Reference Include="Swsu.Lignis.MiddleWare.Common, Version=1.6.1.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.MiddleWare.Common.1.6.1.9\lib\net45\Swsu.Lignis.MiddleWare.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Swsu.Lignis.SCMF.ModuleSCMF, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swsu.Lignis.SCMF.ModuleSCMF.1.2.2\lib\net45\Swsu.Lignis.SCMF.ModuleSCMF.dll</HintPath>
+    <Reference Include="Swsu.Lignis.SCMF.ModuleSCMF, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.SCMF.ModuleSCMF.1.2.4\lib\net45\Swsu.Lignis.SCMF.ModuleSCMF.dll</HintPath>
     </Reference>
-    <Reference Include="Swsu.Lignis.SCMF.ProtocolSCMF, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swsu.Lignis.SCMF.ProtocolSCMF.0.2.3\lib\net45\Swsu.Lignis.SCMF.ProtocolSCMF.dll</HintPath>
+    <Reference Include="Swsu.Lignis.SCMF.ProtocolSCMF, Version=0.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swsu.Lignis.SCMF.ProtocolSCMF.0.2.6\lib\net45\Swsu.Lignis.SCMF.ProtocolSCMF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

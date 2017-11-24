@@ -70,6 +70,24 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Выполняется продолжительная операция. Вы хотите прервать процесс?.
+        /// </summary>
+        public static string AppInterruptionConfirmation {
+            get {
+                return ResourceManager.GetString("AppInterruptionConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Приложение успешно запущено.
+        /// </summary>
+        public static string AppStartSuccess {
+            get {
+                return ResourceManager.GetString("AppStartSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка создания резервной копии.
         /// </summary>
         public static string BackupFailed {
@@ -205,6 +223,24 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Завершился процесс создания резервной копии.
+        /// </summary>
+        public static string DumpProcessFinished {
+            get {
+                return ResourceManager.GetString("DumpProcessFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Начался процесс создания резервной копии.
+        /// </summary>
+        public static string DumpProcessStarted {
+            get {
+                return ResourceManager.GetString("DumpProcessStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Список объектов БД пуст.
         /// </summary>
         public static string EmptyDb {
@@ -232,11 +268,29 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Неверный формат IP-адреса сервера.
+        /// </summary>
+        public static string IpAddressIsInvalid {
+            get {
+                return ResourceManager.GetString("IpAddressIsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Создание новой БД.
         /// </summary>
         public static string NewDbCreating {
             get {
                 return ResourceManager.GetString("NewDbCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Значение порта некорректно.
+        /// </summary>
+        public static string PortIsInvalid {
+            get {
+                return ResourceManager.GetString("PortIsInvalid", resourceCulture);
             }
         }
         
@@ -255,6 +309,24 @@ namespace Swsu.Tools.DbBackupper.Resources {
         public static string RestoreProcessFailed {
             get {
                 return ResourceManager.GetString("RestoreProcessFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Завершился процесс восстановления из резервной копии.
+        /// </summary>
+        public static string RestoreProcessFinished {
+            get {
+                return ResourceManager.GetString("RestoreProcessFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Начался процесс восстановления из резервной копии.
+        /// </summary>
+        public static string RestoreProcessStarted {
+            get {
+                return ResourceManager.GetString("RestoreProcessStarted", resourceCulture);
             }
         }
         

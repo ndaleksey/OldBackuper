@@ -8,6 +8,7 @@ using System.Windows.Input;
 using DevExpress.Mvvm;
 using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Properties;
+using Swsu.Tools.DbBackupper.Resources;
 using Swsu.Tools.DbBackupper.Service;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
@@ -101,30 +102,21 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 			ChangeCultureCommand = new DelegateCommand(ChangeCulture, CanChangeCulture);
 			CanCloseCommand = new DelegateCommand<CancelEventArgs>(CanClose);
+
+			Helper.LogInfo(Messages.AppStartSuccess);
 		}
 
 		private void CanClose(CancelEventArgs args)
 		{
 			if (WorkflowType == EWorkflowType.NormalWork) return;
 
-			if (MessageBox.Show("Выполняется продолжительная операция. Вы хотите прервать процесс?", "Закрытие приложения",
-				    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+			if (MessageBox.Show(Messages.AppInterruptionConfirmation, Messages.StopApplication, MessageBoxButton.YesNo,
+				    MessageBoxImage.Question) == MessageBoxResult.No)
 			{
-
 				return;
 			}
 
 			args.Cancel = true;
-
-			/*if (MessageBox.Show("Вы уверенны, что хотите закрыть приложение", "Закрытие", MessageBoxButton.YesNo,
-				    MessageBoxImage.Question) == MessageBoxResult.Yes)
-			{
-				
-			}
-			else
-			{
-				args.Cancel = true;
-			}*/
 		}
 
 		#endregion

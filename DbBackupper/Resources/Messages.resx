@@ -256,4 +256,28 @@
   <data name="SuchDbAlreadyExists" xml:space="preserve">
     <value>БД с указанным именем уже существует. Вы хотите перезаписать ее?</value>
   </data>
+  <data name="AppStartSuccess" xml:space="preserve">
+    <value>Приложение успешно запущено</value>
+  </data>
+  <data name="AppInterruptionConfirmation" xml:space="preserve">
+    <value>Выполняется продолжительная операция. Вы хотите прервать процесс?</value>
+  </data>
+  <data name="IpAddressIsInvalid" xml:space="preserve">
+    <value>Неверный формат IP-адреса сервера</value>
+  </data>
+  <data name="PortIsInvalid" xml:space="preserve">
+    <value>Значение порта некорректно</value>
+  </data>
+  <data name="DumpProcessFinished" xml:space="preserve">
+    <value>Завершился процесс создания резервной копии</value>
+  </data>
+  <data name="DumpProcessStarted" xml:space="preserve">
+    <value>Начался процесс создания резервной копии</value>
+  </data>
+  <data name="RestoreProcessFinished" xml:space="preserve">
+    <value>Завершился процесс восстановления из резервной копии</value>
+  </data>
+  <data name="RestoreProcessStarted" xml:space="preserve">
+    <value>Начался процесс восстановления из резервной копии</value>
+  </data>
 </root>

@@ -249,4 +249,36 @@
     <value>Une base de données avec le nom spécifié existe déjà. Voulez-vous l'écraser?</value>
     <comment>БД с указанным именем уже существует. Вы хотите перезаписать ее?</comment>
   </data>
+  <data name="AppStartSuccess" xml:space="preserve">
+    <value>L'application a été lancée avec succès</value>
+    <comment>Приложение успешно запущено</comment>
+  </data>
+  <data name="AppInterruptionConfirmation" xml:space="preserve">
+    <value>Une longue opération est en cours. Voulez-vous annuler le processus?</value>
+    <comment>Выполняется продолжительная операция. Вы хотите прервать процесс?</comment>
+  </data>
+  <data name="IpAddressIsInvalid" xml:space="preserve">
+    <value>Format d'adresse IP du serveur non valide</value>
+    <comment>Неверный формат IP-адреса сервера</comment>
+  </data>
+  <data name="PortIsInvalid" xml:space="preserve">
+    <value>Le port est invalide</value>
+    <comment>Значение порта некорректно</comment>
+  </data>
+  <data name="DumpProcessFinished" xml:space="preserve">
+    <value>Processus de sauvegarde terminé</value>
+    <comment>Завершился процесс создания резервной копии</comment>
+  </data>
+  <data name="DumpProcessStarted" xml:space="preserve">
+    <value>Le processus de création d'une sauvegarde a commencé</value>
+    <comment>Начался процесс создания резервной копии</comment>
+  </data>
+  <data name="RestoreProcessFinished" xml:space="preserve">
+    <value>Le processus de restauration à partir d'une sauvegarde est terminée</value>
+    <comment>Завершился процесс восстановления из резервной копии</comment>
+  </data>
+  <data name="RestoreProcessStarted" xml:space="preserve">
+    <value>Restauration à partir de la sauvegarde démarrée</value>
+    <comment>Начался процесс восстановления из резервной копии</comment>
+  </data>
 </root>

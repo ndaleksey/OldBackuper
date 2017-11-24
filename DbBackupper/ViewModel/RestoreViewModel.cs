@@ -40,9 +40,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				var dialog = new OpenFileDialog
 				{
-					Filter = $"{Resources.Messages.SqlTypeFiles} (*.sql)|*.sql"
-					         + $"|{Resources.Messages.BinaryTypeFiles} (*.bin)|*.bin"
-					         + $"|{Resources.Messages.TarTypeFiles} (*.tar)|*.tar"
+					Filter = $"{Messages.SqlTypeFiles} (*.sql)|*.sql"
+					         + $"|{Messages.BinaryTypeFiles} (*.bin)|*.bin"
+					         + $"|{Messages.TarTypeFiles} (*.tar)|*.tar"
 				};
 
 				var showDialog = dialog.ShowDialog();
@@ -94,7 +94,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			catch (Exception e)
 			{
 				Helper.LogError(e);
-				/*MessageBox.Show(Resources.Messages.RestoreFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+				/*MessageBox.Show(Messages.RestoreFailed, Messages.Restoring, MessageBoxButton.OK,
 					MessageBoxImage.Error);*/
 			}
 			finally
@@ -123,14 +123,14 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 						d => string.Equals(d, builder.Database, StringComparison.CurrentCulture)))
 				{
 					if (
-						MessageBox.Show(Resources.Messages.DbAlreadyExistsWarning, Resources.Messages.NewDbCreating,
+						MessageBox.Show(Messages.DbAlreadyExistsWarning, Messages.NewDbCreating,
 							MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
 						return;
 					
 					var connections = (await DbService.GetActiveConnectionsAsync(builder)).ToList();
 
 					if (connections.Count > 0)
-						if (MessageBox.Show(Resources.Messages.ActiveConnectionsAbortingRequest, Resources.Messages.NewDbCreating,
+						if (MessageBox.Show(Messages.ActiveConnectionsAbortingRequest, Messages.NewDbCreating,
 							    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
 							return;
 
@@ -143,13 +143,13 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 //				GetDbStructure();
 
-				MessageBox.Show(Resources.Messages.CreateDbSucceed, Resources.Messages.NewDbCreating, MessageBoxButton.OK,
+				MessageBox.Show(Messages.CreateDbSucceed, Messages.NewDbCreating, MessageBoxButton.OK,
 					MessageBoxImage.Information);
 			}
 			catch (Exception e)
 			{
 				Helper.LogError(e);
-				MessageBox.Show(Resources.Messages.CreateDbFailed, Resources.Messages.NewDbCreating, MessageBoxButton.OK,
+				MessageBox.Show(Messages.CreateDbFailed, Messages.NewDbCreating, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 			finally
@@ -167,15 +167,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			switch (code)
 			{
 				case 0:
-					MessageBox.Show(Resources.Messages.RestoreSucceed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBox.Show(Messages.RestoreSucceed, Messages.Restoring, MessageBoxButton.OK,
 						MessageBoxImage.Information);
 					return;
 				case 1:
-					MessageBox.Show(Resources.Messages.RestoreProcessFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBox.Show(Messages.RestoreProcessFailed, Messages.Restoring, MessageBoxButton.OK,
 						MessageBoxImage.Warning);
 					return;
 				default:
-					MessageBox.Show(Resources.Messages.RestoreFailed, Resources.Messages.Restoring, MessageBoxButton.OK,
+					MessageBox.Show(Messages.RestoreFailed, Messages.Restoring, MessageBoxButton.OK,
 						MessageBoxImage.Error);
 					return;
 			}

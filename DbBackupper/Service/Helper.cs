@@ -29,6 +29,13 @@ namespace Swsu.Tools.DbBackupper.Service
 		#endregion
 
 		#region Methods
+
+		public static void LogWarn(string message)
+		{
+			Debug.WriteLine(message);
+			Logger.Warn(Properties.Resources.LogSource, message);
+			ModuleScmf.AddWarning(message);
+		}
 		
 		public static void LogError(string message, Exception e)
 		{

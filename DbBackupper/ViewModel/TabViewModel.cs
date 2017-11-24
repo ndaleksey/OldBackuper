@@ -16,6 +16,7 @@ using DevExpress.Mvvm;
 using Npgsql;
 using Swsu.Tools.DbBackupper.Infrastructure;
 using Swsu.Tools.DbBackupper.Model;
+using Swsu.Tools.DbBackupper.Resources;
 using Swsu.Tools.DbBackupper.Service;
 
 namespace Swsu.Tools.DbBackupper.ViewModel
@@ -45,7 +46,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
 
 		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; protected set; }
-		
+
 		public string Host
 		{
 			get { return _host; }
@@ -176,19 +177,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			{
 				var ping = new Ping().Send(Host);
 
-				if (ping == null) throw new NullReferenceException(Resources.Messages.ServerIsNotAvailable);
+				if (ping == null) throw new NullReferenceException(Messages.ServerIsNotAvailable);
 
 				if (ping.Status == IPStatus.Success)
-					MessageBox.Show(Resources.Messages.ServerIsAvailable, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
+					MessageBox.Show(Messages.ServerIsAvailable, Messages.ConnectionCheck, MessageBoxButton.OK,
 						MessageBoxImage.Information);
 				else
-					MessageBox.Show(Resources.Messages.ServerIsNotAvailable, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
+					MessageBox.Show(Messages.ServerIsNotAvailable, Messages.ConnectionCheck, MessageBoxButton.OK,
 						MessageBoxImage.Warning);
 			}
 			catch (Exception e)
 			{
 				Helper.LogError(e);
-				MessageBox.Show(Resources.Messages.ServerConnectionError, Resources.Messages.ConnectionCheck, MessageBoxButton.OK,
+				MessageBox.Show(Messages.ServerConnectionError, Messages.ConnectionCheck, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 		}
@@ -212,25 +213,25 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 					DbObjects.Add(obj);
 
 				if (objects.Count == 0)
-					MessageBox.Show(Resources.Messages.EmptyDb, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
+					MessageBox.Show(Messages.EmptyDb, Messages.DbStructureGetting, MessageBoxButton.OK,
 						MessageBoxImage.Information);
 			}
 			catch (PostgresException dbe)
 			{
 				var errorMessage = Helper.ParseErrorCode(dbe);
 				Helper.LogError(errorMessage, dbe);
-				MessageBox.Show(errorMessage, Resources.Messages.DbStructureGetting, MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show(errorMessage, Messages.DbStructureGetting, MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			catch (SocketException se)
 			{
-				Helper.LogError(Resources.Messages.ConnectionDenied, se);
-				MessageBox.Show(Resources.Messages.ConnectionDenied, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
+				Helper.LogError(Messages.ConnectionDenied, se);
+				MessageBox.Show(Messages.ConnectionDenied, Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 			catch (Exception e)
 			{
-				Helper.LogError(Resources.Messages.GetDbStructureError, e);
-				MessageBox.Show(Resources.Messages.GetDbStructureError, Resources.Messages.DbStructureGetting, MessageBoxButton.OK,
+				Helper.LogError(Messages.GetDbStructureError, e);
+				MessageBox.Show(Messages.GetDbStructureError, Messages.DbStructureGetting, MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
 			finally
@@ -249,13 +250,13 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 			if (!IPAddress.TryParse(Host, out hostIp))
 			{
-				Debug.WriteLine("Ошибочный формат IP-адресса хоста");
+				Helper.LogWarn(Messages.IpAddressIsInvalid);
 				return false;
 			}
 
 			if (Port >= ushort.MaxValue)
 			{
-				Debug.WriteLine("Значение порта некорректно");
+				Helper.LogWarn(Messages.PortIsInvalid);
 				return false;
 			}
 
@@ -264,7 +265,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		protected NpgsqlConnectionStringBuilder GetConnectionBuilder()
 		{
-			if (!ValidateConnectionBuilder()) throw new ArgumentException(Resources.Messages.ConnectionStringBuildingError);
+			if (!ValidateConnectionBuilder()) throw new ArgumentException(Messages.ConnectionStringBuildingError);
 
 			return new NpgsqlConnectionStringBuilder
 			{
@@ -286,6 +287,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		protected Process MakeDump(string exeFileName, IReadOnlyCollection<string> schemes, ObjectType objectType,
 			FileFormat fileFormat, bool createDb, bool cleanDb, bool isBlobs)
 		{
+			Helper.LogInfo(Messages.DumpProcessStarted);
+
 			var arguments = new StringBuilder();
 
 			arguments.Append($"-h {Host}");
@@ -351,6 +354,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			if (process == null) throw new NullReferenceException("Can't execute restore process");
 
 			process.BeginErrorReadLine();
+			process.Exited += DumpProcessOnExited;
 			process.OutputDataReceived += BackupProcess_OutputDataReceived;
 			process.ErrorDataReceived += BackupProcess_ErrorDataReceived;
 			process.WaitForExit();
@@ -359,14 +363,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				ClearLogs();
 
 			var text = new StringBuilder();
-			text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
+			text.Append($"{DateTime.Now:HH:mm:ss}\n{Messages.ResultCode}:\t{process.ExitCode}");
 			text.Append(process.ExitCode == 0
-				? $"\n\n{Resources.Messages.BackupProcessSucceed}"
-				: $"\n\n{Resources.Messages.BackupProcessFailed}");
+				? $"\n\n{Messages.BackupProcessSucceed}"
+				: $"\n\n{Messages.BackupProcessFailed}");
 
 			OutConcurrentText(Logs, text.ToString());
 
 			return process;
+		}
+
+		private void DumpProcessOnExited(object o, EventArgs args)
+		{
+			Helper.LogInfo(Messages.DumpProcessFinished);
 		}
 
 		private void BackupProcess_OutputDataReceived(object sender, DataReceivedEventArgs args)
@@ -388,6 +397,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		protected Process Restore(string exeFileName, ObjectType objectType, FileFormat fileFormat, string dumpFileName,
 			bool createDb, bool cleanDb)
 		{
+			Helper.LogInfo(Messages.RestoreProcessStarted);
+
 			var arguments = new StringBuilder();
 
 			arguments.Append($"-h {Host}");
@@ -438,10 +449,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			if (process == null) throw new NullReferenceException("Can't execute restore process");
 
 			process.BeginErrorReadLine();
-			process.Exited += (sender, args) =>
-			{
-				Debug.WriteLine("Завершение процесса");
-			};
+			process.Exited += RestoreProcess_Exited;
 			process.OutputDataReceived += RestoreProcess_OutputDataReceived;
 			process.ErrorDataReceived += RestoreProcess_ErrorDataReceived;
 			process.WaitForExit();
@@ -451,14 +459,19 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 			var text = new StringBuilder();
 
-			text.Append($"{DateTime.Now:HH:mm:ss}\n{Resources.Messages.ResultCode}:\t{process.ExitCode}");
+			text.Append($"{DateTime.Now:HH:mm:ss}\n{Messages.ResultCode}:\t{process.ExitCode}");
 			text.Append(process.ExitCode == 0
-				? $"\n\n{Resources.Messages.RestoreProcessSucceed}"
-				: $"\n\n{Resources.Messages.RestoreProcessFailed}");
+				? $"\n\n{Messages.RestoreProcessSucceed}"
+				: $"\n\n{Messages.RestoreProcessFailed}");
 
 			OutConcurrentText(Logs, text.ToString());
 
 			return process;
+		}
+
+		private void RestoreProcess_Exited(object sender, EventArgs args)
+		{
+			Helper.LogInfo(Messages.RestoreProcessFinished);
 		}
 
 		private void RestoreProcess_ErrorDataReceived(object sender, DataReceivedEventArgs args)

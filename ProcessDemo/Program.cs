@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,10 +6,9 @@ namespace ProcessDemo
 {
     public class Program
     {
-        private static int x;
-        static object locker = new object();
-        static AutoResetEvent waitHandler = new AutoResetEvent(true);
-        static Mutex mutexObj = new Mutex();
+        static object _locker = new object();
+        static AutoResetEvent _waitHandler = new AutoResetEvent(true);
+        static Mutex _mutexObj = new Mutex();
 
         public delegate int BinaryOp(int data, int time);
 

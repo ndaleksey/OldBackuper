@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
@@ -29,6 +30,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#endregion
 
 		#region Properties
+		private Process Process { get; set; }
 
 		public EWorkflowType WorkflowType
 		{
@@ -83,14 +85,14 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			WorkflowTypeChangedHandler = type => WorkflowType = type;
 			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
 
-			BackupViewModel = new BackupViewModel(WorkflowTypeChangedHandler)
+			BackupViewModel = new BackupViewModel(Process, WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
 				Database = "los_db"
 			};
 
-			RestoreViewModel = new RestoreViewModel(WorkflowTypeChangedHandler)
+			RestoreViewModel = new RestoreViewModel(Process, WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
@@ -117,6 +119,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			}
 
 			args.Cancel = true;
+			Process.Close();
 		}
 
 		#endregion

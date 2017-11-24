@@ -42,7 +42,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#endregion
 
 		#region Properties
-
+		private Process Process { get; set; }
 		public IListBoxService LogsListBoxService => GetService<IListBoxService>("LogsListBoxService");
 
 		public Action<EWorkflowType> WorkflowTypeChangedHandler { get; protected set; }
@@ -140,8 +140,9 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructors
 
-		protected TabViewModel(Action<EWorkflowType> workflowTypeChangedHandler)
+		protected TabViewModel(Process process,Action<EWorkflowType> workflowTypeChangedHandler)
 		{
+			Process = process;
 			WorkflowTypeChangedHandler = workflowTypeChangedHandler;
 
 			GetDbStructureCommand = new DelegateCommand(GetDbStructure, CanGetDbStructure);
@@ -349,28 +350,28 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				RedirectStandardError = true
 			};
 
-			var process = Process.Start(info);
+			Process = Process.Start(info);
 
-			if (process == null) throw new NullReferenceException("Can't execute restore process");
+			if (Process == null) throw new NullReferenceException("Can't execute restore process");
 
-			process.BeginErrorReadLine();
-			process.Exited += DumpProcessOnExited;
-			process.OutputDataReceived += BackupProcess_OutputDataReceived;
-			process.ErrorDataReceived += BackupProcess_ErrorDataReceived;
-			process.WaitForExit();
+			Process.BeginErrorReadLine();
+			Process.Exited += DumpProcessOnExited;
+			Process.OutputDataReceived += BackupProcess_OutputDataReceived;
+			Process.ErrorDataReceived += BackupProcess_ErrorDataReceived;
+			Process.WaitForExit();
 
-			if (process.ExitCode == 0)
+			if (Process.ExitCode == 0)
 				ClearLogs();
 
 			var text = new StringBuilder();
-			text.Append($"{DateTime.Now:HH:mm:ss}\n{Messages.ResultCode}:\t{process.ExitCode}");
-			text.Append(process.ExitCode == 0
+			text.Append($"{DateTime.Now:HH:mm:ss}\n{Messages.ResultCode}:\t{Process.ExitCode}");
+			text.Append(Process.ExitCode == 0
 				? $"\n\n{Messages.BackupProcessSucceed}"
 				: $"\n\n{Messages.BackupProcessFailed}");
 
 			OutConcurrentText(Logs, text.ToString());
 
-			return process;
+			return Process;
 		}
 
 		private void DumpProcessOnExited(object o, EventArgs args)
@@ -444,29 +445,29 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				UseShellExecute = false
 			};
 
-			var process = Process.Start(info);
+			Process = Process.Start(info);
 
-			if (process == null) throw new NullReferenceException("Can't execute restore process");
+			if (Process == null) throw new NullReferenceException("Can't execute restore process");
 
-			process.BeginErrorReadLine();
-			process.Exited += RestoreProcess_Exited;
-			process.OutputDataReceived += RestoreProcess_OutputDataReceived;
-			process.ErrorDataReceived += RestoreProcess_ErrorDataReceived;
-			process.WaitForExit();
+			Process.BeginErrorReadLine();
+			Process.Exited += RestoreProcess_Exited;
+			Process.OutputDataReceived += RestoreProcess_OutputDataReceived;
+			Process.ErrorDataReceived += RestoreProcess_ErrorDataReceived;
+			Process.WaitForExit();
 
-			if (process.ExitCode == 0)
+			if (Process.ExitCode == 0)
 				ClearLogs();
 
 			var text = new StringBuilder();
 
-			text.Append($"{DateTime.Now:HH:mm:ss}\n{Messages.ResultCode}:\t{process.ExitCode}");
-			text.Append(process.ExitCode == 0
+			text.Append($"{DateTime.Now:HH:mm:ss}\n{Messages.ResultCode}:\t{Process.ExitCode}");
+			text.Append(Process.ExitCode == 0
 				? $"\n\n{Messages.RestoreProcessSucceed}"
 				: $"\n\n{Messages.RestoreProcessFailed}");
 
 			OutConcurrentText(Logs, text.ToString());
 
-			return process;
+			return Process;
 		}
 
 		private void RestoreProcess_Exited(object sender, EventArgs args)

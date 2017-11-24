@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -21,7 +22,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructor
 
-		public BackupViewModel(Action<EWorkflowType> workflowTypeChangedHandler) : base(workflowTypeChangedHandler)
+		public BackupViewModel(Process process, Action<EWorkflowType> workflowTypeChangedHandler) : base(process, workflowTypeChangedHandler)
 		{
 			CreateBackupFileNameCommand = new DelegateCommand(CreateBackupFileName);
 			MakeBackupCommand = new DelegateCommand(MakeBackup, CanMakeBackup);

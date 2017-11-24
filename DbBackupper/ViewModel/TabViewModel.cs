@@ -140,9 +140,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructors
 
-		protected TabViewModel(Process process,Action<EWorkflowType> workflowTypeChangedHandler)
+		protected TabViewModel(Action<EWorkflowType> workflowTypeChangedHandler)
 		{
-			Process = process;
 			WorkflowTypeChangedHandler = workflowTypeChangedHandler;
 
 			GetDbStructureCommand = new DelegateCommand(GetDbStructure, CanGetDbStructure);

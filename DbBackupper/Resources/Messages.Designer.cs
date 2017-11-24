@@ -142,6 +142,15 @@ namespace Swsu.Tools.DbBackupper.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Невозможно завершить приложение из-за запущенной длительной операции.
+        /// </summary>
+        public static string CantStopApplication {
+            get {
+                return ResourceManager.GetString("CantStopApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка получения копии NpgsqlConnectionStringBuilder.
         /// </summary>
         public static string ConnectionBuilderGettingError {

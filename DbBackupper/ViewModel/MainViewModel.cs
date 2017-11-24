@@ -30,7 +30,6 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 		#endregion
 
 		#region Properties
-		private Process Process { get; set; }
 
 		public EWorkflowType WorkflowType
 		{
@@ -85,14 +84,14 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 			WorkflowTypeChangedHandler = type => WorkflowType = type;
 			CultureName = Thread.CurrentThread.CurrentUICulture.Name;
 
-			BackupViewModel = new BackupViewModel(Process, WorkflowTypeChangedHandler)
+			BackupViewModel = new BackupViewModel(WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
 				Database = "los_db"
 			};
 
-			RestoreViewModel = new RestoreViewModel(Process, WorkflowTypeChangedHandler)
+			RestoreViewModel = new RestoreViewModel(WorkflowTypeChangedHandler)
 			{
 				Host = "127.0.0.1",
 				Port = 5432,
@@ -110,16 +109,15 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		private void CanClose(CancelEventArgs args)
 		{
-			if (WorkflowType == EWorkflowType.NormalWork) return;
-
-			if (MessageBox.Show(Messages.AppInterruptionConfirmation, Messages.StopApplication, MessageBoxButton.YesNo,
-				    MessageBoxImage.Question) == MessageBoxResult.No)
+			if (WorkflowType == EWorkflowType.NormalWork)
 			{
+				args.Cancel = false;
 				return;
 			}
 
+			MessageBox.Show(Messages.CantStopApplication, Messages.StopApplication, MessageBoxButton.OK,
+				MessageBoxImage.Warning);
 			args.Cancel = true;
-			Process.Close();
 		}
 
 		#endregion

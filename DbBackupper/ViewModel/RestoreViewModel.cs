@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -24,7 +23,7 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 
 		#region Constructor
 
-		public RestoreViewModel(Process process, Action<EWorkflowType> workflowType) : base(process, workflowType)
+		public RestoreViewModel(Action<EWorkflowType> workflowType) : base(workflowType)
 		{
 			CreateRestoreFileNameCommand = new DelegateCommand(CreateRestoreFileName);
 			RestoreBackupCommand = new DelegateCommand(RestoreBackup, CanRestoreBackup);

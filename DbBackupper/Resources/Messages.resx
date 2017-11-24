@@ -280,4 +280,7 @@
   <data name="RestoreProcessStarted" xml:space="preserve">
     <value>Начался процесс восстановления из резервной копии</value>
   </data>
+  <data name="CantStopApplication" xml:space="preserve">
+    <value>Невозможно завершить приложение из-за запущенной длительной операции</value>
+  </data>
 </root>

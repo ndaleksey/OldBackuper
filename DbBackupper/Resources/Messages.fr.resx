@@ -281,4 +281,8 @@
     <value>Restauration à partir de la sauvegarde démarrée</value>
     <comment>Начался процесс восстановления из резервной копии</comment>
   </data>
+  <data name="CantStopApplication" xml:space="preserve">
+    <value>Impossible de terminer l'application en raison d'une opération longue en cours d'exécution</value>
+    <comment>Невозможно завершить приложение из-за запущенной длительной операции</comment>
+  </data>
 </root>

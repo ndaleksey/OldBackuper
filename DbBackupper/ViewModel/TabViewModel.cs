@@ -212,6 +212,8 @@ namespace Swsu.Tools.DbBackupper.ViewModel
 				foreach (var obj in objects)
 					DbObjects.Add(obj);
 
+				CommandManager.InvalidateRequerySuggested();
+
 				if (objects.Count == 0)
 					MessageBox.Show(Messages.EmptyDb, Messages.DbStructureGetting, MessageBoxButton.OK,
 						MessageBoxImage.Information);

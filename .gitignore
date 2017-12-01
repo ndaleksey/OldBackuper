@@ -5,6 +5,3 @@ DbBackupper.Console
 DbDumper.Console
 ProcessDemo
 packages
-
-*.doc
-*.docx
